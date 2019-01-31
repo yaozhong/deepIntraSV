@@ -45,10 +45,12 @@ There are two evluation metrics, which are determined through CMD parameter -em 
 * intra-sample: ``-em single``
 * cross-sample: ``-em cross``
 
-For the intra-sample case, the data can be split with -ds option:
+For the intra-sample case, one bam file is given and the data can be split with with the following -ds option:
 * Stratify: Stratified Random split
 * RandRgs: Random split
 * CV: cross valdiation
+
+For the intra-sample case, the second bam file is assigned through ``-d2`` option.
 
 
 
@@ -62,12 +64,12 @@ Users can change manually change the model parameter file.
 If no model parameter file is provided, the code will use hyperOpt to search preDefined hyper-parameter spaces.
 
 ```
-python train.py -b 1000 -em single -ds StratifyNew -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
+python train.py -b 1000 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
 ```
 
 ## Testing
 ```
-python test.py -b 1000  -em single -ds StratifyNew -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
+python test.py -b 1000  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
 ```
 
 ## Experiment logs
