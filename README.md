@@ -1,4 +1,4 @@
-#deepIntraSV
+# deepIntraSV
 DeepIntraSV is a U-net based model used for detecting SVs inside of a bin with base-pair read-depth inforamtion.
 More details can be found in https://doi.org/10.1101/503649
 
