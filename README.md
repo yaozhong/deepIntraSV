@@ -23,7 +23,7 @@ Several frequent parameters can be also changed through command line parameters.
 * hg19 Chromesome length 
 
 2. SV annotation files./data/SV_annotation/
-  ** a python script is provided to parse VCF for SV regions
+  (a python script is provided to parse VCF for SV regions)
 
 ## Data pre-processing and caching
 A multi-core version of pysam is applied. In default, all cores will be used 
