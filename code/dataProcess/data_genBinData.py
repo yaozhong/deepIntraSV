@@ -34,7 +34,7 @@ def input_gen_fromRgs(rgs, bamFilePath):
 
     rdVec = get_RDVec_parallel_nobin(bamFilePath, rgs)
     maVec = getRegions_mappability_parallel_nobin(config.DATABASE["mappability_file"], rgs)
-    # @ note potential errors happens here. 
+   
     gcVec, seqMat= getRegions_GC_seq_parallel_nobin(config.DATABASE["ref_faFile"], rgs)
 
     return (rdVec,seqMat, maVec, gcVec)

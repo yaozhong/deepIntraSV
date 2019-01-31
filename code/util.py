@@ -3,7 +3,7 @@ Data:	2018-05-29
 Author: Yao-zhong Zhang @ IMSUT
 
 Description:
-Basic functions for read the region information
+Basic functions for read region information
 
 # revised for the chrName normalization part
 """
@@ -32,7 +32,7 @@ import argparse
 import tensorflow as tf
 from keras import backend as K
 
-## this part is make the reproducible of the CPU version
+## this part for the reproducible of the CPU version
 print "@ Setting randomness fixed ...."
 os.environ['PYTHONHASHSEED'] = '0'
 np.random.seed(config.DATABASE["rand_seed"])
@@ -47,7 +47,7 @@ sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
 K.set_session(sess)
 """
 
-print "- Random seed set [DONE]!! (*not work for the GPU training)\n"
+print "- Random seed set [DONE]!! (* not work for the GPU training)\n"
 
 date_stamp = time.strftime("%Y%m%d_%H.%M")
 
