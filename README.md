@@ -1,4 +1,4 @@
-# deepIntraSV
+# DeepIntraSV
 DeepIntraSV is a U-net based model used for detecting SVs inside of a bin with base-pair read-depth (RD) inforamtion.
 More details can be found in https://doi.org/10.1101/503649
 
@@ -11,13 +11,19 @@ docker pull yaozhong/deep_intra_sv
 * Tensorflow 1.8.0
 * Keras 2.2.4
 
+```
+nvidia-docker run -it --rm -v bamFilePath:/bamFiles yaozhong/deep_intra_sv:0.9 bash
+```
+
 ## Configuration file
-The parameters are required to be assigned in the config.py file.
+The parameters are required to be determined in the config.py file.
+
 Several frequent parameters can be also changed through command line parameters.
 
 ### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
-* reference genome fa file and index (Please download from http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/)
+* reference genome fa file and index (Please download from http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/,
+and put it in the >data/reference fold)
 * mappability of 100-mer
 * Encode hg19 blacklist regions
 * hg19 Chromesome length 
