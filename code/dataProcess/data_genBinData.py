@@ -351,7 +351,7 @@ def bkDataGen_singleSample(goldFile, bamFile, dataAug=0, splitFold=0.2):
             
             return (train_data, test_data)
 
-        if config.DATABASE["data_split"] == "StratifyNew":
+        if config.DATABASE["data_split"] == "Stratify":
 
             rgList_test = []
             rgList_train = []
