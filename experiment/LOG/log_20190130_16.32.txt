@@ -1,0 +1,5 @@
+[2019-01-30 16:32:01]: ** Break point and background data has been generated completely !!!
+[2019-01-30 16:32:12]: ** Break point and background data has been generated completely !!!
+[2019-01-30 16:32:57]: Cached 0.010000 Genome Depth-of-coverage statistics is [29.710238, 9.713292]
+[2019-01-30 16:32:57]: 
+[BIN_DATA]:Sample label number Positive=3270, Negative=3270

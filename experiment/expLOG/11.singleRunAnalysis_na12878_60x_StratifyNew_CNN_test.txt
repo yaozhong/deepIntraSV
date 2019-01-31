@@ -1,0 +1,58 @@
+Using TensorFlow backend.
+2019-01-07 17:48:33.835942: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 17:48:34.021445: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-07 17:48:34.021514: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 17:48:34.253568: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 17:48:34.253661: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 17:48:34.253686: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 17:48:34.253935: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.710238, 9.713292]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.800727, std=11.308276]
+[BIN_DATA]:Break point containing [m=22.207457, std=15.486602]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [51]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 13
+BK=3245 / Total=6489
+* Loading model parameters...
+
+  32/1611 [..............................] - ETA: 39s
+ 512/1611 [========>.....................] - ETA: 1s 
+ 960/1611 [================>.............] - ETA: 0s
+1440/1611 [=========================>....] - ETA: 0s
+1611/1611 [==============================] - 1s 611us/step
+
+=========== [DATA/MODEL information] =============
+[na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=3245 / Total=6489
+Test BK=806 / Total=1611
+[CNN:w_testfix_na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed|CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False.h5]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7460
+* BK only dice_coef=0.7959
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.827436
+* AUC=0.827438
+* Sensitivity=0.825062
+* FDR=0.170823
+------------------------------
+[[668 137]
+ [141 665]]
+==============================
+[CNV]:	* binary= 21/57,	0.368421,	Avg_Dice-all=0.232380	Avg_Dice-BK=0.618592
+[BG]:	* binary= 668/805,	0.829814,	Avg_Dice-all=0.840571	Avg_Dice-BK=1.000000
+[DEL_SVA]:	* binary= 2/2,	1.000000,	Avg_Dice-all=0.543851	Avg_Dice-BK=0.543851
+[DEL_ALU]:	* binary= 240/248,	0.967742,	Avg_Dice-all=0.875877	Avg_Dice-BK=0.902497
+[DEL]:	* binary= 392/487,	0.804928,	Avg_Dice-all=0.596597	Avg_Dice-BK=0.737148
+[DUP]:	* binary= 0/2,	0.000000,	Avg_Dice-all=0.002176,	Ave_Dice-BK=NULL
+[DEL_LINE1]:	* binary= 10/10,	1.000000,	Avg_Dice-all=0.711271	Avg_Dice-BK=0.711271

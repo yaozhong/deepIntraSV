@@ -1,0 +1,22 @@
+[2019-01-30 15:58:26]: 	================ Calcuate the Genomic Statistics based on bam File =================
+[2019-01-30 15:59:22]: >> Filtering the low mappability sample unit from [2881022] to [2437741] 
+[2019-01-30 16:09:13]: ** Break point and background data has been generated completely !!!
+[2019-01-30 16:09:47]: 
+** checking all zero for bk-left 4
+[2019-01-30 16:09:47]: ** checking all zero for bk-right 2
+[2019-01-30 16:09:47]: ** checking all zero for background 7
+[2019-01-30 16:09:47]: ** Break point and background data has been generated completely !!!
+[2019-01-30 16:11:48]: 
+** checking all zero for bk-left 11
+[2019-01-30 16:11:48]: ** checking all zero for bk-right 14
+[2019-01-30 16:11:48]: ** checking all zero for background 26
+[2019-01-30 16:11:53]: Cached 0.010000 Genome Depth-of-coverage statistics is [29.710238, 9.713292]
+[2019-01-30 16:11:53]: 
+[BIN_DATA]:Sample label number Positive=3270, Negative=3270
+[2019-01-30 16:11:53]: 
+ * [Check point] all the test should be the same for each run
+[2019-01-30 16:11:53]: [['11' '31240078' '31241078' 'BG' 'R' '-1' '1' '-1']
+ ['18' '27628716' '27629716' 'DEL_ALU' 'L' '964' '1' '-1']
+ ['4' '184238979' '184239979' 'BG' 'L' '-1' '1' '-1']
+ ['10' '122226211' '122227211' 'DEL' 'L' '480' '-331' '50']
+ ['17' '20589276' '20590276' 'BG' 'L' '-1' '1' '-1']]

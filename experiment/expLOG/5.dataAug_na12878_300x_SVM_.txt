@@ -1,0 +1,312 @@
+Evluating the peformance of data Augmentation
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=257.066013, std=80.731352]
+[BIN_DATA]:Break point containing [m=183.570728, std=119.366841]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [735]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=35643 / Total=71205
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-10_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.876244
+* AUC=0.876244
+* Sensitivity=0.879353
+* FDR=0.126082
+------------------------------
+[[702 102]
+ [ 97 707]]
+==============================
+
+@ TRAIL 1 takes 2959 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=257.066013, std=80.731352]
+[BIN_DATA]:Break point containing [m=183.570728, std=119.366841]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [735]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=35643 / Total=71205
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-10_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.876244
+* AUC=0.876244
+* Sensitivity=0.879353
+* FDR=0.126082
+------------------------------
+[[702 102]
+ [ 97 707]]
+==============================
+
+@ TRAIL 2 takes 2905 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=257.066013, std=80.731352]
+[BIN_DATA]:Break point containing [m=183.570728, std=119.366841]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [735]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=35643 / Total=71205
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-10_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.876244
+* AUC=0.876244
+* Sensitivity=0.879353
+* FDR=0.126082
+------------------------------
+[[702 102]
+ [ 97 707]]
+==============================
+
+@ TRAIL 3 takes 2905 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=257.066013, std=80.731352]
+[BIN_DATA]:Break point containing [m=183.570728, std=119.366841]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [735]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=35643 / Total=71205
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-10_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.876244
+* AUC=0.876244
+* Sensitivity=0.879353
+* FDR=0.126082
+------------------------------
+[[702 102]
+ [ 97 707]]
+==============================
+
+@ TRAIL 4 takes 2933 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=257.066013, std=80.731352]
+[BIN_DATA]:Break point containing [m=183.570728, std=119.366841]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [735]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=35643 / Total=71205
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-10_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.876244
+* AUC=0.876244
+* Sensitivity=0.879353
+* FDR=0.126082
+------------------------------
+[[702 102]
+ [ 97 707]]
+==============================
+
+@ TRAIL 5 takes 2971 seconds
+*************** None data augmentation run ************
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=256.769339, std=80.366883]
+[BIN_DATA]:Break point containing [m=182.781983, std=116.790394]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [68]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=3240 / Total=6472
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.863806
+* AUC=0.863806
+* Sensitivity=0.883085
+* FDR=0.149701
+------------------------------
+[[679 125]
+ [ 94 710]]
+==============================
+
+@ TRAIL 1 takes 29 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=256.769339, std=80.366883]
+[BIN_DATA]:Break point containing [m=182.781983, std=116.790394]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [68]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=3240 / Total=6472
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.863806
+* AUC=0.863806
+* Sensitivity=0.883085
+* FDR=0.149701
+------------------------------
+[[679 125]
+ [ 94 710]]
+==============================
+
+@ TRAIL 2 takes 33 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=256.769339, std=80.366883]
+[BIN_DATA]:Break point containing [m=182.781983, std=116.790394]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [68]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=3240 / Total=6472
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.863806
+* AUC=0.863806
+* Sensitivity=0.883085
+* FDR=0.149701
+------------------------------
+[[679 125]
+ [ 94 710]]
+==============================
+
+@ TRAIL 3 takes 32 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=256.769339, std=80.366883]
+[BIN_DATA]:Break point containing [m=182.781983, std=116.790394]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [68]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=3240 / Total=6472
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.863806
+* AUC=0.863806
+* Sensitivity=0.883085
+* FDR=0.149701
+------------------------------
+[[679 125]
+ [ 94 710]]
+==============================
+
+@ TRAIL 4 takes 33 seconds
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [261.257355, 57.338917]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=256.769339, std=80.366883]
+[BIN_DATA]:Break point containing [m=182.781983, std=116.790394]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [68]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 16
+
+=========== [DATA/MODEL information] =============
+[../experiment/model/]
+Train BK=3240 / Total=6472
+Test BK=804 / Total=1608
+[na12878_300x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+
+---------- [Binary Results] -----------
+* F-score=0.863806
+* AUC=0.863806
+* Sensitivity=0.883085
+* FDR=0.149701
+------------------------------
+[[679 125]
+ [ 94 710]]
+==============================
+
+@ TRAIL 5 takes 37 seconds

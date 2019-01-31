@@ -1,0 +1,268 @@
+*Cross sample evlauation...
+ ../experiment/model_param/cnn_default 
+*python train.py -b 1000 -em cross -ds cross -da 0 -d na12878_7x -d2 na18939_7x -m CNN -g 2 -mp ../experiment/model_param/cnn_default
+Using TensorFlow backend.
+2019-01-07 00:05:26.977272: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 00:05:27.142763: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-07 00:05:27.142847: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 00:05:27.393188: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 00:05:27.393268: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 00:05:27.393288: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 00:05:27.393524: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [13.245769, 7.047873]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 26
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=1866 / Total=3722
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4473
+* BK only dice_coef=0.5729
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.609350
+* AUC=0.608960
+* Sensitivity=0.754019
+* FDR=0.414238
+------------------------------
+[[ 861  995]
+ [ 459 1407]]
+==============================
+
+@ TRAIL 1 takes 47 seconds
+
+Using TensorFlow backend.
+2019-01-07 00:06:14.729089: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 00:06:14.896737: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-07 00:06:14.896827: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 00:06:15.208547: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 00:06:15.208656: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 00:06:15.208689: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 00:06:15.209006: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [13.245769, 7.047873]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 26
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=1866 / Total=3722
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4446
+* BK only dice_coef=0.5646
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.606932
+* AUC=0.606613
+* Sensitivity=0.725080
+* FDR=0.412505
+------------------------------
+[[ 906  950]
+ [ 513 1353]]
+==============================
+
+@ TRAIL 2 takes 55 seconds
+
+Using TensorFlow backend.
+2019-01-07 00:07:09.328901: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 00:07:09.476560: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-07 00:07:09.476631: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 00:07:09.731455: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 00:07:09.731543: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 00:07:09.731564: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 00:07:09.731816: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [13.245769, 7.047873]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 26
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=1866 / Total=3722
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4492
+* BK only dice_coef=0.5770
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.608275
+* AUC=0.607884
+* Sensitivity=0.753483
+* FDR=0.415141
+------------------------------
+[[ 858  998]
+ [ 460 1406]]
+==============================
+
+@ TRAIL 3 takes 48 seconds
+
+Using TensorFlow backend.
+2019-01-07 00:07:56.524914: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 00:07:56.706407: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-07 00:07:56.706477: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 00:07:56.939774: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 00:07:56.939860: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 00:07:56.939881: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 00:07:56.940130: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [13.245769, 7.047873]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 26
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=1866 / Total=3722
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4406
+* BK only dice_coef=0.5513
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.610693
+* AUC=0.610362
+* Sensitivity=0.733655
+* FDR=0.410168
+------------------------------
+[[ 904  952]
+ [ 497 1369]]
+==============================
+
+@ TRAIL 4 takes 42 seconds
+
+Using TensorFlow backend.
+2019-01-07 00:08:38.879479: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 00:08:39.017682: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-07 00:08:39.017758: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 00:08:39.268083: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 00:08:39.268165: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 00:08:39.268186: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 00:08:39.268422: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [13.245769, 7.047873]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 26
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=1866 / Total=3722
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4442
+* BK only dice_coef=0.5637
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.614455
+* AUC=0.614123
+* Sensitivity=0.737406
+* FDR=0.407152
+------------------------------
+[[ 911  945]
+ [ 490 1376]]
+==============================
+
+@ TRAIL 5 takes 47 seconds
+

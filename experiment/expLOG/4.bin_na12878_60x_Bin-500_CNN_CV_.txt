@@ -1,0 +1,658 @@
+Evluation the bin size effect...
+>> Bin = 500 
+
+Using TensorFlow backend.
+2019-01-06 15:31:42.527720: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-06 15:31:42.715324: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-06 15:31:42.715404: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-06 15:31:42.967671: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-06 15:31:42.967759: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-06 15:31:42.967781: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-06 15:31:42.968037: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.744590, 8.841848]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.739041, std=11.577715]
+[BIN_DATA]:Break point containing [m=19.775083, std=15.099603]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [89]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 61
+BK=4032 / Total=8075
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7603
+* BK only dice_coef=0.8091
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.844678
+* AUC=0.844700
+* Sensitivity=0.862454
+* FDR=0.167464
+------------------------------
+[[669 140]
+ [111 696]]
+==============================
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7633
+* BK only dice_coef=0.7973
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.870050
+* AUC=0.870031
+* Sensitivity=0.855019
+* FDR=0.118774
+------------------------------
+[[716  93]
+ [117 690]]
+==============================
+Test BK=806 / Total=1615
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7691
+* BK only dice_coef=0.8126
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.850774
+* AUC=0.850768
+* Sensitivity=0.847395
+* FDR=0.147316
+------------------------------
+[[691 118]
+ [123 683]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7710
+* BK only dice_coef=0.8073
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.851301
+* AUC=0.851276
+* Sensitivity=0.831266
+* FDR=0.134367
+------------------------------
+[[704 104]
+ [136 670]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7347
+* BK only dice_coef=0.7831
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.843247
+* AUC=0.843256
+* Sensitivity=0.851117
+* FDR=0.162393
+------------------------------
+[[675 133]
+ [120 686]]
+==============================
+
+=========== [DATA/MODEL information] =============
+[-CV-na12878_60x_RD_bin500_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+[../experiment/model/]
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+------------------------------
+* CV all score 0.7597 (0.0131)
+-- CV BK score 0.8019 (0.0107)
+-- CV BG score 0.0001 (0.0000)
+------------------------------
+-- CV AUC 0.8520 (0.0096)
+-- CV Sensitivity 0.8494 (0.0104)
+-- CV FDR 0.1461 (0.0179)
+******************************
+
+@ TRAIL 1 takes 116 seconds
+Using TensorFlow backend.
+2019-01-06 15:33:38.926583: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-06 15:33:39.069201: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-06 15:33:39.069281: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-06 15:33:39.306198: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-06 15:33:39.306287: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-06 15:33:39.306307: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-06 15:33:39.306558: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.744590, 8.841848]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.739041, std=11.577715]
+[BIN_DATA]:Break point containing [m=19.775083, std=15.099603]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [89]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 61
+BK=4032 / Total=8075
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7608
+* BK only dice_coef=0.8055
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.840965
+* AUC=0.841010
+* Sensitivity=0.877323
+* FDR=0.182448
+------------------------------
+[[651 158]
+ [ 99 708]]
+==============================
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7629
+* BK only dice_coef=0.8006
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.863861
+* AUC=0.863855
+* Sensitivity=0.858736
+* FDR=0.132666
+------------------------------
+[[703 106]
+ [114 693]]
+==============================
+Test BK=806 / Total=1615
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7680
+* BK only dice_coef=0.8109
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.855728
+* AUC=0.855726
+* Sensitivity=0.854839
+* FDR=0.144099
+------------------------------
+[[693 116]
+ [117 689]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7711
+* BK only dice_coef=0.8096
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.851921
+* AUC=0.851906
+* Sensitivity=0.839950
+* FDR=0.139771
+------------------------------
+[[698 110]
+ [129 677]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7333
+* BK only dice_coef=0.7726
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.850682
+* AUC=0.850641
+* Sensitivity=0.817618
+* FDR=0.124834
+------------------------------
+[[714  94]
+ [147 659]]
+==============================
+
+=========== [DATA/MODEL information] =============
+[-CV-na12878_60x_RD_bin500_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+[../experiment/model/]
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+------------------------------
+* CV all score 0.7592 (0.0135)
+-- CV BK score 0.7999 (0.0141)
+-- CV BG score 0.0001 (0.0000)
+------------------------------
+-- CV AUC 0.8526 (0.0074)
+-- CV Sensitivity 0.8497 (0.0200)
+-- CV FDR 0.1448 (0.0199)
+******************************
+
+@ TRAIL 2 takes 114 seconds
+Using TensorFlow backend.
+2019-01-06 15:35:32.433268: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-06 15:35:32.598226: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-06 15:35:32.598299: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-06 15:35:32.839772: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-06 15:35:32.839860: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-06 15:35:32.839882: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-06 15:35:32.840134: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.744590, 8.841848]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.739041, std=11.577715]
+[BIN_DATA]:Break point containing [m=19.775083, std=15.099603]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [89]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 61
+BK=4032 / Total=8075
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7608
+* BK only dice_coef=0.8006
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.860149
+* AUC=0.860151
+* Sensitivity=0.862454
+* FDR=0.141800
+------------------------------
+[[694 115]
+ [111 696]]
+==============================
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7562
+* BK only dice_coef=0.7984
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.857673
+* AUC=0.857690
+* Sensitivity=0.871128
+* FDR=0.151990
+------------------------------
+[[683 126]
+ [104 703]]
+==============================
+Test BK=806 / Total=1615
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7667
+* BK only dice_coef=0.8126
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.855728
+* AUC=0.855728
+* Sensitivity=0.856079
+* FDR=0.144981
+------------------------------
+[[692 117]
+ [116 690]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7722
+* BK only dice_coef=0.8099
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.842007
+* AUC=0.842020
+* Sensitivity=0.852357
+* FDR=0.165249
+------------------------------
+[[672 136]
+ [119 687]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7301
+* BK only dice_coef=0.7689
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.845725
+* AUC=0.845679
+* Sensitivity=0.808933
+* FDR=0.127175
+------------------------------
+[[713  95]
+ [154 652]]
+==============================
+
+=========== [DATA/MODEL information] =============
+[-CV-na12878_60x_RD_bin500_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+[../experiment/model/]
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+------------------------------
+* CV all score 0.7572 (0.0146)
+-- CV BK score 0.7981 (0.0156)
+-- CV BG score 0.0001 (0.0000)
+------------------------------
+-- CV AUC 0.8523 (0.0071)
+-- CV Sensitivity 0.8502 (0.0216)
+-- CV FDR 0.1462 (0.0125)
+******************************
+
+@ TRAIL 3 takes 111 seconds
+Using TensorFlow backend.
+2019-01-06 15:37:23.204042: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-06 15:37:23.363898: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-06 15:37:23.363975: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-06 15:37:23.617742: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-06 15:37:23.617835: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-06 15:37:23.617858: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-06 15:37:23.618127: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.744590, 8.841848]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.739041, std=11.577715]
+[BIN_DATA]:Break point containing [m=19.775083, std=15.099603]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [89]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 61
+BK=4032 / Total=8075
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7614
+* BK only dice_coef=0.8066
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.846535
+* AUC=0.846556
+* Sensitivity=0.863693
+* FDR=0.165269
+------------------------------
+[[671 138]
+ [110 697]]
+==============================
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7595
+* BK only dice_coef=0.7926
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.862005
+* AUC=0.861970
+* Sensitivity=0.833953
+* FDR=0.116798
+------------------------------
+[[720  89]
+ [134 673]]
+==============================
+Test BK=806 / Total=1615
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7697
+* BK only dice_coef=0.8150
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.848297
+* AUC=0.848325
+* Sensitivity=0.863524
+* FDR=0.162455
+------------------------------
+[[674 135]
+ [110 696]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7742
+* BK only dice_coef=0.8064
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.851301
+* AUC=0.851269
+* Sensitivity=0.825062
+* FDR=0.129581
+------------------------------
+[[709  99]
+ [141 665]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7341
+* BK only dice_coef=0.7706
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.848823
+* AUC=0.848778
+* Sensitivity=0.812655
+* FDR=0.124332
+------------------------------
+[[715  93]
+ [151 655]]
+==============================
+
+=========== [DATA/MODEL information] =============
+[-CV-na12878_60x_RD_bin500_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+[../experiment/model/]
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+------------------------------
+* CV all score 0.7598 (0.0139)
+-- CV BK score 0.7983 (0.0156)
+-- CV BG score 0.0001 (0.0000)
+------------------------------
+-- CV AUC 0.8514 (0.0055)
+-- CV Sensitivity 0.8398 (0.0206)
+-- CV FDR 0.1397 (0.0202)
+******************************
+
+@ TRAIL 4 takes 118 seconds
+Using TensorFlow backend.
+2019-01-06 15:39:21.279135: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-06 15:39:21.452194: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:06:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2019-01-06 15:39:21.452268: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-06 15:39:21.703168: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-06 15:39:21.703269: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-06 15:39:21.703299: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-06 15:39:21.703583: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:06:00.0, compute capability: 6.1)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.744590, 8.841848]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.739041, std=11.577715]
+[BIN_DATA]:Break point containing [m=19.775083, std=15.099603]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [89]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 61
+BK=4032 / Total=8075
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [2, 2], u'batchSize': 64, u'epoch': 100, u'lr': 0.001, u'window_len': [7, 5], u'BN': False, u'kernel_size': [64, 128]}
+****************************************
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7638
+* BK only dice_coef=0.8029
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.845297
+* AUC=0.845318
+* Sensitivity=0.862454
+* FDR=0.166467
+------------------------------
+[[670 139]
+ [111 696]]
+==============================
+Test BK=807 / Total=1616
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7620
+* BK only dice_coef=0.7983
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.862624
+* AUC=0.862616
+* Sensitivity=0.856258
+* FDR=0.132999
+------------------------------
+[[703 106]
+ [116 691]]
+==============================
+Test BK=806 / Total=1615
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7679
+* BK only dice_coef=0.8116
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.850774
+* AUC=0.850793
+* Sensitivity=0.861042
+* FDR=0.156744
+------------------------------
+[[680 129]
+ [112 694]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7646
+* BK only dice_coef=0.8079
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.845105
+* AUC=0.845107
+* Sensitivity=0.846154
+* FDR=0.155941
+------------------------------
+[[682 126]
+ [124 682]]
+==============================
+Test BK=806 / Total=1614
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.7267
+* BK only dice_coef=0.7637
+* Background dice_coef=0.0001
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.850682
+* AUC=0.850641
+* Sensitivity=0.817618
+* FDR=0.124834
+------------------------------
+[[714  94]
+ [147 659]]
+==============================
+
+=========== [DATA/MODEL information] =============
+[-CV-na12878_60x_RD_bin500_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+[../experiment/model/]
+[CNN_window_Len_7-5-kernel_size_64-128-lr_0.001-batchSize64-epoch100-dropout0.2-BN-False]
+------------------------------
+* CV all score 0.7570 (0.0153)
+-- CV BK score 0.7969 (0.0172)
+-- CV BG score 0.0001 (0.0000)
+------------------------------
+-- CV AUC 0.8509 (0.0064)
+-- CV Sensitivity 0.8487 (0.0166)
+-- CV FDR 0.1474 (0.0158)
+******************************
+
+@ TRAIL 5 takes 114 seconds

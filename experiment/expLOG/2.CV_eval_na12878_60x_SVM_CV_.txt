@@ -1,0 +1,175 @@
+Start the CV evluation on NA12878 data for different read depth ...
+ ../experiment/model_param/ 
+python train.py -b 1000 -em single -ds CV -da 0 -d na12878_60x -m SVM_CV -g 2  -mp ../experiment/model_param/
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.710238, 9.713292]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.959174, std=11.962813]
+[BIN_DATA]:Break point containing [m=22.268261, std=14.629854]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [67]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 49
+Test BK=811 / Total=1621
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.846391
+* AUC=0.846400
+* Sensitivity=0.832306
+* FDR=0.143401
+------------------------------
+[[697 113]
+ [136 675]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.820259
+* AUC=0.820284
+* Sensitivity=0.780247
+* FDR=0.151678
+------------------------------
+[[696 113]
+ [178 632]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.839407
+* AUC=0.839424
+* Sensitivity=0.812346
+* FDR=0.140992
+------------------------------
+[[701 108]
+ [152 658]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.825818
+* AUC=0.825844
+* Sensitivity=0.783951
+* FDR=0.144205
+------------------------------
+[[702 107]
+ [175 635]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.820877
+* AUC=0.820888
+* Sensitivity=0.803704
+* FDR=0.167519
+------------------------------
+[[678 131]
+ [159 651]]
+==============================
+
+=========== [DATA/MODEL information] =============
+[-CV-na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+[../experiment/model/]
+[SVM-CV]
+------------------------------
+-- CV AUC 0.8306 (0.0105)
+-- CV Sensitivity 0.8025 (0.0191)
+-- CV FDR 0.1496 (0.0097)
+******************************
+
+@ TRAIL 1 takes 159 seconds
+
+Using TensorFlow backend.
+/usr/local/lib/python2.7/dist-packages/sklearn/svm/base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [29.710238, 9.713292]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=29.959174, std=11.962813]
+[BIN_DATA]:Break point containing [m=22.268261, std=14.629854]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [67]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 49
+Test BK=811 / Total=1621
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.846391
+* AUC=0.846400
+* Sensitivity=0.832306
+* FDR=0.143401
+------------------------------
+[[697 113]
+ [136 675]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.820259
+* AUC=0.820284
+* Sensitivity=0.780247
+* FDR=0.151678
+------------------------------
+[[696 113]
+ [178 632]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.839407
+* AUC=0.839424
+* Sensitivity=0.812346
+* FDR=0.140992
+------------------------------
+[[701 108]
+ [152 658]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.825818
+* AUC=0.825844
+* Sensitivity=0.783951
+* FDR=0.144205
+------------------------------
+[[702 107]
+ [175 635]]
+==============================
+Test BK=810 / Total=1619
+[SVM-CV]
+
+---------- [Binary Results] -----------
+* F-score=0.820877
+* AUC=0.820888
+* Sensitivity=0.803704
+* FDR=0.167519
+------------------------------
+[[678 131]
+ [159 651]]
+==============================
+
+=========== [DATA/MODEL information] =============
+[-CV-na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+[../experiment/model/]
+[SVM-CV]
+------------------------------
+-- CV AUC 0.8306 (0.0105)
+-- CV Sensitivity 0.8025 (0.0191)
+-- CV FDR 0.1496 (0.0097)
+******************************
+
+@ TRAIL 2 takes 159 seconds
+

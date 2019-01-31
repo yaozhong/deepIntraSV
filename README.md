@@ -15,7 +15,7 @@ docker pull yaozhong/deep_intra_sv
 The parameters are required to be assigned in the config.py file.
 Several frequent parameters can be also changed through command line parameters.
 
-### Pre-requsition files
+### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
 * reference genome fa file and index
 * mappability of 100mer
@@ -26,9 +26,8 @@ Several frequent parameters can be also changed through command line parameters.
 * a python script is provided to parse VCF for SV regions
 
 ## Data pre-processing and caching
-A multi-core version of pysam is implemented. In default, all cores will be used 
+A multi-core version of pysam is applied. In default, all cores will be used 
 to generate RD bin files from bam file.
-
 
 
 ## Training
@@ -50,6 +49,6 @@ python train.py -b 1000 -em single -ds StratifyNew -d na12878_60x -da 0 -m UNet 
 python test.py -b 1000  -em single -ds StratifyNew -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
 ```
 
-## Experiment reproduce
-For reproducibility, the scripts of related experiments are also listed.
+## Experiment logs
+For reproducibility, the scripts of related experiments are listed in the ./experiment fold.
 

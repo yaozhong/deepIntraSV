@@ -1,0 +1,1 @@
+[2019-01-30 12:26:52]: 	================ Calcuate the Genomic Statistics based on bam File =================

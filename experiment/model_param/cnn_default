@@ -1,0 +1,1 @@
+{"epoch": 100, "DropoutRate": 0.2, "kernel_size":[64,128], "window_len": [7,5], "maxpooling_len": [2, 2], "lr": 0.001, "batchSize": 64, "BN": false}

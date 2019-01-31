@@ -1,0 +1,268 @@
+*Cross sample evlauation...
+ ../experiment/model_param/unet_default 
+*python train.py -b 1000 -em cross -ds cross -da 0 -d na12878_7x -d2 na19239_7x -m UNet -g 0 -mp ../experiment/model_param/unet_default
+Using TensorFlow backend.
+2019-01-07 10:41:49.992918: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 10:41:50.317048: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:0a:00.0
+totalMemory: 11.78GiB freeMemory: 11.36GiB
+2019-01-07 10:41:50.317139: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 10:41:50.595597: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 10:41:50.595667: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 10:41:50.595687: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 10:41:50.595968: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10977 MB memory) -> physical GPU (device: 0, name: TITAN V, pci bus id: 0000:0a:00.0, compute capability: 7.0)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [3.438382, 1.977413]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 35
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [5, 5, 2, 2, 5, 5], u'BN': True, u'epoch': 100, u'lr': 0.001, u'conv_window_len': 7, u'batchSize': 64}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=2260 / Total=4513
+[UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4963
+* BK only dice_coef=0.5633
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.677155
+* AUC=0.677161
+* Sensitivity=0.673009
+* FDR=0.320679
+------------------------------
+[[1535  718]
+ [ 739 1521]]
+==============================
+
+@ TRAIL 1 takes 172 seconds
+
+Using TensorFlow backend.
+2019-01-07 10:44:41.091244: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 10:44:41.389972: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:0a:00.0
+totalMemory: 11.78GiB freeMemory: 11.36GiB
+2019-01-07 10:44:41.390037: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 10:44:41.664510: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 10:44:41.664587: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 10:44:41.664617: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 10:44:41.664893: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10977 MB memory) -> physical GPU (device: 0, name: TITAN V, pci bus id: 0000:0a:00.0, compute capability: 7.0)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [3.438382, 1.977413]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 35
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [5, 5, 2, 2, 5, 5], u'BN': True, u'epoch': 100, u'lr': 0.001, u'conv_window_len': 7, u'batchSize': 64}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=2260 / Total=4513
+[UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4819
+* BK only dice_coef=0.5410
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.670729
+* AUC=0.670745
+* Sensitivity=0.660177
+* FDR=0.324887
+------------------------------
+[[1535  718]
+ [ 768 1492]]
+==============================
+
+@ TRAIL 2 takes 136 seconds
+
+Using TensorFlow backend.
+2019-01-07 10:46:55.831898: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 10:46:56.223336: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:0a:00.0
+totalMemory: 11.78GiB freeMemory: 11.36GiB
+2019-01-07 10:46:56.223411: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 10:46:56.485302: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 10:46:56.485377: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 10:46:56.485398: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 10:46:56.485695: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10977 MB memory) -> physical GPU (device: 0, name: TITAN V, pci bus id: 0000:0a:00.0, compute capability: 7.0)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [3.438382, 1.977413]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 35
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [5, 5, 2, 2, 5, 5], u'BN': True, u'epoch': 100, u'lr': 0.001, u'conv_window_len': 7, u'batchSize': 64}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=2260 / Total=4513
+[UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.4958
+* BK only dice_coef=0.5838
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.670729
+* AUC=0.670647
+* Sensitivity=0.723451
+* FDR=0.344952
+------------------------------
+[[1392  861]
+ [ 625 1635]]
+==============================
+
+@ TRAIL 3 takes 275 seconds
+
+Using TensorFlow backend.
+2019-01-07 10:51:31.041287: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 10:51:31.379304: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:0a:00.0
+totalMemory: 11.78GiB freeMemory: 11.36GiB
+2019-01-07 10:51:31.379381: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 10:51:31.635549: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 10:51:31.635617: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 10:51:31.635637: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 10:51:31.635903: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10977 MB memory) -> physical GPU (device: 0, name: TITAN V, pci bus id: 0000:0a:00.0, compute capability: 7.0)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [3.438382, 1.977413]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 35
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [5, 5, 2, 2, 5, 5], u'BN': True, u'epoch': 100, u'lr': 0.001, u'conv_window_len': 7, u'batchSize': 64}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=2260 / Total=4513
+[UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.5169
+* BK only dice_coef=0.6002
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.671172
+* AUC=0.671090
+* Sensitivity=0.724336
+* FDR=0.344676
+------------------------------
+[[1392  861]
+ [ 623 1637]]
+==============================
+
+@ TRAIL 4 takes 154 seconds
+
+Using TensorFlow backend.
+2019-01-07 10:54:04.945335: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-01-07 10:54:05.251228: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: TITAN V major: 7 minor: 0 memoryClockRate(GHz): 1.455
+pciBusID: 0000:0a:00.0
+totalMemory: 11.78GiB freeMemory: 11.36GiB
+2019-01-07 10:54:05.251298: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2019-01-07 10:54:05.533043: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-01-07 10:54:05.533119: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2019-01-07 10:54:05.533152: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2019-01-07 10:54:05.533457: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10977 MB memory) -> physical GPU (device: 0, name: TITAN V, pci bus id: 0000:0a:00.0, compute capability: 7.0)
+@ Setting randomness fixed ....
+- Random seed set [DONE]!! (*not work for the GPU training)
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [4.431306, 2.354632]
+[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... 
+[Genome]: ** Cached 0.010000 Genome Depth-of-coverage statistics is [3.438382, 1.977413]
+-- loading cache genome information done!
+[BIN_DATA]:Background data [m=4.427429, std=2.557242]
+[BIN_DATA]:Break point containing [m=3.195861, std=2.870535]
+-- loading cache bin data information done!
+	 * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [70]
+	 * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is 35
+BK=4047 / Total=8094
+****************************************
+{u'DropoutRate': 0.2, u'maxpooling_len': [5, 5, 2, 2, 5, 5], u'BN': True, u'epoch': 100, u'lr': 0.001, u'conv_window_len': 7, u'batchSize': 64}
+****************************************
+@ Saving model ...
+
+=========== [DATA/MODEL information] =============
+[na12878_7x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile:NA12878_1kGP_IC--1.bed]
+Train BK=4047 / Total=8094
+Test BK=2260 / Total=4513
+[UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2]
+
+---------- [Segmentation Results] -----------
+>> All dice_coef=0.5071
+* BK only dice_coef=0.5859
+* Background dice_coef=0.0000
+------------------------------
+
+---------- [Binary Results] -----------
+* F-score=0.673831
+* AUC=0.673774
+* Sensitivity=0.710619
+* FDR=0.337459
+------------------------------
+[[1435  818]
+ [ 654 1606]]
+==============================
+
+@ TRAIL 5 takes 158 seconds
+
