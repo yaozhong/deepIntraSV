@@ -1,5 +1,5 @@
 # deepIntraSV
-DeepIntraSV is a U-net based model used for detecting SVs inside of a bin with base-pair read-depth inforamtion.
+DeepIntraSV is a U-net based model used for detecting SVs inside of a bin with base-pair read-depth (RD) inforamtion.
 More details can be found in https://doi.org/10.1101/503649
 
 ## Docker enviorment
@@ -18,7 +18,7 @@ Several frequent parameters can be also changed through command line parameters.
 ### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
 * reference genome fa file and index (Please download from http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/)
-* mappability of 100mer
+* mappability of 100-mer
 * Encode hg19 blacklist regions
 * hg19 Chromesome length 
 
@@ -27,13 +27,14 @@ Several frequent parameters can be also changed through command line parameters.
 
 ## Data pre-processing and caching
 A multi-core version of pysam is applied. In default, all cores will be used 
-to generate RD bin files from bam file.
+to generate RD bin files from bam file. For each training data, 
+background statistics of RD are first calcuated through sampling the data.
 
 
 ## Training
-Input are bam file(s). Cached data will be first searched according to the current parameters,
-If cache files are not found, the code re-process the bam file and cache the data.
-The cached file will be saved in ./data/data_cache/ fold
+Input are WGS bam file(s). Cached data will be first searched according to current parameters,
+If cache files are not found, the code will process the bam file and cache the data.
+The cached files are saved in ./data/data_cache/
 Output are the saved model weights.
 
 Users can change manually change the model parameter file.
