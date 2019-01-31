@@ -50,5 +50,5 @@ python test.py -b 1000  -em single -ds StratifyNew -d na12878_60x -m UNet -mw ..
 ```
 
 ## Experiment logs
-For reproducibility, the scripts of related experiments are listed in the ./experiment fold.
+For reproducibility, the scripts of related experiments are listed in the ./experiment/expLOG fold.
 
