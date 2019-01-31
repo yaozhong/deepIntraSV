@@ -17,13 +17,12 @@ nvidia-docker run -it --rm -v deepIntraSV:/deepIntraSV -v bamFilePath:/bamFiles 
 
 ## Configuration file
 The parameters can be changed in `code/config.py` file.
-The following two parameters indicating file path are required to be pre-determined, and the format is:
+The following two parameters of file path are required to be pre-determined, and the format is:
 ```
 bamFileID:bamFilePath
 bamFileID:SV_annotation_path
 ```
-
-Several frequent parameters can be also changed through command line parameters.
+Frequent parameters can be also changed through command line option.
 
 ### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
@@ -55,7 +54,6 @@ If no model parameter file is provided, the code will use hyperOpt to search pre
 python train.py -b 1000 -em single -ds StratifyNew -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
 ```
 
-
 ## Testing
 ```
 python test.py -b 1000  -em single -ds StratifyNew -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
@@ -65,5 +63,5 @@ python test.py -b 1000  -em single -ds StratifyNew -d na12878_60x -m UNet -mw ..
 For reproducibility, the scripts of related experiments are listed in the ./experiment/expLOG fold.
 
 
-(*) This document is still under construction and will be updated very soon.
+(*) This document is still under construction.
 
