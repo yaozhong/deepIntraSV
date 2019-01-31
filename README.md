@@ -17,7 +17,7 @@ Several frequent parameters can be also changed through command line parameters.
 
 ### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
-* reference genome fa file and index
+* reference genome fa file and index (Please download from http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/)
 * mappability of 100mer
 * Encode hg19 blacklist regions
 * hg19 Chromesome length 
