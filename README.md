@@ -45,12 +45,12 @@ There are two evluation metrics, which are determined through CMD parameter -em 
 * intra-sample: ``-em single``
 * cross-sample: ``-em cross``
 
-For the intra-sample case, one bam file is given and the data can be split with with the following -ds option:
+For the intra-sample case, one bam file is given and the data is split into train-test with the following -ds option:
 * Stratify: Stratified Random split
 * RandRgs: Random split
 * CV: cross valdiation
 
-For the intra-sample case, the second bam file is assigned through ``-d2`` option.
+For the intra-sample case, the second bam file used as the test set is assigned through ``-d2`` option.
 
 
 
