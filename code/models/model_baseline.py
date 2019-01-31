@@ -231,34 +231,7 @@ def SVM(dataPath, bk_dataPath, modelParamPath, dataInfo, modelInfo):
         binary_eval(y_test, t, modelInfo, True)
 
 
-# higher segment, but worse in classification
-def CNN_networkstructure_v1(kernel_size, window_len, maxpooling_len, BN=True, DropoutRate=0.2):
-
-        model = models.Sequential()
-        # 1000bp (32,10,10) -> ()
-        model.add(layers.Conv1D(kernel_size[0], window_len[0], padding="valid", activation="relu"))
-        if BN: model.add(layers.BatchNormalization())
-        
-        model.add(layers.Conv1D(kernel_size[0], window_len[0], padding="valid", activation="relu"))
-        if BN: model.add(layers.BatchNormalization())
-        
-        model.add(layers.MaxPooling1D(maxpooling_len[0]))
-
-
-        model.add(layers.Conv1D(kernel_size[1], window_len[1], padding="valid", activation="relu"))
-        if BN: model.add(layers.BatchNormalization())
-        
-        model.add(layers.Conv1D(kernel_size[1], window_len[1], padding="valid", activation="relu"))
-        if BN: model.add(layers.BatchNormalization())
-        
-        model.add(layers.MaxPooling1D(maxpooling_len[1]))
-
-        model.add(layers.Flatten())
-        model.add(layers.Dropout(DropoutRate))
-        model.add(layers.Dense(config.DATABASE["binSize"], activation='sigmoid'))
-    
-
-# classical 
+# classical CNN
 def CNN_networkstructure(kernel_size, window_len, maxpooling_len, BN=True, DropoutRate=0.2):
 
         model = models.Sequential()
