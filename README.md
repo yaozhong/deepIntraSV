@@ -25,16 +25,16 @@ Several frequent parameters can be also changed through command line parameters.
 2. SV annotation files./data/SV_annotation/
   (a python script is provided to parse VCF for SV regions)
 
-## Data pre-processing and caching
+## Data pre-processing
 A multi-core version of pysam is applied. In default, all cores will be used 
-to generate RD bin files from bam file. For each training data, 
+to generate RD bins from bam file. For each training data, 
 background statistics of RD are first calcuated through sampling the data.
-
+Background statistics of each WGS data are cached in ./data/data_cache/.
 
 ## Training
-Input are WGS bam file(s). Cached data will be first searched according to current parameters,
+Input are WGS bam file(s). Cached train-test data will be first searched according to current parameters,
 If cache files are not found, the code will process the bam file and cache the data.
-The cached files are saved in ./data/data_cache/
+The cached files are saved in 
 Output are the saved model weights.
 
 Users can change manually change the model parameter file.
