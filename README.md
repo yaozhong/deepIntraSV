@@ -16,14 +16,14 @@ nvidia-docker run -it --rm -v bamFilePath:/bamFiles yaozhong/deep_intra_sv:0.9 b
 ```
 
 ## Configuration file
-The parameters are required to be determined in the config.py file.
+The parameters are required to be determined in the `code/config.py` file.
 
 Several frequent parameters can be also changed through command line parameters.
 
 ### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
-* reference genome fa file and index (Please download from http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/,
-and put it in the >data/reference fold)
+* reference genome fa file and index (Please download from [1000genomes](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/),
+and put it in the data/reference fold)
 * mappability of 100-mer
 * Encode hg19 blacklist regions
 * hg19 Chromesome length 
@@ -35,7 +35,7 @@ and put it in the >data/reference fold)
 A multi-core version of pysam is applied. In default, all cores will be used 
 to generate RD bins from bam file. For each training data, 
 background statistics of RD are first calcuated through sampling the data.
-Background statistics of each WGS data are cached in ./data/data_cache/.
+Background statistics of each WGS data are cached in `./data/data_cache/`.
 
 ## Training
 Input are WGS bam file(s). Cached train-test data will be first searched according to current parameters,
