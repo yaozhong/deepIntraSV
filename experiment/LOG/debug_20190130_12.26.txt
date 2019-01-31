@@ -1,2 +1,0 @@
-[2019-01-30 12:26:52]: 	================ Calcuate the Genomic Statistics based on bam File =================
-[2019-01-30 12:27:48]: >> Filtering the low mappability sample unit from [2881022] to [2437741] 

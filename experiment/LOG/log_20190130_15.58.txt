@@ -1,6 +1,0 @@
-[2019-01-30 15:58:26]: 	================ Calcuate the Genomic Statistics based on bam File =================
-[2019-01-30 16:09:13]: ** Break point and background data has been generated completely !!!
-[2019-01-30 16:09:47]: ** Break point and background data has been generated completely !!!
-[2019-01-30 16:11:53]: Cached 0.010000 Genome Depth-of-coverage statistics is [29.710238, 9.713292]
-[2019-01-30 16:11:53]: 
-[BIN_DATA]:Sample label number Positive=3270, Negative=3270
