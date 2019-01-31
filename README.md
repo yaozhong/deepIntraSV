@@ -12,11 +12,16 @@ docker pull yaozhong/deep_intra_sv
 * Keras 2.2.4
 
 ```
-nvidia-docker run -it --rm -v bamFilePath:/bamFiles yaozhong/deep_intra_sv:0.9 bash
+nvidia-docker run -it --rm -v deepIntraSV:/deepIntraSV -v bamFilePath:/bamFiles yaozhong/deep_intra_sv:0.9 bash
 ```
 
 ## Configuration file
-The parameters are required to be determined in the `code/config.py` file.
+The parameters can be changed in `code/config.py` file.
+The following two parameters indicating file path are required to be pre-determined, and the format is:
+```
+bamFileID:bamFilePath
+bamFileID:SV_annotation_path
+```
 
 Several frequent parameters can be also changed through command line parameters.
 
