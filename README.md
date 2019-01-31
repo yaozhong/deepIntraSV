@@ -35,11 +35,22 @@ and put it in the data/reference fold)
 2. SV annotation files./data/SV_annotation/
   (a python script is provided to parse VCF for SV regions)
 
-## Data pre-processing
+## Data pre-processing and split
 A multi-core version of pysam is applied. In default, all cores will be used 
 to generate RD bins from bam file. For each training data, 
 background statistics of RD are first calcuated through sampling the data.
 Background statistics of each WGS data are cached in `./data/data_cache/`.
+
+There are two evluation metrics, which are determined through CMD parameter -em (evluation mode)
+* intra-sample: ``-em single``
+* cross-sample: ``-em cross``
+
+For the intra-sample case, the data can be split with -ds option:
+* Stratify: Stratified Random split
+* RandRgs: Random split
+* CV: cross valdiation
+
+
 
 ## Training
 Input are WGS bam file(s). Cached train-test data will be first searched according to current parameters,
