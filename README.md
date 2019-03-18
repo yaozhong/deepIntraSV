@@ -5,7 +5,7 @@ More details can be found in https://doi.org/10.1101/503649
 ## Docker enviorment
 We provide a docker image for running this code
 ```
-docker pull yaozhong/deep_intra_sv
+docker pull yaozhong/deep_intra_sv:0.9
 ```
 * ubuntu 14.04.4
 * Tensorflow 1.8.0
