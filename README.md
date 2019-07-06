@@ -2,7 +2,7 @@
 DeepIntraSV is a U-net based model used for detecting SVs inside of a bin with base-pair read-depth (RD) inforamtion.
 More details can be found in https://doi.org/10.1101/503649
 
-## Docker enviorment
+## Docker enviroment
 We provide a docker image for running this code
 ```
 docker pull yaozhong/deep_intra_sv:0.9
