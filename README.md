@@ -73,13 +73,13 @@ If no model parameter file is provided, the code will use hyperOpt to search pre
 
 ```
 # Example
-python train.py -b 400 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
+python train.py -b 1000 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
 ```
 
 ## Testing model-level performance
 ```
 # Example
-python test.py -b 400  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
+python test.py -b 1000  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
 ```
 
 ## Enhancement for CNVnator
@@ -87,7 +87,7 @@ python test.py -b 400  -em single -ds Stratify -d na12878_60x -m UNet -mw ../exp
 ```
 data="simA"
 vcf_ci=99999999
-binSize=400
+binSize=1000
 
 genomeStat="hg19-INPUT_simA_RD_bin${binSize}_GENOMESTAT_SampleRate-0.01_Filter-Mappability-0.9"
 model="simA_RD_bin${binSize}_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b${binSize}_tsp0.8.h5"
