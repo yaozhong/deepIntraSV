@@ -5,6 +5,7 @@ Description: the basic training for the keras model for the break point detectio
 
 2018-12-08:Model concrete test for segmentation.
 """
+# -*- coding: utf-8 -*-
 
 from __future__ import division
 
@@ -193,7 +194,6 @@ def CNN(dataPath, bk_dataPath, modelSavePath, dataInfo, plotResult=False):
         # save the prediction figures
         if plotResult == True:
             figureSavePath= "../experiment/visual/" + "_DATA-"+dataInfo
-
             visual_prediction(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath)
 
 

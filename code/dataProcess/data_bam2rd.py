@@ -18,9 +18,11 @@ readCount_bin = number of reads that started in the bin.
 2018-08-15 update the RD count with mapq filters for each position
 """
 from util import *
+#import numpy as np
 DTYPE = np.int32
 
 def getRegion_RC_worker(bamfileName, region, binSize):
+
     bamfile = pysam.AlignmentFile(bamfileName, 'rb')
     nSegs = (region[2] - region[1]) / binSize
     region_rd = np.zeros(nSegs, dtype=DTYPE)
@@ -55,6 +57,7 @@ def getRegion_RC_list_worker(param):
 
 def getRegion_RCVec_list_worker(param):
     bamfileName, regions = param
+
     with pysam.AlignmentFile(bamfileName, 'rb') as (bamfile):
         regions_rcMat = np.zeros((len(regions), config.DATABASE['binSize']), dtype=DTYPE)
         region_rd = np.zeros(len(regions), dtype=DTYPE)
@@ -67,12 +70,14 @@ def getRegion_RCVec_list_worker(param):
 
     return regions_rcMat
 
-
-def getRegion_RDVec_list_worker(param):
+# workers for exatraction input signals for the target regions of assigned
+def getRegion_RDVec_list_worker(param):  
     bamfileName, regions = param
+    # check pysam alignement filges
     with pysam.AlignmentFile(bamfileName, 'rb') as (bamfile):
         regions_rdMat = np.zeros((len(regions), config.DATABASE['binSize']), dtype=DTYPE)
         for i, region in enumerate(regions):
+
             pileup = bamfile.pileup(region[0], region[1], region[2])
             for pColumn in pileup:
                 if pColumn.pos >= region[1] and pColumn.pos < region[2]:
@@ -149,8 +154,9 @@ def get_RC_parallel(bamfileName, chr_rg, binSize=500):
     rc_bin = np.concatenate([ output[c] for c in range(len(process)) ])
     return rc_bin
 
-
+# currently used for extrction
 def get_RDVec_parallel_nobin(bamfileName, rgs):
+
     cores = multiprocessing.cpu_count()
     
     if len(rgs) < cores:
@@ -158,10 +164,13 @@ def get_RDVec_parallel_nobin(bamfileName, rgs):
 
     pool = multiprocessing.Pool(processes=cores)
     step = int(len(rgs) / cores)
+
     rgsList = [ rgs[i * step:(i + 1) * step] for i in range(cores - 1) ]
+    
     rgsList.append(rgs[(cores - 1) * step:])
     todo_params = [ (bamfileName, rs) for rs in rgsList ]
     output = pool.map(getRegion_RDVec_list_worker, todo_params)
+
     pool.close()
     pool.join()
     vec = np.concatenate(output)
@@ -237,12 +246,24 @@ def printBasicBamInfo(bamfile):
     logger.info(('- Unmapped {0}').format(bamfile.unmapped))
     logger.info('==============================================')
 
+def printBasicBamInfo_print(bamfile):
+    print('==============================================')
+    print('- Basic information for bam file: \n %s' %(bamfile.filename))
+    print('- Mapped %d' %(bamfile.mapped))
+    print('- Unmapped %d' %(bamfile.unmapped))
+    print('==============================================')
 
 if __name__ == '__main__':
-    bamfileName = '/home/dev/NA12878.mapped.ILLUMINA.bwa.CEU.low_coverage.20121211.bam'
+    bamfileName = '/Users/yaozhong/my_work/2019_Projects/1_UNet_IntraSV/201911/data/Sim-A_30x_para.bam'
+    bamfile = pysam.AlignmentFile(bamfileName, 'rb')
+    printBasicBamInfo_print(bamfile)
+    
+    """
     region = ('1', 144710310, 144710362)
-    rgs = [
-     region]
+    rgs = [region]
     vec = getRegion_RDVec_list_worker((bamfileName, [region]))
     print np.max(vec)
+    """
+    
+
 # okay decompiling data_bam2rd.pyc

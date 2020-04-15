@@ -8,6 +8,7 @@ from __future__ import division
 from util import *
 from data_seq2feat import *
 import traceback 
+from data_feat_Fragility import *
 
 # basic CPU version of calculating GC content with larger content
 def getRegion_GC(region, binSize, fastaFile):
@@ -48,28 +49,58 @@ def getRegions_GC_nobin(regions, fastaFile):
 
 
 ## current usage of extracting GC content
+# key features extraction
+# original GC and Seq feature extractor
+
 def getRegions_GC_seq_worker(params):
-	
+
 	fastaFile, regions = params
-	
+	ext = config.DATABASE["extra_feat_ext_len"]
+
 	with pyfaidx.Fasta(fastaFile, as_raw=True, one_based_attributes=False) as fa_file:
-	
-	    gc_vec = np.zeros(len(regions), np.float32)
-	    seq_vec = []
-	
+		
+		gc_vec = np.zeros(len(regions), np.float32)
+		seq_vec = []
+		flex_vec, stable_vec =[], []
+		for i, rg in enumerate(regions):
 
-	    for i, rg in enumerate(regions):
-                    
-		seqs = fa_file[rg[0]][rg[1]:(rg[2])]
-                if len(seqs) < (rg[2] -rg[1]):
-                    seqs = 'N'*(rg[2]-rg[1])
-                    logger.debug(rg)
+			seqs = fa_file[rg[0]][rg[1]:(rg[2]+ext)]
+			if len(seqs) < (rg[2]+ext -rg[1]):
+				seqs = 'N'*(rg[2]+ext -rg[1])
+				logger.debug(rg)
 
-                gc_vec[i] = calcualte_gc(seqs)
-                seq_vec.append(seq2vec(seqs))           
-            
-            return (gc_vec, np.array(seq_vec, dtype=np.uint16))
+			# addtional features added here
+			gc_vec[i] = calcualte_gc(seqs)
+			seq_vec.append(seq2vec(seqs[:(len(seqs)-ext)]))
 
+			# adding addtional vec stability information.
+			flex_vec.append(calc_flexibility_vec(seqs))
+			stable_vec.append(calc_stability_vec(seqs))
+
+		return (gc_vec, np.array(seq_vec, dtype=np.uint16), \
+				np.array(flex_vec, dtype=np.float16), np.array(stable_vec, dtype=np.float16))
+
+"""	    
+def getRegions_GC_seq_worker(params):
+
+	fastaFile, regions = params
+
+	with pyfaidx.Fasta(fastaFile, as_raw=True, one_based_attributes=False) as fa_file:
+
+		gc_vec = np.zeros(len(regions), np.float32)
+		seq_vec = []
+
+		for i, rg in enumerate(regions):
+			seqs = fa_file[rg[0]][rg[1]:(rg[2])]
+			if len(seqs) < (rg[2] -rg[1]):
+				seqs = 'N'*(rg[2]-rg[1])
+				logger.debug(rg)
+
+			gc_vec[i] = calcualte_gc(seqs)
+			seq_vec.append(seq2vec(seqs))
+
+		return (gc_vec, np.array(seq_vec, dtype=np.uint16))
+"""
 
 def getRegions_GC_worker(params):
 	
@@ -111,32 +142,34 @@ def getRegions_GC_parallel_nobin(fastaFile, rgs):
 
 # parallel running 
 def getRegions_GC_seq_parallel_nobin(fastaFile, rgs):
-	
-        if config.DATABASE["kmer_dic"] == None:
-	    set_kmer_dic()
-	
+
+	if config.DATABASE["kmer_dic"] == None:
+		set_kmer_dic()
+
 	cores = multiprocessing.cpu_count()
-        if len(rgs) < cores:
-            cores = len(rgs)
+	if len(rgs) < cores:
+		cores = len(rgs)
 
 	pool = multiprocessing.Pool(processes=cores)
-	
+
 	# core based split
 	step = int(len(rgs)/cores)
 	rgsList = [ rgs[i*step: (i+1)*step] for i in range(cores-1)]
 	rgsList.append( rgs[(cores-1)*step:])
-	
-	todo_params = [(fastaFile, rs) for rs in rgsList ]
-        output = pool.map(getRegions_GC_seq_worker, todo_params)
 
+	todo_params = [(fastaFile, rs) for rs in rgsList ]
+	output = pool.map(getRegions_GC_seq_worker, todo_params)
+	
 	pool.close()
 	pool.join()
 
-        # this part should be tested
+	# this part should be tested
 	gc_vec = np.concatenate([x[0] for x in output])
-        seqMat = np.concatenate( [ x[1] for x in output ])
-        
-	return (gc_vec, seqMat)
+	seqMat = np.concatenate( [ x[1] for x in output ])
+	flexMat = np.concatenate( [ x[2] for x in output ])
+	stableMat = np.concatenate( [ x[3] for x in output ])
+
+	return (gc_vec, seqMat, flexMat, stableMat)
 
 
 
@@ -165,10 +198,6 @@ def getRegion_GC_rg(region, binSize, fastaFile):
 	return (gc_vec, rg_vec)
 
 
-#def get_vec_gc(vec):
-        
-
-
 def calcualte_gc(subseq):
 
 	seq = subseq.lower()
@@ -179,6 +208,11 @@ def calcualte_gc(subseq):
 		return 0
 	else:
 		return gc/(len(seq) - nc)
+
+#calculate the sequential GC shift
+def calcualte_gc_vec(seq, rlen):
+	vec = [ calcualte_gc(seq[i:i + rlen]) for i in range(len(seq)-rlen) ]
+	return vec
 
 
 ##########################################################

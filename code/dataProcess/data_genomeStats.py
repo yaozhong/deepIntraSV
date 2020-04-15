@@ -35,14 +35,20 @@ def getSampleBG(bamFile, sampleFold=0.1):
 
     # chrome scale regions
     rgs = get_chr_region(config.DATABASE["chrLen_info"])
+
     maVec, gcVec, rgVec = [],[],[]
     binSize = config.DATABASE["binSize"]
 
     for rg in rgs:
-        rg = normChrName(rg, 0)
+        
+        if config.DATABASE["chr_prefix"]:
+            rg = normChrName(rg, 1)
+        else:
+            rg = normChrName(rg, 0)
+
         chr_rgVec = getRegion_split(rg, binSize)
         rgVec.extend(chr_rgVec)
-        
+
         chr_maVec = getChr_mappability_parallel_pool(normChrName(rg, 1), binSize, config.DATABASE["mappability_file"])
 	maVec.extend(np.nan_to_num(chr_maVec))
 
@@ -62,6 +68,7 @@ def getSampleBG(bamFile, sampleFold=0.1):
 	
     #rdVec = get_RC_parallel_nobin(bamFile, rgs)
     rdVec = get_RDVec_parallel_nobin(bamFile, rgs)
+
     gcVec= getRegions_GC_parallel_nobin(config.DATABASE["ref_faFile"], rgs)
     gcVec = [ int(round(x*100)) for x in gcVec]
     
@@ -82,7 +89,6 @@ def getSampleBG(bamFile, sampleFold=0.1):
     for gc in gc_rd_dic.keys():
         gc_list.append(gc)
         mrd_list.append(np.median(gc_rd_dic[gc]))
-
 
     return rd_basic, gc_list, mrd_list, rdVec
 

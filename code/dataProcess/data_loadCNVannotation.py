@@ -10,6 +10,7 @@ chr start   end type    start_ci_l  start_ci_r  end_ci_l    end_ci_r    rgLen
 import re
 from util import normChrStrName
 
+
 """
 processing files with TAB seperation and first line (start with #) of field names,
 chr, start, end is the mustbe containning field.

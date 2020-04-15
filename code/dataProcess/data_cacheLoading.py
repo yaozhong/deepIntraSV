@@ -76,26 +76,26 @@ def GC_normalization(m_rd, gc_count_dic, rd_data, gc_data):
 
     return rd_data
 
-
-
 # dataPath and bk_dataPath is generated based on the options
 ## this is for inner sample evluation case. 
+## key functions of dine all the data are processinged here
 def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False):
 
         # loading background genome sampling
         m_rd, std_rd, md_rd, gc_mrd_table = load_genome_statistics(bk_dataPath[0])
-
-        visal_rd_genome(bk_dataPath[0],False)
+        visal_rd_genome(bk_dataPath[0], False)
         
+        # if do crosss evualtion load additional background information
         if config.DATABASE["eval_mode"] == "cross":
             m_rd2, std_rd2, md_rd2, gc_mrd_table2 = load_genome_statistics(bk_dataPath[1])
-            visal_rd_genome(bk_dataPath[1],False)
-        
+            print("[**] second VCF, Basic statistics is: ")
+            visal_rd_genome(bk_dataPath[1], False)
+
         print("-- loading cache genome information done!")
 
-        # loading CNV training samples
-        x_train, y_train, seq_train, rgs_train,  gc_train, \
-        x_test, y_test, seq_test, rgs_test, gc_test   = load_cache_trainData(dataPath)
+        # loading training samples
+        x_train, y_train, seq_train, rgs_train,  gc_train, bps_train, f_train, s_train,\
+        x_test, y_test, seq_test, rgs_test, gc_test, bps_test, f_test, s_test = load_cache_trainData(dataPath)
         
         printBasicStat(x_train, y_train)
         print("-- loading cache bin data information done!")
@@ -111,11 +111,16 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
                 un_select.append(i)
         
         print("\t * [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [%d]" %(len(un_select)))
+        
         x_train = x_train[select]
         y_train = y_train[select]
         seq_train = seq_train[select]
         rgs_train = rgs_train[select]
         gc_train = gc_train[select]
+        bps_train = bps_train[select]
+
+        f_train = f_train[select]
+        s_train = s_train[select]
 
         indicator = np.apply_along_axis(check_all_zero, 1, x_test)
         select, un_select = [], []
@@ -126,15 +131,24 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
                 un_select.append(i)
         
         print("\t * [Filtering]:Ignoring ALL-ZERO input in the Testing set, Number is %d" %(len(un_select)))
+        
         x_test = x_test[select]
         y_test = y_test[select]
         seq_test = seq_test[select]
         rgs_test = rgs_test[select]
         gc_test = gc_test[select]
+        bps_test = bps_test[select]
 
-        logger.debug("\n * [Check point] all the test should be the same for each run")
-        logger.debug(rgs_test[1:6])
-        
+        f_test = f_test[select]
+        s_test = s_test[select]
+
+        print("\n * [Check point] all the test should be the same for each run")
+        print("# Main input data shape")
+        print(x_train.shape)
+        print("# Potential Extra feature shape")
+        print(f_train.shape)
+        print(s_train.shape)
+
         ###########################################################################################
 
         if prob_add :
@@ -150,8 +164,8 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
                 x_train_prob = ss.norm.pdf(x_train, m_rd, std_rd)
                 x_test_prob = ss.norm.pdf(x_test, m_rd2, std_rd2)
 
-
         # Standarization
+    
         if config.DATABASE["eval_mode"] != "cross":
             x_train = (x_train - m_rd)/std_rd
             x_test = (x_test - m_rd)/std_rd
@@ -159,11 +173,17 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
             x_train = (x_train - m_rd)/std_rd
             x_test = (x_test - m_rd2)/std_rd2
     
+        # per sample normalization:
+        """
+        m = np.mean(x_train, axis=0)
+        std=np.mean(x_test, axis=0)
+        x_train = (x_train - m)/std
+        x_test = (x_test -m)/std
+        """
 
-        # transform the data to tensro
+        # transform the data to tensor
         x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
         x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
-
 
         if prob_add:
             
@@ -178,16 +198,45 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
             x_train = x_train_prob
             x_test =  x_test_prob
         
-
         # concatenate the data with sequence information, not validated!
         if seq_add:
-    
+            """
             seq_train = to_categorical(seq_train)
             seq_test = to_categorical(seq_test)
-            
             # combine into kernals
             x_train = np.concatenate((x_train, seq_train), -1)
             x_test = np.concatenate((x_test, seq_test), -1)
+            """
+
+            print("# Addting extra information in seq categorical ...")
+
+            seq_train = to_categorical(seq_train)
+            seq_test = to_categorical(seq_test)
+            
+            #s_train = s_train.reshape(s_train.shape[0], s_train.shape[1], 1)
+            #s_test  = s_test.reshape(s_test.shape[0], s_test.shape[1], 1)
+
+            f_train = f_train.reshape(f_train.shape[0], f_train.shape[1], 1)
+            f_test  = f_test.reshape(f_test.shape[0], f_test.shape[1], 1)
+
+            """
+            feat_train = np.concatenate((f_train, s_train), -1)
+            feat_test  = np.concatenate((f_test, s_test), -1)
+
+            x_train = np.concatenate((x_train, feat_train), -1)
+            x_test = np.concatenate((x_test, feat_test), -1)
+            """
+            
+            x_train = s_train
+            x_test =  s_test
+
+            m = np.mean(x_train, axis=0)
+            std=np.mean(x_test, axis=0)
+            x_train = (x_train - m)/std
+            x_test = (x_test -m)/std
+
+            x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
+            x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
 
 
         if gc_norm:
@@ -202,6 +251,68 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
                 x_test =  GC_normalization(md_rd, gc_count_dic,  x_test,  gc_test)
 
 
-        return (x_train, y_train, rgs_train,  x_test, y_test, rgs_test)
+        return (x_train, y_train, rgs_train, bps_train,  x_test, y_test, rgs_test, bps_test)
 
+
+# normal raw data
+def normal_rawData(rawData, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False):
+
+        # loading background genome sampling
+        print("- Normalize loaded raw data ...")
+        m_rd, std_rd, md_rd, gc_mrd_table = load_genome_statistics(bk_dataPath)
+        visal_rd_genome(bk_dataPath[0], False)
+
+        x, y, seq, rgs, gc = rawData["x"], rawData["y"], rawData["seq"], rawData["rgs"], rawData["gc"]
+   
+        print("[*] Basic statistics of loaded data ...")
+        printBasicStat(x, y)
+
+        indicator = np.apply_along_axis(check_all_zero, 1, x)
+        select, un_select = [], []
+        
+        for i, tag in enumerate(indicator):
+            if tag == False:
+                select.append(i)
+            else:
+                un_select.append(i)
+        
+        print("\t[!] [Filtering]:Ignoring All-ZERO input in the Training dataset, Number is [%d]" %(len(un_select)))        
+        x, y, seq, rgs, gc = x[select], y[select], seq[select], rgs[select], gc[select]
+
+        if prob_add :
+            """
+            r, p = get_NegBinomial_params(bk_dataPath)
+            x_train_prob = ss.nbinom.pmf(x_train, r, p)
+            x_test_prob =  ss.nbinom.pmf(x_test, r, p)
+            """
+            x_prob = ss.norm.pdf(x, m_rd, std_rd)
+
+        # Standarization
+        x = (x - m_rd)/std_rd
+
+        # transform the data to tensro
+        x = x_train.reshape(x.shape[0], x.shape[1], 1)
+        
+        if prob_add:
+            x_prob = x_prob.reshape(x_prob.shape[0], x_prob.shape[1], 1)
+
+            ## combine
+            x = np.concatenate((x_prob, x), -1)
+
+            ## replace
+            #x = x_prob
+
+        # concatenate the data with sequence information, not validated!
+        if seq_add:
+    
+            seq = to_categorical(seq)
+            # combine into kernals
+            x = np.concatenate((x, seq), -1)
+          
+        if gc_norm:
+
+            gc_count_dic = GC_count_dic_gen(gc_mrd_table)
+            x = GC_normalization(md_rd, gc_count_dic, x, gc)
+
+        return (x, y, rgs)
 

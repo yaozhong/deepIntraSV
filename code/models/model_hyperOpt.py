@@ -19,16 +19,18 @@ CB = [ callbacks.EarlyStopping(monitor="val_loss", patience=10, mode="auto", res
 
 # define parameter space
 
-
 space ={
-        'conv_window_len':hp.choice('conv_window_len',[7]),
-        'maxpooling_len':hp.choice('maxpooling_len', [[5,5,2,2,5,5]]),
+        'kernel_size': hp.choice('kernel_size', [[8,16,32,64], [16,32,64,128], \
+            [64,32,16,8], [128,64,32,16]]),
+        'conv_window_len':hp.choice('conv_window_len',[3,5,7,9,11,15,21]),
+        'maxpooling_len':hp.choice('maxpooling_len', [[5,5,2],[5,2,2],[2,2,2],[2,2,5],[2,5,5]]),
          # 256 will be out of memory
-        'batchSize': hp.choice('batchSize', [64]),
+        'batchSize': hp.choice('batchSize', [16,32,64,128, 256]),
         'lr': hp.choice('lr', [ 1e-4, 1e-3, 1e-2]),
         'DropoutRate': hp.choice("DropoutRate", [0.5, 0.2, 0]),
          #'BN': hp.choice("BN", [True, False]),
-        'epoch': hp.choice("epoch",[100])
+        'epoch': hp.choice("epoch",[50]),
+        'stride':hp.choice("stride",[1])
 }
 
 """
@@ -64,10 +66,10 @@ def objective(params):
 
     #model define
     rd_input = Input(shape=(x_data_opt.shape[1], x_data_opt.shape[-1]), dtype='float32', name="rd")
-    
-    model = UNet_networkstructure_basic(rd_input, params["conv_window_len"],  \
-            params["maxpooling_len"], True , params["DropoutRate"])
-    
+
+    model = UNet_networkstructure_basic(rd_input, params["kernel_size"], params["conv_window_len"],\
+        params["maxpooling_len"], 1 , True, params["DropoutRate"])
+
     model.compile(optimizer=Adam(lr = params["lr"]) , loss= dice_coef_loss, metrics=[dice_coef])
     model.fit(x_data_opt, y_data_opt, epochs=params["epoch"], batch_size=params["batchSize"], verbose=0, \
             callbacks = CB, validation_split=0.2)
@@ -175,7 +177,7 @@ if __name__ == "__main__":
 #######################################################
 # call API 
 #######################################################
-def do_hyperOpt(data, tryTime = 10, paramFile=None):
+def do_hyperOpt(modelName, data, tryTime = 10, paramFile=None):
     
     x_data_tmp, y_data_tmp, y_data_label = data
     

@@ -1,38 +1,69 @@
 # config file
 ## Note: some option values can be modified through the command option.
+## Make proper setting before running the code. 
 
-DATABASE ={	
+#hg19 reference
+DATABASE={	
     # reference genome sequence
-    'ref_faFile':"../data/reference/hs37d5.fa",
+    'ref_faFile':"../data/reference/hg19/hs37d5.fa",
+    'chr_prefix':False,
     # reference general chromesome information
-    'chrLen_info':"../data/reference/hg19_chr_info.txt",
+    'chrLen_info':"../data/reference/hg19/hg19_chr_info.txt",
 	# Read signal types
 	'count_type':"RD",
     # bin Size of the the data
-    'binSize':1000,
+    'binSize':400,
     # mappability files
-    'mappability_file':"../data/reference/wgEncodeCrgMapabilityAlign100mer.bigWig",
+    'mappability_file':"../data/reference/hg19/wgEncodeCrgMapabilityAlign100mer.bigWig",
+
     'mappability_threshold':0.9,
     # alignment threshold for filtering out low quality data
     'mapq_threshold':30, 
     'base_quality_threshold':30,
+
     # regions avoid in the reference genome
-	'black_list':"../data/reference/hg19.blackList.bed",
+	'black_list':"../data/reference/hg19/hg19.blackList.bed",
     # Embedding related
 	'kmer_dic':None,
 	'max_kmer':1,
     # random seed
     'rand_seed':1234,
+
     # background genome sample rate
     'genomeSampleRate':0.01,
     # data augmentation option
     'data_aug':0,
+
     'extend_context':0,
+    'extra_feat_ext_len':1,
+
     # different data running model: CV (all bks data), DEL-DUP, rSplit
     'data_split':"RandRgs",
     # evluation model:  "single" or "cross"
     'eval_mode':"single",
-    'model_param': ""
+    'model_param': "",
+
+    'vcf': "",
+    'vcf2': "",
+    "vcf_filter":0,
+    "vcf_filter2":1,
+    "vcf_ci":99999999,
+    "small_cv_train":"normal",
+
+    "fix_center":False,
+    "shift_low_bound":10,
+    'USESEQ':False,
+    'USEPROB':False,
+    'GC_NORM':False,
+
+    # output folds
+    'outFold_train_rgs':"../experiment/train_rgs/",
+    "enhance_output_fold":"../experiment/enhance_result/",
+    "heatmap_fold":"../experiment/heatmap/",
+    "model_data_tag":"",
+
+    # threshold of overlapped (Jaccard similarity)
+    "RO":0.5, 
 }
 
 BAMFOLD="/data/Dataset/1000GP/phase3/"
