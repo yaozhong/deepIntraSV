@@ -82,10 +82,10 @@ data="simA"
 vcf_ci=99999999
 binSize=400
 
-genomeStat="20200313_hg19-INPUT_simA_RD_bin${binSize}_GENOMESTAT_SampleRate-0.01_Filter-Mappability-0.9"
+genomeStat="hg19-INPUT_simA_RD_bin${binSize}_GENOMESTAT_SampleRate-0.01_Filter-Mappability-0.9"
 model="simA_RD_bin${binSize}_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b${binSize}_tsp0.8.h5"
 # exclude regions
-trainRgs="train_rgs/2020_03_13-UNet_networkstructure_basic_simA_b${binSize}_tsp0.8-train_rgs.txt"
+trainRgs="train_rgs/UNet_networkstructure_basic_simA_b${binSize}_tsp0.8-train_rgs.txt"
 
 gVCF="Sim-A.SV.vcf"
 # CNVnator predictions
