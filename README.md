@@ -2,7 +2,7 @@
 DeepIntraSV is a U-net based model used for detecting SVs inside of a bin with base-pair read-depth (RD) inforamtion.
 More details can be found in https://doi.org/10.1101/503649
 
-RDBKE branch added the module of enahncing read-depth SV caller (e.g., CNVnator).
+RDBKE branch added the module of enahncing a general read-depth SV caller (e.g., CNVnator).
 
 ## Docker enviroment
 We provide a docker image for running this code
@@ -66,13 +66,32 @@ If no model parameter file is provided, the code will use hyperOpt to search pre
 
 ```
 # Example
-python train.py -b 1000 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
+python train.py -b 400 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
 ```
 
-## Testing
+## Testing model-level performance
 ```
 # Example
-python test.py -b 1000  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
+python test.py -b 400  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
+```
+
+## Enhancement for CNVnator
+
+```
+data="simA"
+vcf_ci=99999999
+binSize=400
+
+genomeStat="20200313_hg19-INPUT_simA_RD_bin${binSize}_GENOMESTAT_SampleRate-0.01_Filter-Mappability-0.9"
+model="simA_RD_bin${binSize}_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b${binSize}_tsp0.8.h5"
+# exclude regions
+trainRgs="train_rgs/2020_03_13-UNet_networkstructure_basic_simA_b${binSize}_tsp0.8-train_rgs.txt"
+
+gVCF="Sim-A.SV.vcf"
+# CNVnator predictions
+pVCF="cnvnator.vcf"
+
+python eval/enhance_bk.py -d $data -b $binSize -gs $genomeStat -mp $model -er $trainRgs -ci $vcf_ci -v $pVCF -vg $gVCF
 ```
 
 ## Experiment logs
