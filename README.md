@@ -1,15 +1,14 @@
-# DeepIntraSV [RDBKE branch]
+#Breakpoint enhancement for read-depth based SV callers
 
-RDBKE is a general breakpoint resolution enhancment pipeline for read-depth (RD) based SV callers using deep segmenation model UNet.
-UNet is used to learn specific patterns of base-wise RD information surrounding known breaking points.
-It can be applied for both in-sample and cross-sample.
-More details can be found in https://doi.org/10.1101/503649
+RDBKE is a breakpoint enhancment pipeline for read-depth (RD) based SV callers using deep segmenation model UNet.
+UNet is used to learn specific patterns of base-wise RDs surrounding known breaking points.
+It is designed for in-sample and cross-sample applications.
+More details can be found in the manuscript https://doi.org/10.1101/503649
 
 Old branch DeepIntraSV only contains model-level training and testing.
-RDBKE branch added the module of enahncing a general read-depth SV caller (e.g., CNVnator).
+RDBKE branch added the enhancement module for RD-based SV callers (e.g., CNVnator).
 
 ![](figures/Fig1_workflow.png)
-
 
 ## Docker enviroment
 We provide a docker image for running this code
@@ -45,31 +44,32 @@ and put it in ``./data/reference``)
   (a python script is provided to parse VCF for SV regions)
 
 ## Data pre-processing and split
-A multi-core version of pysam is applied. In default, all cores will be used 
-to generate RD bins from bam file. For each training data, 
-background statistics of RD are first calcuated through sampling the data.
-Background statistics of each WGS data are cached in `./data/data_cache/`.
+A multi-core version of pysam is used. 
+By default, all cores will be used to generate RD bins from bam file. For each training data, 
+background statistics of RDs are first calcuated through sampling WGS data.
+Background statistics of each WGS data will be cached in `./data/data_cache/`.
 
 There are two evluation metrics, which are determined through CMD parameter -em (evluation mode)
-* intra-sample: ``-em single``
+* in-sample: ``-em single``
 * cross-sample: ``-em cross``
 
-For the intra-sample case, only one bam file is required and the data is split into train-test with the following -ds option:
+For the in-sample case, only one bam file is required and the data is split into train-test with the following data split -ds option:
+
 * Stratify: Stratified Random split
 * RandRgs: Random split
 * CV: cross valdiation
 
-For the intra-sample case, the second bam file used as the test set is assigned through ``-d2`` option.
-
+The test-split-proportion can be specified with option ``-tsp``
+For the cross-sample case, the second bam file used as the test set is assigned through ``-d2`` option.
 
 ## Training
-Input are WGS bam file(s). Cached train-test data will be first searched according to current parameters,
+Input are WGS bam file(s) and VCF file(s). 
+Cached train-test data will be first searched according to current parameters,
 If cache files are not found, the code will process the bam file and cache the data.
-The cached files are saved in 
-Output are the saved model weights.
 
-Users can change manually change the model parameter file.
-If no model parameter file is provided, the code will use hyperOpt to search preDefined hyper-parameter spaces.
+We provided a default hyperparameters of UNet and CNN in ``./experiment/model_param/``
+Users can make changes of the parameter file or specifiy through command line option.
+If no model parameter file is provided, the code will use hyperOpt to search preDefined hyper-parameter spaces based on the train set.
 
 ```
 # Example
@@ -79,7 +79,7 @@ python train.py -b 1000 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 
 ## Testing model-level performance
 ```
 # Example
-python test.py -b 1000  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/model/na12878_60x_RD_bin1000_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-annoFile\:NA12878_1kGP_IC--1.bed\|UNet_maxpoolingLen_5-5-2-2-5-5-convWindowLen_7-lr_0.001-batchSize64-epoch100-dropout0.2.h5 -mp ../experiment/model_param/unet_default
+python test.py -b 1000  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5 -mp ../experiment/model_param/unet_default
 ```
 
 ## Enhancement for CNVnator
@@ -87,22 +87,21 @@ python test.py -b 1000  -em single -ds Stratify -d na12878_60x -m UNet -mw ../ex
 ```
 data="simA"
 vcf_ci=99999999
-binSize=1000
+binSize=400
 
 genomeStat="hg19-INPUT_simA_RD_bin${binSize}_GENOMESTAT_SampleRate-0.01_Filter-Mappability-0.9"
-model="simA_RD_bin${binSize}_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b${binSize}_tsp0.8.h5"
+model="../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5"
+
 # exclude regions
 trainRgs="train_rgs/UNet_networkstructure_basic_simA_b${binSize}_tsp0.8-train_rgs.txt"
 
 gVCF="Sim-A.SV.vcf"
+
 # CNVnator predictions
 pVCF="cnvnator.vcf"
 
 python eval/enhance_bk.py -d $data -b $binSize -gs $genomeStat -mp $model -er $trainRgs -ci $vcf_ci -v $pVCF -vg $gVCF
 ```
-
-## Experiment logs
-For reproducibility, the scripts of related experiments are listed in the ``./experiment/expLOG``.
 
 
 
