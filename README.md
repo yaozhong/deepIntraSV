@@ -10,6 +10,10 @@ RDBKE branch added the enhancement module for RD-based SV callers (e.g., CNVnato
 
 ![](figures/Fig1_workflow.png)
 
+Model structure of UNet used for RDBKE:
+![](figures/Fig2_Unet_structure.png)
+
+
 ## Docker enviroment
 We provide a docker image for running this code
 ```
