@@ -10,7 +10,6 @@ chr start   end type    start_ci_l  start_ci_r  end_ci_l    end_ci_r    rgLen
 import re
 from util import normChrStrName
 
-
 """
 processing files with TAB seperation and first line (start with #) of field names,
 chr, start, end is the mustbe containning field.
@@ -80,11 +79,6 @@ def genBkDic(rgs):
 #################################################################
 
 if __name__ == "__main__":
-
-	#file_name = "mills_nature/NA12156"
-	#file_name = "NA12878/GIAB/Personalis_1000_Genomes_deduplicated_deletions.bed"
-	#file_name = "NA12878/GIAB/Spiral_Genetics_insertions.bed"
-	#file_name = "NA12878/1KG_phase3_all_bkpts.v5.txt"
 
 	file_name = "../data/CNV_annotation/mills_nature/NA12878_ref_hg36"
 

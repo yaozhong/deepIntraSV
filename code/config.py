@@ -94,6 +94,7 @@ BAMFILE={
 
 }
 
+ic=-1
 AnnoCNVFile ={       
         "na12878_7x": "../data/SV_annotation/1KGP/annoFile/NA12878_1kGP_IC-"+str(ic)+".bed",
         "na12878_60x": "../data/SV_annotation/1KGP/annoFile/NA12878_1kGP_IC-"+str(ic)+".bed",
@@ -112,4 +113,4 @@ AnnoCNVFile ={
         "na19239_60x": "../data/SV_annotation/1KGP/annoFile/nonOverlap_NA19239_1kGP_IC-"+str(ic)+".bed",            
 }
 
-ic=-1
+

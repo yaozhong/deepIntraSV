@@ -63,7 +63,6 @@ def target_region_investigation(bam_file):
 
 	reads = samfile.fetch(rgs[0], rgs[1], rgs[2])
 	for read in reads:
-	
 		print(read.cigarstring)
 		print(read.cigartuples)
 
@@ -71,7 +70,6 @@ def target_region_investigation(bam_file):
 if __name__ == "__main__":
 
 	# copy the data and visulaization
-
 	bam_file = "../data/simData/Sim-A_30x_para.bam"
 	vcf_file = "../data/simData/Sim-A.SV.vcf"
 

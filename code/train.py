@@ -26,7 +26,6 @@ from visualization import *
 
 # revision the model part
 from models.model_unet import *
-from models.model_multi_info import *
 
 from models.model_baseline import *
 from models.model_hyperOpt import *

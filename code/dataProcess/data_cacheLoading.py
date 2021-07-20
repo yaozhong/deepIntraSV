@@ -74,9 +74,7 @@ def GC_normalization(m_rd, gc_count_dic, rd_data, gc_data):
 
     return rd_data
 
-# dataPath and bk_dataPath is generated based on the options
-## this is for inner sample evluation case. 
-## key functions of dine all the data are processinged here
+
 def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False):
 
         # loading background genome sampling
@@ -148,7 +146,6 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
         print(s_train.shape)
 
         ###########################################################################################
-
         if prob_add :
             if config.DATABASE["eval_mode"] != "cross":
                 x_train_prob = ss.norm.pdf(x_train, m_rd, std_rd)
@@ -169,8 +166,7 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
         x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
         x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
 
-        if prob_add:
-            
+        if prob_add:       
             x_train_prob = x_train_prob.reshape(x_train_prob.shape[0], x_train_prob.shape[1], 1)
             x_test_prob = x_test_prob.reshape(x_test_prob.shape[0], x_test_prob.shape[1], 1)
   
@@ -180,9 +176,7 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
         
         # concatenate the data with sequence information, not validated!
         if seq_add:
-
             print("# Addting extra information in seq categorical ...")
-
             seq_train = to_categorical(seq_train)
             seq_test = to_categorical(seq_test)
             
@@ -200,7 +194,6 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
             x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
             x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
 
-
         if gc_norm:
 
             gc_count_dic = GC_count_dic_gen(gc_mrd_table)
@@ -211,7 +204,6 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
                 x_test =  GC_normalization(md_rd2, gc_count_dic2, x_test,  gc_test)
             else:
                 x_test =  GC_normalization(md_rd, gc_count_dic,  x_test,  gc_test)
-
 
         return (x_train, y_train, rgs_train, bps_train,  x_test, y_test, rgs_test, bps_test)
 

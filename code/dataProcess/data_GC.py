@@ -25,7 +25,6 @@ def getRegion_GC(region, binSize, fastaFile):
                             seqs = 'N'*(rg[2]-rg[1])
                 
                         gc_vec[i] = calcualte_gc(seqs)
-
 	return gc_vec
 
 
@@ -34,7 +33,6 @@ def getRegions_GC_nobin(regions, fastaFile):
 	with pyfaidx.Fasta(fastaFile, as_raw=True) as fa_file:
 
 		gc_vec = np.zeros(len(regions), np.float32)
-
 		for rg in regions:
                     
 		    seqs = fa_file[rg[0]][rg[1]:(rg[2])]
@@ -43,7 +41,6 @@ def getRegions_GC_nobin(regions, fastaFile):
                         logger.debug(rg)
 
                     gc_vec[i] = calcualte_gc(seqs)
-
 	return gc_vec
 
 
@@ -151,7 +148,6 @@ def getRegion_split(region, binSize):
 	nSeg = int((region[2]-region[1])/binSize)
 	rg_vec =[ (region[0], region[1]+i*binSize, region[1]+(i+1)*binSize) for i in range(nSeg) ]
 	return rg_vec
-
 
 def getRegion_GC_rg(region, binSize, fastaFile):
 

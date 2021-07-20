@@ -13,7 +13,7 @@ import config
 import time, os, random, sys
 import re, random
 import h5py
-from tqdm import tqdm
+#from tqdm import tqdm
 
 import pysam, pyfaidx, pyBigWig
 

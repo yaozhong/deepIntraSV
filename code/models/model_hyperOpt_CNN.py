@@ -3,44 +3,88 @@ Date: 2018-11-3
 Description: Hyperopt for search the best model performance
 """
 
-from model_baseline import *
-from model_unet import UNet
+from model_baseline import * 
 from util import *
 
 from hyperopt import hp, fmin, tpe, hp, STATUS_OK, Trials, space_eval
+#from hyperopt.mongoexp import MongoTrials
 import json
 
 
 ## the data should be expose to the level of objective function
-CB = [ callbacks.EarlyStopping(monitor="val_loss", patience=10, mode="auto", restore_best_weights=True) ] 
+#CB = [ callbacks.EarlyStopping(monitor="val_dice_coef", patience=10, restore_best_weights=True) ] 
+
+CB = [ callbacks.EarlyStopping(monitor="val_loss", patience=10, mode = "auto", restore_best_weights=True) ] 
+
+
+def CNN_networkstructure(kernel_size, window_len, maxpooling_len, BN=True, DropoutRate=0.2):
+
+        model = models.Sequential()
+        # 1000bp (32,10,10) -> ()
+        model.add(layers.Conv1D(kernel_size[0], window_len[0], padding="valid", activation="relu"))
+        if BN: model.add(layers.BatchNormalization())
+        
+        model.add(layers.Conv1D(kernel_size[0], window_len[0], padding="valid", activation="relu"))
+        if BN: model.add(layers.BatchNormalization())
+        
+        model.add(layers.MaxPooling1D(maxpooling_len[0]))
+
+
+        model.add(layers.Conv1D(kernel_size[1], window_len[1], padding="valid", activation="relu"))
+        if BN: model.add(layers.BatchNormalization())
+        
+        model.add(layers.Conv1D(kernel_size[1], window_len[1], padding="valid", activation="relu"))
+        if BN: model.add(layers.BatchNormalization())
+        
+        model.add(layers.MaxPooling1D(maxpooling_len[1]))
+
+        model.add(layers.Flatten())
+        model.add(layers.Dropout(DropoutRate))
+        model.add(layers.Dense(config.DATABASE["binSize"], activation='sigmoid'))
+    
+        return model
+
 
 # define parameter space
-space ={
-        'kernel_size': hp.choice('kernel_size', [[8,16,32,64], [16,32,64,128], \
-            [64,32,16,8], [128,64,32,16]]),
-        'conv_window_len':hp.choice('conv_window_len',[3,5,7,9,11,15,21]),
-        'maxpooling_len':hp.choice('maxpooling_len', [[5,5,2],[5,2,2],[2,2,2],[2,2,5],[2,5,5]]),
+space_CNN ={
+        'kernel_size':hp.choice('kernel_size', [[32,64], [64,128]]),
+        'window_len':hp.choice('window_len',[[5,3],[7,5],[9,7]]),
+        'maxpooling_len':hp.choice('maxpooling_len', [[2,2], [5,5]]),
          # 256 will be out of memory
-        'batchSize': hp.choice('batchSize', [16,32,64,128, 256]),
-        'lr': hp.choice('lr', [ 1e-4, 1e-3, 1e-2]),
+        'batchSize': hp.choice('batchSize', [16,32,64]),
+        'lr': hp.choice('lr', [ 1e-5, 1e-4, 1e-3, 1e-2, 0.1]),
         'DropoutRate': hp.choice("DropoutRate", [0.5, 0.2, 0]),
-         #'BN': hp.choice("BN", [True, False]),
-        'epoch': hp.choice("epoch",[50]),
-        'stride':hp.choice("stride",[1])
+        'BN': hp.choice("BN", [True, False]),
+        'epoch': hp.choice("epoch",[100])
 }
+
+
+"""
+# define parameter space
+space ={
+        'conv_window_len':hp.choice('conv_window_len',[3,5,7,9]),
+        'maxpooling_len':hp.choice('maxpooling_len', [[2,2,2,2,2,2], [10,5,2,2,5,10], [8,5,5,5,5,8], [10,10,2,2,10,10]]),
+         # 256 will be out of memory
+        'batchSize': hp.choice('batchSize', [8,16,32,64,128]),
+        'lr': hp.choice('lr', [ 1e-5, 1e-4, 1e-3, 1e-2, 0.1]),
+        'DropoutRate': hp.choice("DropoutRate", [0.5, 0.3, 0.2, 0]),
+         #'BN': hp.choice("BN", [True, False]),
+        'epoch': hp.choice("epoch",[5, 10, 30, 50, 70, 100])
+}
+"""
 
 # define objective function
 def objective(params):
 
     #model define
     rd_input = Input(shape=(x_data_opt.shape[1], x_data_opt.shape[-1]), dtype='float32', name="rd")
-
-    model = UNet(rd_input, params["kernel_size"], params["conv_window_len"],\
-        params["maxpooling_len"], 1 , True, params["DropoutRate"])
-
+    
+    model = CNN_networkstructure(params["kernel_size"], params["window_len"],  \
+            params["maxpooling_len"], params["BN"] , params["DropoutRate"])
+    
     model.compile(optimizer=Adam(lr = params["lr"]) , loss= dice_coef_loss, metrics=[dice_coef])
-    model.fit(x_data_opt, y_data_opt, epochs=params["epoch"], batch_size=params["batchSize"], verbose=0, \
-            callbacks = CB, validation_split=0.2)
+    model.fit(x_data_opt, y_data_opt, epochs=params["epoch"], batch_size=params["batchSize"], verbose=0,
+            callbacks=CB, validation_split=0.2)
     
     t_cnv = model.predict(x_cnv_opt, verbose=0)
     pred_cnv = (t_cnv > 0.5).astype(np.float32).reshape(t_cnv.shape[0], t_cnv.shape[1])
@@ -55,7 +99,7 @@ def objective(params):
 if __name__ == "__main__":
     
         parser = argparse.ArgumentParser(description='DL Based Break Point Detection')
-        parser.add_argument('--gpu', '-g', type=str, default="0", help='Assign GPU for Training model.')
+        parser.add_argument('--gpu', '-g', type=str, default="3", help='Assign GPU for Training model.')
         parser.add_argument('--bin', '-b', type=int, default=1000, help='screening window length.')
         parser.add_argument('--dataAug', '-da', type=int, default=0, help='Number of additional proportional samples to gen.')
         parser.add_argument('--model', '-m', type=str, default="CNN", help='Model type for training break point.')
@@ -137,7 +181,7 @@ if __name__ == "__main__":
         y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
 
         trials = Trials()
-        best = fmin(objective, space, algo=tpe.suggest, max_evals=100, trials=trials, verbose=1)
+        best = fmin(objective, space_CNN, algo=tpe.suggest, max_evals=100, trials=trials, verbose=1)
         print best
         print (trials.best_trial)
 
@@ -145,7 +189,7 @@ if __name__ == "__main__":
 #######################################################
 # call API 
 #######################################################
-def do_hyperOpt(modelName, data, tryTime = 10, paramFile=None):
+def do_hyperOpt_CNN(data, tryTime = 10, paramFile=None):
     
     x_data_tmp, y_data_tmp, y_data_label = data
     
@@ -161,9 +205,9 @@ def do_hyperOpt(modelName, data, tryTime = 10, paramFile=None):
     print "* Model hyper parmaters tunning start ..."
     
     trials = Trials()
-    best = fmin(objective, space, algo=tpe.suggest, max_evals=tryTime, trials=trials, verbose=1)
+    best = fmin(objective, space_CNN, algo=tpe.suggest, max_evals=tryTime, trials=trials, verbose=1)
 
-    param_dic = space_eval(space, best)
+    param_dic = space_eval(space_CNN, best)
     
     jd = json.dumps(param_dic)
     output = open(paramFile, "w")
@@ -179,3 +223,17 @@ def load_modelParam(paramFile):
         return param_dic
 
     
+"""
+
+space ={
+        'conv_window_len':hp.choice('conv_window_len',[3,5,7,9]),
+        'maxpooling_len':hp.choice('maxpooling_len', [[2,2,2,2,2,2], [10,5,2,2,5,10], [5,5,4,4,5,5],[8,5,5,5,5,8], [10,10,2,2,10,10]]),
+         # 256 will be out of memory
+        'batchSize': hp.choice('batchSize', [8,16,32,64,128]),
+        'lr': hp.choice('lr', [ 1e-5, 1e-4, 1e-3, 1e-2, 0.1, 0.5, 1]),
+        'DropoutRate': hp.choice("DropoutRate", [0.5, 0.3, 0.2, 0]),
+        'BN': hp.choice("BN", [True, False]),
+        'epoch': hp.choice("epoch",[10])
+}
+
+"""

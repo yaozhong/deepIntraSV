@@ -102,22 +102,7 @@ def parse_sim_data_vcf(vcf_file, test_protion=0.2, verbose=True, vcf_filter=Fals
                         continue
                 except:
                     pass
-                      
 
-                #################### Special Process for HG002 ###################
-                """
-                try:
-                    if(record.INFO["HG2count"] == 0):
-                        continue
-                except:
-                    pass
-
-                try:
-                    if(record.INFO["Illcalls"] == 0):
-                        continue
-                except:
-                    pass
-       
                 try:
                     end = record.INFO["END"]
                     if(isinstance(end, list)): end = end[0]
@@ -288,6 +273,7 @@ def sample_sv_list_gen(vcf_file, highConfidenceThreshold=50, savePath="./", verb
     file_output.close()
     return svs
 
+
 # 2019-11-21 generate input list for the vcf list
 def gen_input_for_vcf(vcf_file, bam_file, bin=100):
 
@@ -312,17 +298,6 @@ def gen_input_for_vcf(vcf_file, bam_file, bin=100):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("Parse Riken vcf file format test...")
-    
     parser.add_argument('--vcf', '-v', type=str, default="", required=True, help="VCF input ")
     parser.add_argument('--output', '-o', type=str, default="", required=True, help="VCF input ")
-
-    """
-    parser.add_argument('--ci', '-i', type=int, default=50, help="Confidence interval threshold.-1 represent no filtering")
-    parser.add_argument('--savePath', '-s', type=str, default='./', help="Saving the path of the file")
-    parser.add_argument('--mode', '-m', type=str, default='parse', help="parse/analysis")
-    args= parser.parse_args()
-    
-    vcf_file = args.vcf
-    sample_sv_list_gen(vcf_file, args.ci, args.savePath)
-    """
 
