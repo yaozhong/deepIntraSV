@@ -8,11 +8,11 @@ More details can be found in the manuscript https://doi.org/10.1101/503649
 Old branch DeepIntraSV only contains model-level training and testing.
 RDBKE branch added the enhancement module for RD-based SV callers (e.g., CNVnator).
 
+* RDBKE overall pipeline
 ![](figures/Fig1_workflow.png)
 
-Model structure of UNet used for RDBKE:
+* Model structure of UNet used for RDBKE:
 ![](figures/Fig2_Unet_structure.png)
-
 
 ## Docker enviroment
 We provide a docker image for running this code
