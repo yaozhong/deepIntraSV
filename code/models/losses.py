@@ -1,10 +1,6 @@
-# Copyright 2019 
-#
 #This Source Code Form is subject to the terms of the Mozilla Public
 #License, v. 2.0. If a copy of the MPL was not distributed with this
 #file, You can obtain one at http://mozilla.org/MPL/2.0/.
-#
-
 
 from __future__ import division
 
@@ -31,15 +27,13 @@ def dice_score(gold, pred):
     df = (2. * intersection + np.finfo(np.float32).eps) / (np.sum(gold) + np.sum(pred) + np.finfo(np.float32).eps)
     return df
 
+
 def iou_score(gold, pred):
     intersection = np.sum(gold*pred)
     df = (intersection + np.finfo(np.float32).eps) / (np.sum(gold) + np.sum(pred) - intersection + np.finfo(np.float32).eps)
     return df
 
-# consider this one
-#############################################
-# segmentation loss
-#############################################
+
 def iou_coef(y_true, y_pred, smooth=K.epsilon()):
 
     intersection = K.sum(K.abs(y_true * y_pred), axis=-1)
@@ -47,9 +41,9 @@ def iou_coef(y_true, y_pred, smooth=K.epsilon()):
     iou = (intersection + smooth) / ( union + smooth)
     return iou
 
+
 def iou_loss(y_true, y_pred):
     return 1. - iou_coef(y_true, y_pred)
-
 
 
 def dice_coef(y_true, y_pred):
@@ -57,6 +51,7 @@ def dice_coef(y_true, y_pred):
     y_pred_f = K.flatten(y_pred)
     intersection = K.sum(y_true * y_pred)
     return (2.*intersection + K.epsilon()) / ( K.sum(y_true) + K.sum(y_pred) + K.epsilon())
+
 
 def dice_loss(y_true, y_pred):
     return 1. - dice_coef(y_true, y_pred)
@@ -69,7 +64,6 @@ def dice_loss(y_true, y_pred):
 def ce_dice_loss(y_true, y_pred):
     return losses.categorical_crossentropy(y_true, y_pred) + dice_loss(y_true, y_pred)
 
-## no weight is used
 def bc_dice_loss(y_true, y_pred):
     return losses.binary_crossentropy(y_true, y_pred) + dice_loss(y_true, y_pred)
 
@@ -94,10 +88,6 @@ def weighted_cross_entropy(y_true, y_pred):
     except:
         pass
 
-    #
-    #w_rmse = K.mean(math_ops.multiply(weight, math_ops.square(y_pred - seg)), axis=-1)
-
-    # weighted _ binary cross-entropy
     epsilon = K.epsilon()
     y_pred = K.tf.clip_by_value(y_pred, epsilon, 1 - epsilon)
     zeros = array_ops.zeros_like(y_pred, dtype=y_pred.dtype)
@@ -116,29 +106,6 @@ def weighted_cross_entropy(y_true, y_pred):
     return  dice_loss - w_bc
 
 
-## refer binary logit binary loss function
-"""
-def weighted_cross_entropy(y_true, y_pred):
-    try:
-        [seg, weight] = K.tf.unstack(y_true, 2, axis=2)
-        seg = K.tf.expand_dims(seg, -1)
-        weight = K.tf.expand_dims(weight, -1)
-    except:
-        pass
-
-    epsilon = K.tf.convert_to_tensor(10e-8, y_pred.dtype.base_dtype)
-    y_pred = K.tf.clip_by_value(y_pred, epsilon, 1 - epsilon)
-    y_pred = K.tf.log(y_pred / (1 - y_pred))
-
-    zeros = array_ops.zeros_like(y_pred, dtype=y_pred.dtype)
-    cond = (y_pred >= zeros)
-    relu_logits = math_ops.select(cond, y_pred, zeros)
-    neg_abs_logits = math_ops.select(cond, -y_pred, y_pred)
-    entropy = math_ops.add(relu_logits - y_pred * seg, math_ops.log1p(math_ops.exp(neg_abs_logits)), name=None)
-    return K.mean(math_ops.multiply(weight, entropy), axis=-1) 
-"""
-
-
 ### those are used for the basic evluation of unpaccking
 def unpack_binary_accuracy(y_true, y_pred):
     try:
@@ -151,6 +118,7 @@ def unpack_binary_accuracy(y_true, y_pred):
 
     score = metrics.binary_accuracy(seg, y_pred)
     return score
+
 
 def unpack_dice_score(y_true, y_pred):
     try:
@@ -168,6 +136,7 @@ def unpack_dice_score(y_true, y_pred):
    
     return score
 
+
 def unpack_iou_score(y_true, y_pred):
     try:
         [seg, weight] = K.tf.unstack(y_true, 2, axis=-1)
@@ -180,9 +149,6 @@ def unpack_iou_score(y_true, y_pred):
     score = iou_score(seg, y_pred)
     return score
 
-
-
-## 20190607
 def categorical_focal_loss(gamma=2., alpha=.25):
     """
     Usage:

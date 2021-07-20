@@ -117,37 +117,7 @@ def parse_sim_data_vcf(vcf_file, test_protion=0.2, verbose=True, vcf_filter=Fals
                         continue
                 except:
                     pass
-
-                try:
-                    if(len(record.FILTER)> 0):
-                        continue
-                except:
-                    pass
-
-                try:
-                    if(record.INFO["LongReadHomRef"] or record.INFO["NoConsensusGT"]):
-                        continue
-                except:
-                    pass
-
-                try:
-                    if "HG2" not in record.ID:
-                        continue
-                except:
-                    pass
-                """
-
-                ########################################
-
-                # filtering out too short read ones
-                # try:
-                #     if(int(record.INFO["READS"][0]) < 10):
-                #         continue
-                # except:
-                #     pass
-
-                # extract the length
-                ## some vcf may do not have required key items
+       
                 try:
                     end = record.INFO["END"]
                     if(isinstance(end, list)): end = end[0]

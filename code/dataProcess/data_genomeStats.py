@@ -127,7 +127,6 @@ def load_genome_statistics(bk_dataPath):
 """
 fit the data, GC and NB
 """
-
 def visal_rd_genome(bk_dataPath, fitDist = True):
 
     print("[Genome]: ** Generate basic statistics, Depth-of-Coverage hist ... ")

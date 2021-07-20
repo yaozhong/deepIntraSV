@@ -1,17 +1,13 @@
 """
-Date: 2018-08-16
+Date: 2018-08-16, 2021-07-19
 Author: Yao-zhong Zhang
-Description: the basic training for the keras model for the break point detection problem.
-
-2018-09-19: revised the model for the multi-class classification and evluation metrics.
-2018-10-09: Add the autoencoder for the classification task. [with/without attention]
-
+Description:
+This is the training function of UNet, CNN of RDBKE, which is used for breakpoint resolution
+enhancement for read-depth based SV callers.
 """
 
 # -*- coding: utf-8 -*-
-
 from __future__ import division
-
 from util import *
 
 from keras import Input, models, layers, regularizers, metrics
@@ -30,7 +26,6 @@ from visualization import *
 
 # revision the model part
 from models.model_unet import *
-from models.model_unet_res import *
 from models.model_multi_info import *
 
 from models.model_baseline import *
@@ -54,19 +49,16 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
 
         # all data loading, the data is pre-splited in the caching part.
         print("@ Loading data ...")
-        #x_data, y_data, rgs_data, x_cnv, y_cnv, rgs_cnv = loadData(dataPath, bk_dataPath, prob_add=USEPROB, seq_add=USESEQ, gc_norm=GC_NORM)
         x_data, y_data, rgs_data, bps_data, x_cnv, y_cnv, rgs_cnv, bps_cnv = loadData(dataPath, bk_dataPath, \
             prob_add=config.DATABASE["USEPROB"], seq_add=config.DATABASE["USESEQ"], gc_norm=config.DATABASE["GC_NORM"])
         
-        # 2019-12-05 added, previous version the CV part is on the split-train set only
-        print(x_data.shape)
-        # concatenate 
+        # concatenate both train and test split for cross-validation
         x_data = np.concatenate((x_data, x_cnv), 0)
         y_data = np.concatenate((y_data, y_cnv), 0)
         bps_data = np.concatenate((bps_data, bps_cnv), 0)
         rgs_data = np.concatenate((rgs_data, rgs_cnv), 0)
 
-        print("* After concatenating of all the training data...")
+        print("* After concatenating of all the data...")
         print(x_data.shape)
     
         print("- Loading data okay and start processing ...")
@@ -74,19 +66,14 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
         y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
         print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
  
-        # model parameters loading
+        # using provided hyper-parameters
         if config.DATABASE["model_param"] != "":
             params = load_modelParam(config.DATABASE["model_param"])
+            print("Loaded model parameters ...")
+            print(params) 
         else:
-            model_param_file  =  modelParamPath + ".TRAIL-"+ str(TRAIL)+ ".UNet.model.parameters.json"
-            # check whether the model is hyperOpt tuned
-            if not os.path.exists(model_param_file):
-                tmpData = (x_data, y_data, y_data_label)
-                do_hyperOpt(tmpData, TRAIL, model_param_file)
-
-            params = load_modelParam(model_param_file)
-        
-        print params     
+            print("[Error!] Model's parameter file is not provided, please check!")
+            exit(-1)   
 
         maxpooling_len = params["maxpooling_len"]
         conv_window_len = params["conv_window_len"]
@@ -94,6 +81,7 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
         batchSize = params["batchSize"]
         dropoutRate = params["DropoutRate"]
 
+        # generate the model names according to model parameters
         modelInfo = "UNet-all_maxpoolingLen_"+"-".join([str(l) for l in maxpooling_len]) 
         modelInfo += "-convWindowLen_"+ str(conv_window_len)
         modelInfo += "-lr_"+ str(lr)
@@ -117,6 +105,8 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
         for train_idx, test_idx in kfold.split(x_data, y_data_label): 
 
             index = index + 1
+
+            # small CV training option
             if config.DATABASE["small_cv_train"] == "small":
                 print("+ Small train CV actived!!!! ")
                 train_idx, test_idx = test_idx, train_idx
@@ -136,8 +126,7 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
                 model.compile(optimizer=Adam(lr = lr) , loss= "binary_crossentropy", metrics=[dice_coef, metrics.binary_accuracy])  
             if loss == "iou_loss":
                 model.compile(optimizer=Adam(lr = lr) , loss= iou_loss, metrics=[dice_coef, iou_score, metrics.binary_accuracy])  
-        
-
+    
             if loss == "bk_loss":
                 # packing y_data
                 print("@ adding the the BK weighting information in the target label data...")
@@ -195,10 +184,7 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
             cv_bk_iou.append(iou1)
             cv_bg_iou.append(iou0)
             
-            cv_auc.append(auc_value)
-            cv_sensitivity.append(sensitivity)
             cv_FDR.append(FDR)
-
             cv_precision.append(precision)
             cv_recall.append(recall)
 
@@ -210,14 +196,9 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
         print "["+ modelInfo + "]"
           
         print '-'*30
-        print("-- CV AUC %.4f (%.4f)" % (np.mean(cv_auc), np.std(cv_auc)))
-        print("-- CV Sensitivity %.4f (%.4f)" % (np.mean(cv_sensitivity), np.std(cv_sensitivity)))
-        print("-- CV FDR %.4f (%.4f)" % (np.mean(cv_FDR), np.std(cv_FDR)))
-        print '*'*30
-
-        print '-'*30
         print("-- CV Precision %.4f (%.4f)" % (np.mean(cv_precision), np.std(cv_precision)))
         print("-- CV Recall %.4f (%.4f)" % (np.mean(cv_recall), np.std(cv_recall)))
+        print("-- CV FDR %.4f (%.4f)" % (np.mean(cv_FDR), np.std(cv_FDR)))
         print '*'*30
 
         print '-'*30
@@ -232,18 +213,15 @@ def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, da
         print("-- CV BG IOU %.4f (%.4f)" % (np.mean(cv_bg_iou), np.std(cv_bg_iou)))
 
         
-
 # non-cross validation setting for the u-net, first tailing
 def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, loss, plotTrainCurve=False, plotResult=False):
 
         # Data loading start
         print("@ Loading training data ...")
-        # region is the fixed length region.
         x_data, y_data, rgs_data, bps_data, x_cnv, y_cnv, rgs_cnv, bps_cnv = loadData(dataPath, bk_dataPath, \
             prob_add=config.DATABASE["USEPROB"], seq_add=config.DATABASE["USESEQ"], gc_norm=config.DATABASE["GC_NORM"])
 
         print(x_data.shape)
-        # for the convolutional output
         if("UNet" in modelName):
             y_data = y_data.reshape(y_data.shape[0], y_data.shape[1], 1)
         print(y_data.shape)
@@ -305,7 +283,6 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
         if loss == "iou_loss":
             model.compile(optimizer=Adam(lr = lr) , loss= iou_loss, metrics=[dice_coef, iou_score, metrics.binary_accuracy])  
         
-
         if loss == "bk_loss":
             # packing y_data
             print("@ adding the the BK weighting information in the target label data...")
@@ -325,7 +302,6 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
         ###########################################################################################3
         # Results generation
         ###########################################################################################
-        # plot the training curve:
         if plotTrainCurve:
 
             figureSavePath= modelSavePath + "/model_curve/" + modelSaveName + "_trainCurve.png"
@@ -358,7 +334,6 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
        
         figureSavePath= "../experiment/result/" + date.today().strftime("%Y%m%d") + "_"
         evluation_breakpoint(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath + "UNet_", False)
-
         print("\n")
 
 
@@ -369,7 +344,7 @@ if __name__ == "__main__":
         parser.add_argument('--gpu', '-g', type=str, default="0", help='GPU ID for Training model.')
         parser.add_argument('--bin', '-b', type=int, default=1024, required=True, help='bin size of target region')
         parser.add_argument('--dataAug', '-da', type=int, default=0, help='Epochs of data augmentation')
-        parser.add_argument('--model', '-m', type=str, default="UNet", required=True, help='URNet/UNet/...')
+        parser.add_argument('--model', '-m', type=str, default="UNet", required=True, help='UNet/CNN/SVM')
         parser.add_argument('--trainMode', '-tm', type=str, default="", help='Training model [, CV]')
 
         parser.add_argument('--ref_faFile', '-refa', type=str, default="", help='Reference files')      
@@ -449,11 +424,10 @@ if __name__ == "__main__":
         binSize = config.DATABASE["binSize"]
         config.DATABASE["model_data_tag"] = args.model + "_" + args.dataSelect + "_b"+str(binSize) + "_tsp" + str(args.testSplitPortion)
         
-        ANNOTAG="20200313_hg19-INPUT_"
+        ANNOTAG=""
 
         ## background data first caching check
         ## background data is random sampling whole genome read depth data
-        
         bk_dataPath = "../data/data_cache/"+ ANNOTAG + args.dataSelect \
                 +"_"+config.DATABASE["count_type"] \
                 +"_bin"+str(binSize)+"_GENOMESTAT_"
@@ -502,7 +476,6 @@ if __name__ == "__main__":
         dataInfo += "_dataAug-"+str(config.DATABASE["data_aug"])
         dataInfo += "_filter-BQ"+str(config.DATABASE["base_quality_threshold"])+"-MAPQ-"+str(config.DATABASE["mapq_threshold"])
 
-        # 
         annoElems = config.AnnoCNVFile[args.dataSelect].split("/")
         dataInfo += "_AnnoFile-"+annoElems[-2]+":" +annoElems[-1]
 
@@ -525,7 +498,6 @@ if __name__ == "__main__":
             else:
                 cache_trainData_fromVCF([args.vcf], bamFilePath, dataPath, args.testSplitPortion)
 
-
         ## model parameter is associated with the training data [depth bin size, annotation] 
         modelParamPath = "../experiment/model_param/"  
         dataInfo = args.dataSelect +"_" + config.DATABASE["count_type"] + "_bin"+str(binSize) + "_TRAIN"
@@ -539,7 +511,6 @@ if __name__ == "__main__":
         modelSavePath ="/home/yaozhong/working/1_Unet_IntraSV/experiment"
 
         # used for saving different train_tag_set.
-
         if args.dataSplit == "CV":
             if args.model == "SVM":
                 SVM_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotResult= False, plotTrainCurve=False)
@@ -550,8 +521,6 @@ if __name__ == "__main__":
         else:
             if args.model == "SVM":
                 SVM(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo)
-            elif args.model == "SVM_1class":
-                SVM_1class(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo)
             elif args.model == "CNN":
                 CNN(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotTrainCurve=False, plotResult=False)   
             else: 

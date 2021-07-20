@@ -9,7 +9,7 @@ Basic functions for read region information
 """
 from __future__ import division
 
-import logging, config
+import config
 import time, os, random, sys
 import re, random
 import h5py
@@ -63,7 +63,7 @@ K.set_session(sess)
 print("- Random seed set for np.random, random, tf_random with seed [%d]\n" %(config.DATABASE["rand_seed"]))
 
 ## setting the log information
-
+"""
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
@@ -81,11 +81,7 @@ handler2.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s]: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 handler2.setFormatter(formatter)
 logger.addHandler(handler2)
-
-
-##########################################
-# Utility functions
-##########################################
+"""
 
 
 def get_chr_region(filePath):
@@ -156,8 +152,6 @@ def normChrStrName(chrName, withChr=0):
 			chrName = "chr"+chrName
 
 	return chrName
-
-
 
 def estimate_sampleSize(binSize=1000):
 
@@ -322,7 +316,7 @@ def get_split_len_idx2(sv_list):
 # get the dist idx
 def get_dist_len_idx(dist):
 
-	if dist < 5:  return 0
+	if dist < 5:   return 0
 	if dist < 10:  return 1
 	if dist < 20:  return 2
 	if dist < 50:  return 3
@@ -366,4 +360,3 @@ if __name__ == "__main__":
 	print(seq)
 	print(seq_count)
 	print(index)
-

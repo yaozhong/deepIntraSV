@@ -15,25 +15,19 @@ from keras.optimizers import RMSprop,SGD, Adam
 from keras import callbacks, losses
 from keras import backend as K
 from keras.utils import to_categorical
-from keras_contrib.layers import CRF
 
 from sklearn.metrics import roc_curve, auc, f1_score, accuracy_score, confusion_matrix
 from sklearn.model_selection import StratifiedKFold, KFold
 from sklearn import svm
-from sklearn.manifold import TSNE
 
 from visualization import *
-from mpl_toolkits.mplot3d import Axes3D
 from models.model_unet import *
 from models.model_baseline import *
 from models.model_hyperOpt import *
 
 from dataProcess.data_cacheLoading import *
 
-#from train import *
 
-# model training settings
-CB = [ callbacks.EarlyStopping(monitor="val_dice_coef", patience=20, restore_best_weights=True) ] 
 VB = 1
 
 # how to get the segment, only return the first 1 position, not very accurate
@@ -118,7 +112,6 @@ def label_eval(gold_cnv, pred_cnv, rgs_cnv):
                     eval_dic[t][2]/eval_dic[t][1]))
 
 
-
 def UNet(dataPath, bk_dataPath, modelSavePath, dataInfo, plotResult=False):
 
         
@@ -130,16 +123,9 @@ def UNet(dataPath, bk_dataPath, modelSavePath, dataInfo, plotResult=False):
         y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
         print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))       
 
-        #########################################
-        
         # loading model 
         print("* Loading model parameters...")
         model = models.load_model(modelSavePath, custom_objects={'dice_coef_loss': dice_coef_loss, 'dice_coef':dice_coef})
-
-
-        ###########################################################################################3
-        # Results generation
-        ###########################################################################################
 
         ############# dice evluation #################
         t_cnv = model.predict(x_cnv, verbose=VB)
@@ -149,25 +135,19 @@ def UNet(dataPath, bk_dataPath, modelSavePath, dataInfo, plotResult=False):
         # save the prediction figures
         if plotResult == True:
             figureSavePath= "../experiment/visual/" + "_DATA-"+dataInfo
-
             visual_prediction(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath)
-
 
         print "\n=========== [DATA/MODEL information] ============="
         print "[" + dataInfo+ "]"
         print("Train BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
 
-
         binary_eval(gold_cnv, pred_cnv, "UNet_test"+ os.path.basename(modelSavePath))
         ###############################################
         label_eval(gold_cnv, pred_cnv, rgs_cnv)
-        #position_eval(gold_cnv, pred_cnv, rgs_cnv)
-
 
 
 def CNN(dataPath, bk_dataPath, modelSavePath, dataInfo, plotResult=False):
 
-        
         # Data loading start
         x_data, y_data, rgs_data, x_cnv, y_cnv, rgs_cnv = loadData(dataPath, bk_dataPath, prob_add=USEPROB, seq_add=USESEQ)
 
@@ -176,15 +156,9 @@ def CNN(dataPath, bk_dataPath, modelSavePath, dataInfo, plotResult=False):
         y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
         print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))       
 
-        #########################################
-        
         # loading model 
         print("* Loading model parameters...")
         model = models.load_model(modelSavePath, custom_objects={'dice_coef_loss': dice_coef_loss, 'dice_coef':dice_coef})
-
-        ###########################################################################################3
-        # Results generation
-        ###########################################################################################
 
         ############# dice evluation #################
         t_cnv = model.predict(x_cnv, verbose=VB)
@@ -196,15 +170,12 @@ def CNN(dataPath, bk_dataPath, modelSavePath, dataInfo, plotResult=False):
             figureSavePath= "../experiment/visual/" + "_DATA-"+dataInfo
             visual_prediction(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath)
 
-
         print "\n=========== [DATA/MODEL information] ============="
         print "[" + dataInfo+ "]"
         print("Train BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
 
         binary_eval(gold_cnv, pred_cnv, "CNN:w_test"+ os.path.basename(modelSavePath))
-        ###############################################
         label_eval(gold_cnv, pred_cnv, rgs_cnv)
-        #position_eval(gold_cnv, pred_cnv, rgs_cnv)
 
 
 if  __name__ == "__main__":

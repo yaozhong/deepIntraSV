@@ -1,9 +1,9 @@
 """
 Date: 2018-06-10
-Author: Yao-zhong Zhang
 Description:
 GC content calculation for the given region and basic parallel implementation test
 """
+
 from __future__ import division
 from util import *
 from data_seq2feat import *
@@ -47,11 +47,6 @@ def getRegions_GC_nobin(regions, fastaFile):
 	return gc_vec
 
 
-
-## current usage of extracting GC content
-# key features extraction
-# original GC and Seq feature extractor
-
 def getRegions_GC_seq_worker(params):
 
 	fastaFile, regions = params
@@ -80,27 +75,6 @@ def getRegions_GC_seq_worker(params):
 		return (gc_vec, np.array(seq_vec, dtype=np.uint16), \
 				np.array(flex_vec, dtype=np.float16), np.array(stable_vec, dtype=np.float16))
 
-"""	    
-def getRegions_GC_seq_worker(params):
-
-	fastaFile, regions = params
-
-	with pyfaidx.Fasta(fastaFile, as_raw=True, one_based_attributes=False) as fa_file:
-
-		gc_vec = np.zeros(len(regions), np.float32)
-		seq_vec = []
-
-		for i, rg in enumerate(regions):
-			seqs = fa_file[rg[0]][rg[1]:(rg[2])]
-			if len(seqs) < (rg[2] -rg[1]):
-				seqs = 'N'*(rg[2]-rg[1])
-				logger.debug(rg)
-
-			gc_vec[i] = calcualte_gc(seqs)
-			seq_vec.append(seq2vec(seqs))
-
-		return (gc_vec, np.array(seq_vec, dtype=np.uint16))
-"""
 
 def getRegions_GC_worker(params):
 	
@@ -172,13 +146,11 @@ def getRegions_GC_seq_parallel_nobin(fastaFile, rgs):
 	return (gc_vec, seqMat, flexMat, stableMat)
 
 
-
 def getRegion_split(region, binSize):
 
 	nSeg = int((region[2]-region[1])/binSize)
 	rg_vec =[ (region[0], region[1]+i*binSize, region[1]+(i+1)*binSize) for i in range(nSeg) ]
 	return rg_vec
-
 
 
 def getRegion_GC_rg(region, binSize, fastaFile):

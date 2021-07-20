@@ -6,8 +6,6 @@
 # Compiled at: 2018-11-07 20:07:17
 """
 Data:   2018-05-29
-Author: Yao-zhong Zhang @ IMSUT
-
 Description:
 Functions of reading bam file and convert to readCount/readDepth signals.
 
@@ -18,7 +16,6 @@ readCount_bin = number of reads that started in the bin.
 2018-08-15 update the RD count with mapq filters for each position
 """
 from util import *
-#import numpy as np
 DTYPE = np.int32
 
 def getRegion_RC_worker(bamfileName, region, binSize):
@@ -39,7 +36,6 @@ def getRegion_RC_worker(bamfileName, region, binSize):
 
     bamfile.close()
     return region_rd
-
 
 def getRegion_RC_list_worker(param):
     bamfileName, regions = param
@@ -69,6 +65,7 @@ def getRegion_RCVec_list_worker(param):
                         regions_rcMat[(i, r.pos - region[1])] += 1
 
     return regions_rcMat
+
 
 # workers for exatraction input signals for the target regions of assigned
 def getRegion_RDVec_list_worker(param):  
@@ -238,7 +235,6 @@ def getRegion_RCvec(bamfile, region):
 
     return region_rc
 
-
 def printBasicBamInfo(bamfile):
     logger.info('==============================================')
     logger.info(('- Basic information for bam file: \n {0}').format(bamfile.filename))
@@ -253,17 +249,3 @@ def printBasicBamInfo_print(bamfile):
     print('- Unmapped %d' %(bamfile.unmapped))
     print('==============================================')
 
-if __name__ == '__main__':
-    bamfileName = '/Users/yaozhong/my_work/2019_Projects/1_UNet_IntraSV/201911/data/Sim-A_30x_para.bam'
-    bamfile = pysam.AlignmentFile(bamfileName, 'rb')
-    printBasicBamInfo_print(bamfile)
-    
-    """
-    region = ('1', 144710310, 144710362)
-    rgs = [region]
-    vec = getRegion_RDVec_list_worker((bamfileName, [region]))
-    print np.max(vec)
-    """
-    
-
-# okay decompiling data_bam2rd.pyc

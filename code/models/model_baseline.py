@@ -35,14 +35,9 @@ TRAIL=100
 EPOCH=30
 
 # model training settings
-
 CB = [ callbacks.EarlyStopping(monitor="val_loss", patience=10, mode = "auto", restore_best_weights=True) ] 
 VB = 0
 
-"""
-CB1 = [ callbacks.EarlyStopping(monitor="val_acc", patience=30)]
-CB2 = [ callbacks.EarlyStopping(monitor="val_viterbi_acc", patience=50, restore_best_weights=True) ] 
-"""
 
 ## 2019/12/19 add ROC curve for the figure
 def plot_roc(gold_cnv, pred_cnv, rocFigPath):
@@ -99,16 +94,15 @@ def binary_eval(gold_cnv, pred_cnv, modelInfo, binaryCase=False, rocFigPath=""):
             else:
                 df0, iou0 = None, None
 
-
         print "* [Binary classification Results]:"
         fscore = f1_score(gold_label, pred_label, average="micro")
         print ("F-score=%f" %(fscore)),
-        tn, fp, fn, tp = confusion_matrix(gold_label, pred_label).ravel()       
+        tn, fp, fn, tp = confusion_matrix(gold_label, pred_label).ravel()   
+        auc_value = None    
 
         if len(index0) > 0 :
             fpr, tpr, thresholds = roc_curve(gold_label, pred_label)
-            auc_value = auc(fpr, tpr)
-            print(", AUC=%f" %auc_value),
+
             print(", Sensitivity(TPR)=%f" %(tp/(tp+fn))),
             print(", Specificity(TNR)=%f" %(tn/(tn+fp))),
             print(", FDR=%f" %(fp/(fp+tp)))
@@ -139,10 +133,8 @@ def binary_eval(gold_cnv, pred_cnv, modelInfo, binaryCase=False, rocFigPath=""):
         
         if binaryCase == True:
             return (fscore, auc_value, tp/(tp+fn), fp/(fp+tp), tp/(tp+fp), tp/(tp+fn))
-            #return (fscore, auc_value, tp/(tp+fn), fp/(fp+tp))
         else:
             return (df_cnv, df1, df0, fscore, auc_value, tp/(tp+fn), fp/(fp+tp), iou_cnv, iou1, iou0, tp/(tp+fp), tp/(tp+fn))
-            #return (df_cnv, df1, df0, fscore, auc_value, tp/(tp+fn), fp/(fp+tp), iou_cnv, iou1, iou0)
 
 
 ###########################################################
@@ -152,7 +144,6 @@ def evluation_breakpoint(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath, plo
  
     same_bk, diff1_bk, more2_diff = [], [], []
 
-    # current evluation is not the final one.
     basic_distance = []
 
     for i in range(gold_cnv.shape[0]):
@@ -171,17 +162,6 @@ def evluation_breakpoint(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath, plo
                 basic_distance.extend(np.abs(pred_seq_point[:-1] - gold_seq_point[:-1]))
         else:
             diff1_bk.append(i)
-     
-            """
-            print(pred_seq),
-            print(pred_seq_point)
-
-            print(gold_seq),
-            print(gold_seq_point)
-
-            print(rgs_cnv[i])
-            print("-"*10)
-            """
 
     print("** Totally have [%d] same bk, [%d] 1-diff bbk, [%d] 2 more-diff"  \
         %(len(same_bk), len(diff1_bk), len(more2_diff)))
@@ -198,8 +178,7 @@ def evluation_breakpoint(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath, plo
         if len(more2_diff) > 0:
             visual_prediction(x_cnv[more2_diff], rgs_cnv[more2_diff], gold_cnv[more2_diff], pred_cnv[more2_diff], figureSavePath + "_2moreDiff")
     
-###############################################################################
-# paper description break point enhancement
+
 def get_new_breakpoint2(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath, plotFig=False):
  
     # current evluation is not the final one.
@@ -295,13 +274,9 @@ def get_new_breakpoint(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath, plotF
 
     return old_rg_list, new_rg_list
 
-
-##############################################################################3
-
 """
 1-vs-1 SVM model
 """
-
 def SVM_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotResult= False, plotTrainCurve=True):
 
         # model parameters
@@ -310,7 +285,6 @@ def SVM_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotR
         x_data, y_data, rgs_data, bps_data, x_cnv, y_cnv, rgs_cnv, bps_cnv = loadData(dataPath, bk_dataPath, \
             prob_add=config.DATABASE["USEPROB"], seq_add=config.DATABASE["USESEQ"], gc_norm=config.DATABASE["GC_NORM"])
 
-        # 2019-12-05 added
         x_data = np.concatenate((x_data, x_cnv), 0)
         y_data = np.concatenate((y_data, y_cnv), 0)
         rgs_data = np.concatenate((rgs_data, rgs_cnv), 0)
@@ -356,10 +330,7 @@ def SVM_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotR
 
             fscore, auc_value, sensitivity, FDR, precision, recall = binary_eval(gold, pred, modelInfo, True)
 
-            cv_auc.append(auc_value)
-            cv_sensitivity.append(sensitivity)
             cv_FDR.append(FDR)
-
             cv_precision.append(precision)
             cv_recall.append(recall)
 
@@ -369,16 +340,11 @@ def SVM_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotR
         print "[-CV-" + dataInfo+ "]"
         print "["+ modelSavePath + "]"
         print "["+ modelInfo + "]"
-            
-        print '-'*30
-        print("-- CV AUC %.4f (%.4f)" % (np.mean(cv_auc), np.std(cv_auc)))
-        print("-- CV Sensitivity %.4f (%.4f)" % (np.mean(cv_sensitivity), np.std(cv_sensitivity)))
-        print("-- CV FDR %.4f (%.4f)" % (np.mean(cv_FDR), np.std(cv_FDR)))
-        print '*'*30
 
         print '-'*30
         print("-- CV Precision %.4f (%.4f)" % (np.mean(cv_precision), np.std(cv_precision)))
         print("-- CV Recall %.4f (%.4f)" % (np.mean(cv_recall), np.std(cv_recall)))
+        print("-- CV FDR %.4f (%.4f)" % (np.mean(cv_FDR), np.std(cv_FDR)))
         print '*'*30
 
 
@@ -412,6 +378,7 @@ def RuleBased(dataPath, bk_dataPath, modelParamPath, dataInfo, modelInfo):
         plt.close("all")
 
 
+
 def SVM(dataPath, bk_dataPath, modelParamPath, dataInfo, modelInfo, ):
 
         x_data, y_data, rgs_data, bps_data, x_cnv, y_cnv, rgs_cnv, bps_cnv = loadData(dataPath, bk_dataPath, \
@@ -431,16 +398,10 @@ def SVM(dataPath, bk_dataPath, modelParamPath, dataInfo, modelInfo, ):
         y_train = y_data_label 
         y_test = y_cnv_label
     
-        """
-        sidx = int(x_train.shape[0]*0.1)
-        x_train = x_train[sidx:]
-        y_train = y_train[sidx:]
-        """
 
         model = svm.SVC()  # 1-vs-1
         model.fit(x_train, y_train) 
         t = model.predict(x_test).ravel()
-        # to draw roc curved
 
         print "\n=========== [DATA/MODEL information] ============="
         print "[" + dataInfo+ "]"
@@ -492,9 +453,6 @@ def SVM_1class(dataPath, bk_dataPath, modelParamPath, dataInfo, modelInfo):
         figureSavePath= "../experiment/ROC/" + date.today().strftime("%Y%m%d") + "_"
         binary_eval(y_test, t, modelInfo, True, figureSavePath + "SVM_1class_trainNorm.png")
 
-# add addtional implemenation of mean-shift
-       
-
 
 # classical CNN
 def CNN_networkstructure(kernel_size, window_len, maxpooling_len, BN=True, DropoutRate=0.2):
@@ -507,19 +465,12 @@ def CNN_networkstructure(kernel_size, window_len, maxpooling_len, BN=True, Dropo
         model.add(layers.Conv1D(kernel_size[1], window_len[1],activation="relu"))
         model.add(layers.MaxPooling1D(maxpooling_len[1]))
 
-        #model.add(layers.Conv1D(kernel_size[1], window_len[1], strides=window_len[1], padding="valid",activation="relu"))
-        #if BN: model.add(layers.BatchNormalization())
-        #model.add(layers.Conv1D(kernel_size[1], window_len[1], strides=window_len[1], padding="valid",activation="relu"))
-        #if BN: model.add(layers.BatchNormalization())
-        #model.add(layers.MaxPooling1D(maxpooling_len[1]))
-
         model.add(layers.Flatten())
         model.add(layers.Dense(256, activation="relu"))
         model.add(layers.Dropout(DropoutRate))
         model.add(layers.Dense(config.DATABASE["binSize"], activation='sigmoid'))
     
         return model
-
 
 # 2019-01-04 add the CNN version for evluation
 def CNN(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotTrainCurve=False, plotResult=False):
@@ -529,7 +480,6 @@ def CNN(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotTrai
             prob_add=config.DATABASE["USEPROB"], seq_add=config.DATABASE["USESEQ"], gc_norm=config.DATABASE["GC_NORM"])
 
         # for the convolutional output
-        #y_data = y_data.reshape(y_data.shape[0], y_data.shape[1], 1)
         y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
         print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))       
 
@@ -581,7 +531,6 @@ def CNN(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotTrai
         ,callbacks=CB, validation_split=0.2)
         
         print "@ Saving model ..."
-        #model.save(modelSavePath +"/model_20200313_bke/"+ modelSaveName +".h5" )
         model.save(modelSavePath +"/model_20200405_bke/"+ modelSaveName +".h5" )
         model.summary()
 
@@ -600,18 +549,6 @@ def CNN(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotTrai
             plt.legend(['train', 'valid'], loc='upper left')
             plt.savefig(figureSavePath)
             plt.close("all")
-
-        """
-        figureSavePath= "../figures/trainCurve/current/"+ dataSetName +"-bin_" + str(config.DATABASE["binSize"])+"-Unet_LossCurve_all" 
-        plt.plot(history.history['loss'])
-        plt.plot(history.history['val_loss'])
-        plt.title('Training curve for the loss')
-        plt.xlabel('epoch')
-        plt.ylabel('Loss')
-        plt.legend(['train', 'valid'], loc='upper left')
-        plt.savefig(figureSavePath)
-        plt.close("all")
-        """
 
         ############# dice evluation #################
         t_cnv = model.predict(x_cnv, verbose=VB)
@@ -657,19 +594,12 @@ def CNN_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotR
         # model parameters loading
         if config.DATABASE["model_param"] != "":
             params = load_modelParam(config.DATABASE["model_param"])
+            print "*"*40
+            print params
+            print "*"*40
         else:
-
-            model_param_file  =  modelParamPath + ".CNN.model.parameters.json"
-            # check whether the model is hyperOpt tuned
-            if not os.path.exists(model_param_file):
-                tmpData = (x_data, y_data, y_data_label)
-                do_hyperOpt(tmpData, TRAIL, model_param_file)
-
-            params = load_modelParam(model_param_file)
-        
-        print "*"*40
-        print params
-        print "*"*40
+            print("[Error!] model parameter file is not provided, please check!")
+            exit(-1)
 
         # model parameters
         window_len = params["window_len"]              #[10, 5]
@@ -691,7 +621,6 @@ def CNN_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotR
         if config.DATABASE["USEPROB"]: modelInfo += "_USEPROB"
         if config.DATABASE["USESEQ"]: modelInfo += "_USESEQ"
         if config.DATABASE["GC_NORM"]: modelInfo += "_GC-NORM"
-
 
         ## K-fold cross validation
         kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=config.DATABASE["rand_seed"])
@@ -759,29 +688,21 @@ def CNN_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotR
             cv_bk_iou.append(iou1)
             cv_bg_iou.append(iou0)
             
-            cv_auc.append(auc_value)
-            cv_sensitivity.append(sensitivity)
             cv_FDR.append(FDR)
 
             cv_precision.append(precision)
             cv_recall.append(recall)
 
-        ####################################  Generating Results Report #################################
-        
+        ####################################  Generating Results Report #################################     
         print "\n=========== [DATA/MODEL information] ============="
         print "[-CV-" + dataInfo+ "]"
         print "["+ modelSavePath + "]"
         print "["+ modelInfo + "]"
-          
-        print '-'*30
-        print("-- CV AUC %.4f (%.4f)" % (np.mean(cv_auc), np.std(cv_auc)))
-        print("-- CV Sensitivity %.4f (%.4f)" % (np.mean(cv_sensitivity), np.std(cv_sensitivity)))
-        print("-- CV FDR %.4f (%.4f)" % (np.mean(cv_FDR), np.std(cv_FDR)))
-        print '*'*30
 
         print '-'*30
         print("-- CV Precision %.4f (%.4f)" % (np.mean(cv_precision), np.std(cv_precision)))
         print("-- CV Recall %.4f (%.4f)" % (np.mean(cv_recall), np.std(cv_recall)))
+        print("-- CV FDR %.4f (%.4f)" % (np.mean(cv_FDR), np.std(cv_FDR)))
         print '*'*30
 
         print '-'*30
@@ -796,449 +717,6 @@ def CNN_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotR
         print("-- CV BG IOU %.4f (%.4f)" % (np.mean(cv_bg_iou), np.std(cv_bg_iou)))
 
 
-## basic version
-def BiLSTM(dataPath, bk_dataPath, modelSavePath, dataInfo, plotTrainCurve=True, plotResult=True):
-
-        # model parameters
-        lr = 1e-4
-        batchSize = 8
-
-        modelInfo = "BiLSTM-lr_"+ str(lr)
-        modelInfo += "-batchSize" + str(batchSize)
-        modelInfo += "-epoch"+str(EPOCH)
-
-        if USEPROB: modelInfo += "_USEPROB"
-        if USESEQ: modelInfo += "_USESEQ"
-
-        # loading data part
-        x_data, y_data, rgs_data, x_cnv, y_cnv, rgs_cnv = loadData(dataPath, bk_dataPath, prob_add=USEPROB, seq_add=USESEQ)
-        
-
-        # y_data_1hot = to_categorical(y_data)
-
-        # for the convolutional output
-        y_data = y_data.reshape(y_data.shape[0], y_data.shape[1], 1)
-        y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
-        print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))       
-
-        model = models.Sequential()
-        model.add(layers.Bidirectional(layers.LSTM(64, return_sequences=True)))
-        model.add(layers.TimeDistributed(layers.Dense(1, activation='sigmoid')))
-
-        model.compile(optimizer=Adam(lr = lr) , loss= dice_coef_loss, metrics=[dice_coef])
-        history = model.fit(x_data, y_data, epochs=EPOCH, batch_size=batchSize, verbose=VB, \
-                  validation_split=0.1, callbacks=CB)
-
-        # plot the training curve:
-        if plotTrainCurve:
-            figureSavePath= modelSavePath + modelInfo + "_trainCurve.png"
-            fig=plt.figure()
-            plt.plot(history.history['dice_coef'])
-            plt.plot(history.history['val_dice_coef'])
-            plt.title('Training curve of dice_coefficient')
-            plt.xlabel('epoch')
-            plt.ylabel('dice_coef')
-            plt.legend(['train', 'valid'], loc='upper left')
-            plt.savefig(figureSavePath)
-            plt.close("all")
-
-        ############# dice evluation #################
-        t_cnv = model.predict(x_cnv, verbose=VB)
-        pred_cnv = (t_cnv > 0.5).astype(np.float32).reshape(t_cnv.shape[0], t_cnv.shape[1])
-        gold_cnv = y_cnv.astype(np.float32)
-
-        # save the prediction figures
-        if plotResult == True:
-            figureSavePath= "../experiment/result/"+ modelInfo + "_DATA-"+dataInfo
-
-            visual_prediction(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath)
-        
-
-        print "\n=========== [DATA/MODEL information] ============="
-        print "[" + dataInfo+ "]"
-        print("Train BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
-
-        binary_eval(gold_cnv, pred_cnv, modelInfo)
-        
-
-
-
-
-def BiLSTM_crf(dataPath, bk_dataPath, modelSavePath, dataInfo, plotTrainCurve=True, plotResult=True):
-
-        # model parameters
-        lr = 1e-4
-        batchSize = 8
-
-        modelInfo = "BiLSTM_CRF-lr_"+ str(lr)
-        modelInfo += "-batchSize" + str(batchSize)
-        modelInfo += "-epoch"+str(EPOCH)
-
-        if USEPROB: modelInfo += "_USEPROB"
-        if USESEQ: modelInfo += "_USESEQ"
-
-        # loading data part
-        x_data, y_data, rgs_data, x_cnv, y_cnv, rgs_cnv = loadData(dataPath, bk_dataPath, prob_add=USEPROB, seq_add=USESEQ)
-        
-        # y_data_1hot = to_categorical(y_data)
-
-        # for the convolutional output
-        y_data = y_data.reshape(y_data.shape[0], y_data.shape[1], 1)
-        y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
-        print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))       
-
-        model = models.Sequential()
-        model.add(layers.Bidirectional(layers.LSTM(64, return_sequences=True)))
-        model.add(layers.TimeDistributed(layers.Dense(1, activation='sigmoid')))
-        crf = CRF(2, sparse_target=True)
-        model.add(crf)
-
-        model.compile(optimizer=Adam(lr = lr) , loss= crf.loss_function, metrics=[crf.accuracy])
-        #model.compile(optimizer=Adam(lr = lr) , loss= dice_coef_loss, metrics=[dice_coef])
-        #model.compile(optimizer='adam', loss=crf.loss_function, metric=[crf.accuracy])
-        history = model.fit(x_data, y_data, epochs=EPOCH, batch_size=batchSize, verbose=VB, \
-                  validation_split=0.1, callbacks=CB2)
-
-
-        # plot the training curve:
-        if plotTrainCurve:
-            figureSavePath= modelSavePath + modelInfo + "_trainCurve.png"
-            plt.plot(history.history['viterbi_acc'])
-            plt.plot(history.history['val_viterbi_acc'])
-            plt.title('Training curve of viterbi_acc')
-            plt.xlabel('epoch')
-            plt.ylabel('viterbi_acc')
-            plt.legend(['train', 'valid'], loc='upper left')
-            plt.savefig(figureSavePath)
-
-
-        ############# dice evluation #################
-        #t_cnv = model.predict(x_cnv, verbose=VB)
-        pred_cnv = model.predict(x_cnv,verbose=VB).argmax(-1)
-        #pred_cnv = (t_cnv > 0.5).astype(np.float32).reshape(t_cnv.shape[0], t_cnv.shape[1])
-        gold_cnv = y_cnv.astype(np.float32)
-
-        # save the prediction figures
-        if plotResult == True:
-            figureSavePath= "../experiment/result/"+ modelInfo + "_DATA-"+dataInfo
-
-            visual_prediction(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath)
-
-
-
-        print "\n=========== [DATA/MODEL information] ============="
-        print "[" + dataInfo+ "]"
-        print("Train BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
-
-        binary_eval(gold_cnv, pred_cnv, modelInfo)
-
-# need to revised: directly loading basic U-net structures, not do hyperOpt, pre-fixed!
-def UNet_crf(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotTrainCurve=True, plotResult=True):
-
-        # model parameters
-        model_param_file  =  modelParamPath + ".UNet.model.parameters.json"
-        
-        if not os.path.exists(model_param_file):
-            print "[Error!!]Not find UNet Parameter file! Please generate in single run model first!"
-            return(-1)
-
-        params = load_modelParam(model_param_file)
-        print params   
-
-        maxpooling_len = params["maxpooling_len"]
-        conv_window_len = params["conv_window_len"]
-        lr = params["lr"]
-        batchSize = params["batchSize"]
-        dropoutRate = params["DropoutRate"]
-
-        modelInfo = "UNet_crf-all_maxpoolingLen_"+"-".join([str(l) for l in maxpooling_len]) 
-        modelInfo += "-convWindowLen_"+ str(conv_window_len)
-        modelInfo += "-lr_"+ str(lr)
-        modelInfo += "-batchSize" + str(batchSize)
-        modelInfo += "-epoch"+str(params["epoch"])
-        modelInfo += "-dropout"+str(dropoutRate)
-
-        if USEPROB: modelInfo += "_USEPROB"
-        if USESEQ: modelInfo += "_USESEQ"
-
-
-        # Data loading start
-        x_data, y_data, rgs_data, x_cnv, y_cnv, rgs_cnv = loadData(dataPath, bk_dataPath, prob_add=USEPROB, seq_add=USESEQ)
-
-        # for the convolutional output
-        y_data = y_data.reshape(y_data.shape[0], y_data.shape[1], 1)
-        y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
-        print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))       
-
-        rd_input = Input(shape=(x_data.shape[1], x_data.shape[-1]), dtype='float32', name="rd")
-        model,crf = UNet_networkstructure_crf(rd_input, conv_window_len, maxpooling_len, True, 0.2)
-        model.compile(optimizer=Adam(lr = lr) , loss= crf.loss_function, metrics=[crf.accuracy])
-        history = model.fit(x_data, y_data, epochs=EPOCH, batch_size=batchSize, verbose=VB, \
-                  validation_split=0.1, callbacks=CB2)
-
-        model.summary()
-            
-        ###########################################################################################3
-        # Results generation
-        ###########################################################################################
-        # plot the training curve:
-        if plotTrainCurve:
-            figureSavePath= modelSavePath + modelInfo + "_trainCurve.png"
-            plt.plot(history.history['viterbi_acc'])
-            plt.plot(history.history['val_viterbi_acc'])
-            plt.title('Training curve of viterbi_acc')
-            plt.xlabel('epoch')
-            plt.ylabel('viterbi_acc')
-            plt.legend(['train', 'valid'], loc='upper left')
-            plt.savefig(figureSavePath)
-            plt.close("all")
-        
-        ############# Note the decoding SV
-        #t_cnv = model.predict(x_cnv, verbose=VB)
-        pred_cnv = model.predict(x_cnv, verbose=VB).argmax(-1)
-        #pred_cnv = (t_cnv > 0.5).astype(np.float32).reshape(t_cnv.shape[0], t_cnv.shape[1])
-        
-        gold_cnv = y_cnv.astype(np.float32)
-
-        # save the prediction figures
-        if plotResult == True:
-            figureSavePath= "../experiment/result/"+ modelInfo + "_DATA-"+dataInfo
-            visual_prediction(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath)
-
-
-        
-        print "\n=========== [DATA/MODEL information] ============="
-        print "[" + dataInfo+ "]"
-        print("Train BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
-
-        binary_eval(gold_cnv, pred_cnv, modelInfo)
-
-
-
-
-
-######################################################################
-# The following functions is not tested!!
-#####################################################################
-
-# 2018-10-13 implementation, consider the related paper for the full-end model.
-def AE(dataPath, bk_dataPath, modelName, niter=20):
-
-        x_data, y_data = loadData(dataPath, bk_dataPath, shiftValue=USESHIFT, prob_add=False, seq_add=False)
-        x_data = x_data.reshape(x_data.shape[0], x_data.shape[1])
-
-        ## K-fold cross validation
-        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=config.DATABASE["rand_seed"])
-        cvscores = []
-
-        for train_idx, test_idx in kfold.split(x_data, y_data):
-
-            # y_data_1hot = to_categorical(y_data)
-
-            #1. add a model to train an AE
-            ## 2. get the feature representation for each input and training another classifier ()
-            rd_input = Input(shape=(x_data.shape[1],), dtype='float32', name="rd")
-            encoder = layers.Dense(128, activation='relu')(rd_input)
-            #encoder = layers.Dense(32, activation='relu')(encoder)
-            encoder_output = layers.Dense(DIM_ENCODE)(encoder)
-
-            decoder = layers.Dense(128, activation='relu')(encoder_output)
-            #decoder = layers.Dense(64, activation='relu')(decoder)
-            decoder = layers.Dense(x_data.shape[1], activation='tanh')(decoder)
-
-            ae = models.Model(rd_input, decoder)
-            encode = models.Model(rd_input, encoder_output)
-
-            ae.compile(optimizer='adam', loss='mse', metrics=['mse'])
-            ae.fit(x_data[train_idx], x_data[train_idx], epochs=EPOCH, batch_size=128, verbose=VB, validation_split=0.1, callbacks=CB)
-            
-
-            # get the middle layer vector
-            x_data_encode = encode.predict(x_data[train_idx])
-
-            ### construct classifier using
-        
-            svm_model = svm.SVC()       # 1-vs-1
-            #model = svm.LinearSVC() # 1-vs-rest
-            svm_model.fit(x_data_encode, y_data[train_idx])
-            
-            t = svm_model.predict(encode.predict(x_data[test_idx])).ravel()
-            #print t
-            acc=accuracy_score(y_data[test_idx], t)
-            fscore = f1_score(y_data[test_idx], t, average="micro")
-            print("* f1=%.4f, acc=%.2f" %(fscore,acc*100))
-            cvscores.append(fscore)
-            
-            print confusion_matrix(y_data[test_idx], t) 
-
-        print("%.4f (+/- %.4f)" % (np.mean(cvscores), np.std(cvscores)))
-
-        #testEval_multi(model, x_test, y_test_origin, rgs_test)
-
-
-
-
-def convRNN(dataPath, bk_dataPath, modelName, niter=20):
-
-
-        x_data, y_data, rgs_data, x_cnv, y_cnv, rgs_cnv = loadData(dataPath, bk_dataPath, shiftValue=USESHIFT, prob_add=USEPROB, seq_add=USESEQ)
-
-        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=config.DATABASE["rand_seed"])
-    
-        y_data = y_data.reshape(y_data.shape[0], y_data.shape[1], 1)
-        y_data_label = np.apply_along_axis(checkLabel, 1, y_data)
-        print("BK=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
-
-        x_train = x_data.reshape(x_data.shape[0], x_data.shape[1], 1)
-        y_train = y_data_label 
-
-        cvscores = []
-    
-        for train_idx, test_idx in kfold.split(x_train, y_train):
-            
-            y_train_1hot = to_categorical(y_train)
-
-            model = models.Sequential()
-    
-            model.add(layers.Conv1D(64, 3, strides=1, activation="relu"))
-            model.add(layers.Conv1D(128, 3, strides=1, activation="relu"))
-            model.add(layers.MaxPooling1D(2))
-
-            model.add(layers.Bidirectional(layers.LSTM(64)))
-            model.add(layers.Dense(N_class, activation='softmax'))
-
-            model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
-            model.fit(x_train[train_idx], y_train_1hot[train_idx], epochs=EPOCH, batch_size=128, verbose=VB, validation_split=0.1, callbacks=CB)
-
-            # evaluate the model
-            t = model.predict(x_train[test_idx])
-            t = np.argmax(t, axis=1)   
-            acc=accuracy_score(y_train[test_idx], t)
-            fscore = f1_score(y_train[test_idx], t, average="micro")
-            print("*f1=%.4f, acc=%.2f" %(fscore,acc*100))
-
-            fpr, tpr, thresholds = roc_curve(y_train[test_idx], t)
-            auc_value = auc(fpr, tpr)
-            print ("-- AUC score is %f", auc_value)
-            cvscores.append(auc_value)
-        
-            print confusion_matrix(y_train[test_idx], t) 
-
-
-        print("%.4f (+/- %.4f)" % (np.mean(cvscores), np.std(cvscores)))
-
-
-
-
-def LM(dataPath, bk_dataPath, modelName, niter=20):
-
-        x_train, y_train = loadData(dataPath, bk_dataPath, shiftValue=USESHIFT, prob_add=False, seq_add=USESEQ)
-    
-        x_train = x_train.reshape(x_train.shape[0], x_train.shape[1])
-
-        ## K-fold cross validation
-        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=config.DATABASE["rand_seed"])
-        cvscores = []
-    
-        for train_idx, test_idx in kfold.split(x_train, y_train):
-            
-            y_train_1hot = to_categorical(y_train)
-
-            model = models.Sequential()
-    
-            #model.add(layers.Dense(128))
-            #model.add(layers.Dropout(0.5))
-            model.add(layers.Dense(N_class, activation='softmax'))
-
-            model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
-            model.fit(x_train[train_idx], y_train_1hot[train_idx], epochs=EPOCH, batch_size=128, verbose=VB, validation_split=0.1, callbacks=CB)
-
-            # evaluate the model
-            t = model.predict(x_train[test_idx])
-            t = np.argmax(t, axis=1)   
-            acc=accuracy_score(y_train[test_idx], t)
-            fscore = f1_score(y_train[test_idx], t, average="micro")
-            print("*f1=%.4f, acc=%.2f" %(fscore,acc*100))
-            cvscores.append(fscore)
-            
-            print confusion_matrix(y_train[test_idx], t) 
-
-        print("%.4f (+/- %.4f)" % (np.mean(cvscores), np.std(cvscores)))
-
-
-
-def MLP(dataPath, bk_dataPath, modelName, niter=20):
-
-        x_train, y_train = loadData(dataPath, bk_dataPath, shiftValue=USESHIFT, prob_add=False, seq_add=USESEQ)
-    
-        x_train = x_train.reshape(x_train.shape[0], x_train.shape[1])
-
-        ## K-fold cross validation
-        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=config.DATABASE["rand_seed"])
-        cvscores = []
-    
-        for train_idx, test_idx in kfold.split(x_train, y_train):
-            
-            y_train_1hot = to_categorical(y_train)
-
-            model = models.Sequential()
-            
-            #model.add(layers.Dense(128))
-            #model.add(layers.Activation('relu'))
-            #model.add(layers.Dropout(0.2))
-            
-            model.add(layers.Dense(64, activation='relu'))
-            #model.add(layers.Dropout(0.2))
-
-            model.add(layers.Dense(N_class, activation='softmax'))
-
-            model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
-            model.fit(x_train[train_idx], y_train_1hot[train_idx], epochs=EPOCH, batch_size=128, verbose=VB, validation_split=0.1, callbacks=CB)
-
-            # evaluate the model
-            t = model.predict(x_train[test_idx])
-            t = np.argmax(t, axis=1)   
-            acc=accuracy_score(y_train[test_idx], t)
-            fscore = f1_score(y_train[test_idx], t, average="micro")
-            print("*f1=%.4f, acc=%.2f" %(fscore,acc*100))
-            cvscores.append(fscore)
-        
-            print confusion_matrix(y_train[test_idx], t) 
-
-        print("%.4f (+/- %.4f)" % (np.mean(cvscores), np.std(cvscores)))
-
-
-
-def LSTM(dataPath, bk_dataPath, modelName, niter=20):
-
-        x_train, y_train = loadData(dataPath, bk_dataPath, shiftValue=USESHIFT, prob_add=False, seq_add=USESEQ)
-    
-        ## K-fold cross validation
-        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=config.DATABASE["rand_seed"])
-        cvscores = []
-    
-        for train_idx, test_idx in kfold.split(x_train, y_train):
-            
-            y_train_1hot = to_categorical(y_train)
-
-            model = models.Sequential()
-            
-            model.add(layers.Bidirectional(layers.LSTM(32)))
-            model.add(layers.Dense(N_class, activation='softmax'))
-
-            model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
-            model.fit(x_train[train_idx], y_train_1hot[train_idx], epochs=EPOCH, batch_size=128, verbose=VB, validation_split=0.1, callbacks=CB)
-
-            # evaluate the model
-            t = model.predict(x_train[test_idx])
-            t = np.argmax(t, axis=1)   
-            acc=accuracy_score(y_train[test_idx], t)
-            fscore = f1_score(y_train[test_idx], t, average="micro")
-            print("*f1=%.4f, acc=%.2f" %(fscore,acc*100))
-            cvscores.append(fscore)
-            print confusion_matrix(y_train[test_idx], t) 
-
-        print("%.4f (+/- %.4f)" % (np.mean(cvscores), np.std(cvscores)))
 
 
 """
@@ -1367,7 +845,6 @@ def dataVisual_PCA(dataPath, bk_dataPath, modelName, dataSetName):
         
         print("CV distance %f" %(np.linalg.norm(x_data_0 - x_data_1)))
         print("CNV distance %f" %(np.linalg.norm(x_data_0 - x_cnv_1)))
-
 
 
 def dataVisual_tSNE(dataPath, bk_dataPath, modelName, dataSetName):

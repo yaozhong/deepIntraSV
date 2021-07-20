@@ -33,10 +33,6 @@ def input_gen_fromRgs(rgs, bamFilePath):
 
     # Basic input
     rdVec = get_RDVec_parallel_nobin(bamFilePath, rgs)
-
-    # split read coverage
-    ## split_rdVec = 
-
     # additional features
     maVec = getRegions_mappability_parallel_nobin(config.DATABASE["mappability_file"], rgs)
     gcVec, seqMat, flexMat, stableMat = getRegions_GC_seq_parallel_nobin(config.DATABASE["ref_faFile"], rgs)
@@ -44,10 +40,6 @@ def input_gen_fromRgs(rgs, bamFilePath):
     # checking of the addtional features for the model
     return (rdVec,seqMat, maVec, gcVec, flexMat, stableMat)
 
-
-"""
-Checking the given region conains any bk point in the bk-region check list. 
-"""
 def whetherNotBKregion(region, bkDic):
     
     for bk in bkDic[region[0]]:
@@ -58,7 +50,6 @@ def whetherNotBKregion(region, bkDic):
 """
 Given Region return the y-mask, no change for the y, only the input.
 """
-
 def getPairMask(cnvType, rg, shift, binSize):
 
 	left, right = [0]*binSize, [0]*binSize
@@ -79,7 +70,6 @@ def getPairMask(cnvType, rg, shift, binSize):
 
 # sub-main function get the binSamples
 # The most important functions for generating the data
-
 def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=5):
 
     bk_left, bk_right, background = [],[],[]
@@ -200,7 +190,6 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
         rd_bl_aug, seq_bl_aug, ma_bl_aug, gc_bl_aug, fm_bl_aug, sm_bl_aug = input_gen_fromRgs(bk_left_aug, bamFile)
         rd_br_aug, seq_br_aug, ma_br_aug, gc_br_aug, fm_br_aug, sm_br_aug = input_gen_fromRgs(bk_right_aug, bamFile)
 
-        ### 20190110 @@ revious for testing the data augmentation issue
         if bk_in: rd_bg_aug, seq_bg_aug, ma_bg_aug, gc_bg_aug, fm_bg_aug, sm_bg_aug = input_gen_fromRgs(background_aug, bamFile)
 
         ind = np.apply_along_axis(check_all_zero, 1, rd_bl_aug)
@@ -208,7 +197,6 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
         ind = np.apply_along_axis(check_all_zero, 1, rd_br_aug)
         logger.debug("** AUG-checking all zero for bk-right %d" %(np.sum(np.sum(ind))))
 
-        ### 20190110 @@ revious for testing the data augmentation issue
         if bk_in:
             ind = np.apply_along_axis(check_all_zero, 1, rd_bg_aug)
             logger.debug("** AUG-checking all zero for background %d" %(np.sum(np.sum(ind))))
@@ -217,7 +205,6 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
     bps_bg = [(-1,-1)]*len(background)
     x_data, y_data, seq_data, rgs_data, gc_data,bps_data = [], [], [], [], [], []
     f_data, s_data = [], []
-
 
     ###################################################
     # 1. basic data without data augmentation
@@ -254,8 +241,6 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
     s_data.extend(sm_br)
     if bk_in: s_data.extend(sm_bg)
 
-
-    ## The augmenation code is not checked!!!!!!
     if dataAug > 0:
 
         x_data.extend(rd_bl_aug)
@@ -276,7 +261,6 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
         f_data.extend(fm_br_aug)
         s_data.extend(sm_br_aug)
 
-        ###20199110  @@ revious for testing the data augmentation issue
         if bk_in:
             x_data.extend(rd_bg_aug)
             y_data.extend([ [0]* binSize ]*rd_bg_aug.shape[0])

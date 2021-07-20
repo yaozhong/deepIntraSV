@@ -35,7 +35,6 @@ def compare_rgs_list(sv_list, tsv_list, excldue_list=None, eval_with_ci=False):
 		print(" [-] Query rgs=[%d], Gold rgs=[%d], Exclude list=[%d]" %(len(sv_list), len(tsv_list), len(excldue_list)))
 		excldue_list = [ "".join(map(str, esv)) for esv in excldue_list]
 		tsv_list = [ tsv for tsv in tsv_list if "".join(map(str,tsv)) not in excldue_list]
-		# print("[-] After exlcuding %d" %(len(tsv_list)))
 
     # from SV to gSV
 	for sv in tqdm(sv_list):
@@ -45,8 +44,6 @@ def compare_rgs_list(sv_list, tsv_list, excldue_list=None, eval_with_ci=False):
 			continue
 
 		for tsv in tsv_list:
-			# firt make sure chr and type is the same
-
 			if( (sv[0] == tsv[0]) and (sv[3] == tsv[3] or (sv[3] in tsv[3]) or (tsv[3] in sv[3])) ):
 
 				# confirm overlapping
@@ -76,22 +73,12 @@ def compare_rgs_list(sv_list, tsv_list, excldue_list=None, eval_with_ci=False):
 
 				   	# this overlap is Jaccard index
 				   	overlap_rate = float(overlap) / union
-				   	# reprocitcal overalp
-				   	#overlap_rate = float(overlap) / (sv[2] - sv[1])
-
-				   	##################################################
-				   	## two different definition of exactly match
-				   	##################################################
-				   	## note the position place
-				   	## rough one that is less than 1
-				   	## revision on 2020-04-07
 
 				   	if overlap_rate > config.DATABASE["RO"]:
 				   		if ( np.abs(sv[1] - tsv[1]) <= 1 and np.abs(sv[2] - tsv[2]) <= 1):
 				   			num_exact_both_rough += 1
 				   		elif (np.abs(sv[1] - tsv[1]) <= 1 or np.abs(sv[2] - tsv[2]) <= 1):
 				   			num_exact_rough += 1
-				   		#print(sv)
 
 				   		# exactly match 
 				   		if (sv[1] == tsv[1] and sv[2] == tsv[2]):
@@ -125,8 +112,6 @@ def compare_rgs_list(sv_list, tsv_list, excldue_list=None, eval_with_ci=False):
 	print("[*] SVs hitted gold has the following distribution:")
 	print(",".join(h_sv_range))
 	print("	".join([str(s) for s in h_sv_count]))
-
-
 	
 	print("[**] Overlap ones [%d/%d], exatctly ones [%d], exact both ones [%d]" %(num_overlap, len(sv_list), num_exact, num_exact_both))
 	print("[**] Relax-1 Overlap ones [%d/%d], exatctly ones [%d], exact both ones [%d]" %(num_overlap, len(sv_list), num_exact_rough, num_exact_both_rough))
@@ -231,6 +216,7 @@ def three_compare_rgs_list(sv_list, sv_list2, tsv_list, excldue_list=None, eval_
 					print("Left_distance=%d, right_distance=%d" %(left_dist, right_dist))
 					print("overlap1=%f, overlap2=%f" %(overlap_rate1, overlap_rate2))
 					#x= raw_input("Press any key to continue ...")	
+
 
 # 2020-03-10
 def enhancement_analysis(new_svs, old_svs, tsv_list, excldue_list=None, eval_with_ci=False):
@@ -601,7 +587,6 @@ def exact_checking(sv_list_file, sv_list2_file, tsv_list_file, exclude_rgs_file=
 	print("[Partial BP] The SV distribution in the overlapped gold is:")
 	print(",".join(sv_range))
 	print("	".join([str(s) for s in sv_count]))
-
 
 
 if __name__ == "__main__":

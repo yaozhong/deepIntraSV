@@ -8,7 +8,6 @@ from data_genomeStats import *
 
 from keras.utils import to_categorical
 
-
 ## y_data calcuate the label type
 def checkLabel(x):
     total = np.sum(x)
@@ -27,6 +26,7 @@ def printBasicStat(x_data, y_data):
     
     print("[BIN_DATA]:Background data [m=%f, std=%f]" %(np.mean(x_data[idx_bg]), np.std(x_data[idx_bg])))
     print("[BIN_DATA]:Break point containing [m=%f, std=%f]" %(np.mean(x_data[idx_bk]), np.std(x_data[idx_bk])))
+
 
 # 2018-12-28 GC normalization, based on the pre-calcuated gc caching data
 def GC_count_dic_gen(gc_mrd_table):
@@ -47,6 +47,7 @@ def GC_count_dic_gen(gc_mrd_table):
             gc_count_dic[i] = np.mean(gc_count_dic[i])
 
     return gc_count_dic
+
 
 def plot_GC_count_figure(rd_data, gc_data, figName):
 
@@ -69,9 +70,6 @@ def GC_normalization(m_rd, gc_count_dic, rd_data, gc_data):
         factor = (m_rd+1)/(gc_count_dic[gc_key]+1)
         rd_data[i] = rd_data[i] * factor
     
-    #print np.min(gc_data), np.max(gc_data)
-    
-
     plot_GC_count_figure(rd_data, gc_data, "../experiment/AfterGCNorm.png")
 
     return rd_data
@@ -152,11 +150,6 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
         ###########################################################################################
 
         if prob_add :
-            """
-            r, p = get_NegBinomial_params(bk_dataPath)
-            x_train_prob = ss.nbinom.pmf(x_train, r, p)
-            x_test_prob =  ss.nbinom.pmf(x_test, r, p)
-            """
             if config.DATABASE["eval_mode"] != "cross":
                 x_train_prob = ss.norm.pdf(x_train, m_rd, std_rd)
                 x_test_prob = ss.norm.pdf(x_test, m_rd, std_rd)
@@ -165,7 +158,6 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
                 x_test_prob = ss.norm.pdf(x_test, m_rd2, std_rd2)
 
         # Standarization
-    
         if config.DATABASE["eval_mode"] != "cross":
             x_train = (x_train - m_rd)/std_rd
             x_test = (x_test - m_rd)/std_rd
@@ -173,14 +165,6 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
             x_train = (x_train - m_rd)/std_rd
             x_test = (x_test - m_rd2)/std_rd2
     
-        # per sample normalization:
-        """
-        m = np.mean(x_train, axis=0)
-        std=np.mean(x_test, axis=0)
-        x_train = (x_train - m)/std
-        x_test = (x_test -m)/std
-        """
-
         # transform the data to tensor
         x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
         x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
@@ -189,44 +173,22 @@ def loadData(dataPath, bk_dataPath, prob_add=False, seq_add=False, gc_norm=False
             
             x_train_prob = x_train_prob.reshape(x_train_prob.shape[0], x_train_prob.shape[1], 1)
             x_test_prob = x_test_prob.reshape(x_test_prob.shape[0], x_test_prob.shape[1], 1)
-
-            ## combine
-            # x_train = np.concatenate((x_train_prob, x_train), -1)
-            # x_test = np.concatenate((x_test_prob, x_test), -1)
-            
+  
             ## replace
             x_train = x_train_prob
             x_test =  x_test_prob
         
         # concatenate the data with sequence information, not validated!
         if seq_add:
-            """
-            seq_train = to_categorical(seq_train)
-            seq_test = to_categorical(seq_test)
-            # combine into kernals
-            x_train = np.concatenate((x_train, seq_train), -1)
-            x_test = np.concatenate((x_test, seq_test), -1)
-            """
 
             print("# Addting extra information in seq categorical ...")
 
             seq_train = to_categorical(seq_train)
             seq_test = to_categorical(seq_test)
             
-            #s_train = s_train.reshape(s_train.shape[0], s_train.shape[1], 1)
-            #s_test  = s_test.reshape(s_test.shape[0], s_test.shape[1], 1)
-
             f_train = f_train.reshape(f_train.shape[0], f_train.shape[1], 1)
             f_test  = f_test.reshape(f_test.shape[0], f_test.shape[1], 1)
-
-            """
-            feat_train = np.concatenate((f_train, s_train), -1)
-            feat_test  = np.concatenate((f_test, s_test), -1)
-
-            x_train = np.concatenate((x_train, feat_train), -1)
-            x_test = np.concatenate((x_test, feat_test), -1)
-            """
-            
+     
             x_train = s_train
             x_test =  s_test
 
@@ -280,11 +242,6 @@ def normal_rawData(rawData, bk_dataPath, prob_add=False, seq_add=False, gc_norm=
         x, y, seq, rgs, gc = x[select], y[select], seq[select], rgs[select], gc[select]
 
         if prob_add :
-            """
-            r, p = get_NegBinomial_params(bk_dataPath)
-            x_train_prob = ss.nbinom.pmf(x_train, r, p)
-            x_test_prob =  ss.nbinom.pmf(x_test, r, p)
-            """
             x_prob = ss.norm.pdf(x, m_rd, std_rd)
 
         # Standarization
@@ -298,9 +255,6 @@ def normal_rawData(rawData, bk_dataPath, prob_add=False, seq_add=False, gc_norm=
 
             ## combine
             x = np.concatenate((x_prob, x), -1)
-
-            ## replace
-            #x = x_prob
 
         # concatenate the data with sequence information, not validated!
         if seq_add:

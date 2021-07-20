@@ -4,21 +4,17 @@ Description: Hyperopt for search the best model performance
 """
 
 from model_baseline import *
-from model_unet import UNet_networkstructure_basic
-#from train import *
+from model_unet import UNet
 from util import *
 
 from hyperopt import hp, fmin, tpe, hp, STATUS_OK, Trials, space_eval
-#from hyperopt.mongoexp import MongoTrials
 import json
 
 
 ## the data should be expose to the level of objective function
 CB = [ callbacks.EarlyStopping(monitor="val_loss", patience=10, mode="auto", restore_best_weights=True) ] 
 
-
 # define parameter space
-
 space ={
         'kernel_size': hp.choice('kernel_size', [[8,16,32,64], [16,32,64,128], \
             [64,32,16,8], [128,64,32,16]]),
@@ -33,33 +29,6 @@ space ={
         'stride':hp.choice("stride",[1])
 }
 
-"""
-space ={
-        'conv_window_len':hp.choice('conv_window_len',[5,7,9]),
-        'maxpooling_len':hp.choice('maxpooling_len', [[5,5,2,2,5,5], [8,5,5,5,5,8], [10,5,2,2,5,10]]),
-         # 256 will be out of memory
-        'batchSize': hp.choice('batchSize', [16,32,64]),
-        'lr': hp.choice('lr', [ 1e-4, 1e-3, 1e-2]),
-        'DropoutRate': hp.choice("DropoutRate", [0.5, 0.2, 0]),
-         #'BN': hp.choice("BN", [True, False]),
-        'epoch': hp.choice("epoch",[100])
-}
-"""
-
-"""
-# define parameter space
-space ={
-        'conv_window_len':hp.choice('conv_window_len',[3,5,7,9,11]),
-        'maxpooling_len':hp.choice('maxpooling_len', [[2,2,2,2,2,2], [10,5,2,2,5,10], [8,5,5,5,5,8], [10,10,2,2,10,10]]),
-         # 256 will be out of memory
-        'batchSize': hp.choice('batchSize', [8,16,32,64,128]),
-        'lr': hp.choice('lr', [ 1e-5, 1e-4, 1e-3, 1e-2, 0.1]),
-        'DropoutRate': hp.choice("DropoutRate", [0.5, 0.3, 0.2]),
-         #'BN': hp.choice("BN", [True, False]),
-        'epoch': hp.choice("epoch",[5, 10, 30, 50, 70])
-}
-"""
-
 
 # define objective function
 def objective(params):
@@ -67,7 +36,7 @@ def objective(params):
     #model define
     rd_input = Input(shape=(x_data_opt.shape[1], x_data_opt.shape[-1]), dtype='float32', name="rd")
 
-    model = UNet_networkstructure_basic(rd_input, params["kernel_size"], params["conv_window_len"],\
+    model = UNet(rd_input, params["kernel_size"], params["conv_window_len"],\
         params["maxpooling_len"], 1 , True, params["DropoutRate"])
 
     model.compile(optimizer=Adam(lr = params["lr"]) , loss= dice_coef_loss, metrics=[dice_coef])
@@ -87,7 +56,7 @@ def objective(params):
 if __name__ == "__main__":
     
         parser = argparse.ArgumentParser(description='DL Based Break Point Detection')
-        parser.add_argument('--gpu', '-g', type=str, default="3", help='Assign GPU for Training model.')
+        parser.add_argument('--gpu', '-g', type=str, default="0", help='Assign GPU for Training model.')
         parser.add_argument('--bin', '-b', type=int, default=1000, help='screening window length.')
         parser.add_argument('--dataAug', '-da', type=int, default=0, help='Number of additional proportional samples to gen.')
         parser.add_argument('--model', '-m', type=str, default="CNN", help='Model type for training break point.')
