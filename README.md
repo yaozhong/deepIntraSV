@@ -24,57 +24,48 @@ docker pull yaozhong/deep_intra_sv:0.9
 * Keras 2.2.4
 
 ```
-CODE_FOLD=<Absolute-PATH-to-CODE>
-DATA_FOLD=<Absolute-PATH-to-DATA>
-RESTULT_FOLD=<Absolute-PATH-to-RESULT>
-
-CODE_FOLD=/data/working/1_Unet_IntraSV/deepIntraSV/code
-DATA_FOLD=/data/working/1_Unet_IntraSV/data
-RESTULT_FOLD=/data/working/1_Unet_IntraSV/deepIntraSV/result
-
-nvidia-docker run -it --rm -v $CODE_FOLD:/code -v $DATA_FOLD:/data -v $RESTULT_FOLD:/result \
-yaozhong/deep_intra_sv:0.9 bash
-
-
+WORKING_FOLD=<Absolute-PATH>
+nvidia-docker run -it --rm -v $WORKING_FOLD:/workspace yaozhong/deep_intra_sv:0.9 bash
 ```
 
 ## Configuration file
-The parameters setteing is pre-defined in `code/config.py` file.
-Key parameters can be specifized through command line option.
+The parameter setteing is pre-defined in the `code/config.py` file.
+Some frequently used parameters can be also specifized through command line option (See '-h' option). 
 
 ### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
-* reference genome fa file ``hs37d5.fa`` and index ``	hs37d5.fa.fai``(Please download from [1000genomes](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/),
-and put it in ``./data/reference/hg19/``)
-* mappability of 100-mer
+
+* reference genome FASTA file ``hs37d5.fa`` and its ``index ``	hs37d5.fa.fai``
+(Please download from [1000genomes](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/),
+and place it in ``./data/reference/hg19/``)
+* mappability of 100-mer file
 * Encode hg19 blacklist regions
 * hg19 Chromesome length 
 
 2. SV annotation files./data/SV_annotation/
   (a python script is provided to parse VCF for SV regions)
 
-## Breakpoint enhancement for CNVnator
+## Breakpoint enhancement for RD-based SV callers
+
 ```
-# example of running
+# example
 sample_name="simA"
 binSize=400
-bam_file=<path-to-bam-file>
-
-# CNVnator predictions, check this input.
+bam_file=<path-of-bam-file>
+# SV prediction of a RD-based SV caller, e.g., CNVnator
 pVCF=<CNVnator-bin-resolution-prediction-file>
 
-# trained model
-model="../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5"
+# trained model parameters
+model=<path-of-the-trained-model>
 
-# if sample RD information is not found, generated for the first time.
-genomeStat="../experiment/${sample_name}-BG_RD_statistics.cached"
-output_fold="../experiment/"
+# WGS data information, if not cached, it will re-generate.
+genomeStat=<path-of-cached-BG-RD-statistics>
+output_fold=<restult-saving-path>
 
 # If gold SVs are known, it can be used for evaluating enhancement effect.
-gVCF="Sim-A.SV.vcf"
+gVCF=<path-of-gold-standard-SV>
 
-python eval/enhance_bk.py -d $sample_name -bam $bam_file -b $binSize -gs $genomeStat \
--mp $model -v $pVCF -o $output_fold
+python eval/enhance_bk.py -d $sample_name -bam $bam_file -b $binSize -gs $genomeStat -mp $model -v $pVCF -o $output_fold
 ```
 
 ## Training your own deep segmenation model
