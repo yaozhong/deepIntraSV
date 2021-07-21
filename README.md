@@ -39,18 +39,13 @@ yaozhong/deep_intra_sv:0.9 bash
 ```
 
 ## Configuration file
-The parameters can be changed in `code/config.py` file.
-The following two parameters of file path are required to be pre-determined, and the format is:
-```
-bamFileID:bamFilePath
-bamFileID:SV_annotation_path
-```
-Frequent parameters can be also changed through command line option.
+The parameters setteing is pre-defined in `code/config.py` file.
+Key parameters can be specifized through command line option.
 
 ### Required files
 1. reference files are located in ./data/reference/, which includes required reference files: 
 * reference genome fa file ``hs37d5.fa`` and index ``	hs37d5.fa.fai``(Please download from [1000genomes](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/),
-and put it in ``./data/reference``)
+and put it in ``./data/reference/hg19/``)
 * mappability of 100-mer
 * Encode hg19 blacklist regions
 * hg19 Chromesome length 
