@@ -110,13 +110,13 @@ For the cross-sample case, the second bam file used as the test set is assigned 
 
 ```
 # Example
-python train.py -b 1000 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
+python train.py -b 400 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
 ```
 
 ## Testing model-level performance
 ```
 # Example
-python test.py -b 1000  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5 -mp ../experiment/model_param/unet_default
+python test.py -b 400  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5 -mp ../experiment/model_param/unet_default
 ```
 
 
