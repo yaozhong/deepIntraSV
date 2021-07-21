@@ -125,7 +125,7 @@ def cmd_eval():
 	parser = argparse.ArgumentParser(description='BK enhancement for SV augmentation')
 	parser.add_argument('--dataSelect', '-d', type=str, default="sample1", required=True, help='sample name')
 	parser.add_argument('--bam_file', '-bam', type=str, default="", required=True, help='WGS bam file')
-    parser.add_argument('--vcf', '-v', type=str, default="", required=True, help='initial vcf file')
+	parser.add_argument('--vcf', '-v', type=str, default="", required=True, help='initial vcf file')
 	parser.add_argument('--vcf_ci', '-ci', type=int, default=99999999, required=True, help='upbound of breakpoint confidence interval for filtering')
 	parser.add_argument('--vcf_gold', '-vg', type=str, default="", required=True, help='initial vcf file')	
 
