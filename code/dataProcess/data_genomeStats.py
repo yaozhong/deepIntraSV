@@ -30,7 +30,7 @@ Random sampling whole genome and calcuate the read-depth distriubtion.
 
 def getSampleBG(bamFile, sampleFold=0.1):
 
-    logger.info("\t================ Calcuate the Genomic Statistics based on bam File =================")
+    print("\t================ Calcuate the Genomic Statistics based on bam File =================")
     random.seed(config.DATABASE["rand_seed"])
 
     # chrome scale regions
@@ -54,7 +54,7 @@ def getSampleBG(bamFile, sampleFold=0.1):
 
     # Do mappability filter first, note if no mappability is needed just set the threshold to 0. 	
     idx = [ i for i,ma in enumerate(maVec) if ma > config.DATABASE["mappability_threshold"] ]
-    logger.debug(">> Filtering the low mappability sample unit from [%d] to [%d] " %(len(maVec), len(idx)))
+    print(">> Filtering the low mappability sample unit from [%d] to [%d] " %(len(maVec), len(idx)))
     maVec = np.array(maVec, dtype=np.float32)[idx]
     rgs = [ rgVec[i] for i in idx ]
 	
@@ -152,7 +152,6 @@ def visal_rd_genome(bk_dataPath, fitDist = True):
         # fit the data
         ## 1. norm distribution
         mu, std = ss.norm.fit(rdVec)
-        logger.info("Cached %f Genome Depth-of-coverage statistics is [%f, %f]" %(config.DATABASE["genomeSampleRate"], mu, std))
         print("[Genome]: ** Cached %f Genome Depth-of-coverage statistics is [%f, %f]" %(config.DATABASE["genomeSampleRate"], mu, std))
         
         if fitDist == False:

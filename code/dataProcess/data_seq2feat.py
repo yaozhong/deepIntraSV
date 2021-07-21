@@ -11,7 +11,7 @@ from util import *
 def kmer_dic_gen():
 
 	k = config.DATABASE["max_kmer"]
-	print("Initlaization %d k-mer word dictionary!" %(4**k))
+	#print("Initlaization %d k-mer word dictionary!" %(4**k))
 	basic="atgc"
 	kmers=['n']
 	kmer2idx={}

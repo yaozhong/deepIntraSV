@@ -37,7 +37,10 @@ def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_
 	rgList = data["rgList"]
 
 	# global statistics loading
+	if not os.path.exists(bk_dataPath):
+		cache_genome_statistics(bam_file, bk_dataPath, config.DATABASE["genomeSampleRate"])	
 	m_rd, std_rd, md_rd, gc_mrd_table = load_genome_statistics(bk_dataPath)
+	
 	visal_rd_genome(bk_dataPath, False)
 
 	# nomralization the data and genrate the mapping
@@ -126,7 +129,7 @@ def cmd_eval():
 	parser.add_argument('--dataSelect', '-d', type=str, default="sample1", required=True, help='sample name')
 	parser.add_argument('--bam_file', '-bam', type=str, default="", required=True, help='WGS bam file')
 	parser.add_argument('--vcf', '-v', type=str, default="", required=True, help='initial vcf file')
-	parser.add_argument('--vcf_ci', '-ci', type=int, default=99999999, required=True, help='upbound of breakpoint confidence interval for filtering')
+	parser.add_argument('--vcf_ci', '-ci', type=int, default=99999999, required=False, help='upbound of breakpoint confidence interval for filtering')
 	parser.add_argument('--vcf_gold', '-vg', type=str, default="", required=True, help='initial vcf file')	
 
 	parser.add_argument('--bin', '-b', type=int, default=400, required=True, help='bin size of target region')

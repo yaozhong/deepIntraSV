@@ -169,7 +169,7 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
                         background_aug.append(rg_cand)
                         break
         
-    logger.info("** Break point and background data has been generated completely !!!")
+    #logger.info("** Break point and background data has been generated completely !!!")
 
     ## retrive related information from Bam file, based on a region range.
     rd_bl, seq_bl, ma_bl, gc_bl,fm_bl, sm_bl = input_gen_fromRgs(bk_left, bamFile)
@@ -178,13 +178,13 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
 
     # checking step 
     ind = np.apply_along_axis(check_all_zero, 1, rd_bl)
-    logger.debug("\n** checking all zero for bk-left %d" %(np.sum(np.sum(ind))))
+    #logger.debug("\n** checking all zero for bk-left %d" %(np.sum(np.sum(ind))))
     ind = np.apply_along_axis(check_all_zero, 1, rd_br)
-    logger.debug("** checking all zero for bk-right %d" %(np.sum(np.sum(ind))))
+    #logger.debug("** checking all zero for bk-right %d" %(np.sum(np.sum(ind))))
 
     if bk_in:
         ind = np.apply_along_axis(check_all_zero, 1, rd_bg)
-        logger.debug("** checking all zero for background %d" %(np.sum(np.sum(ind))))
+        #logger.debug("** checking all zero for background %d" %(np.sum(np.sum(ind))))
 
     if dataAug > 0:
         rd_bl_aug, seq_bl_aug, ma_bl_aug, gc_bl_aug, fm_bl_aug, sm_bl_aug = input_gen_fromRgs(bk_left_aug, bamFile)
@@ -193,13 +193,13 @@ def genData_from_rgLists(rgList, bkDic, bamFile, dataAug=0, bk_in=True,hotRange=
         if bk_in: rd_bg_aug, seq_bg_aug, ma_bg_aug, gc_bg_aug, fm_bg_aug, sm_bg_aug = input_gen_fromRgs(background_aug, bamFile)
 
         ind = np.apply_along_axis(check_all_zero, 1, rd_bl_aug)
-        logger.debug("** AUG-checking all zero for bk-left %d" %(np.sum(np.sum(ind))))
+        #logger.debug("** AUG-checking all zero for bk-left %d" %(np.sum(np.sum(ind))))
         ind = np.apply_along_axis(check_all_zero, 1, rd_br_aug)
-        logger.debug("** AUG-checking all zero for bk-right %d" %(np.sum(np.sum(ind))))
+        #logger.debug("** AUG-checking all zero for bk-right %d" %(np.sum(np.sum(ind))))
 
         if bk_in:
             ind = np.apply_along_axis(check_all_zero, 1, rd_bg_aug)
-            logger.debug("** AUG-checking all zero for background %d" %(np.sum(np.sum(ind))))
+            #logger.debug("** AUG-checking all zero for background %d" %(np.sum(np.sum(ind))))
 
     y_bg = [[0]*binSize]*len(background)
     bps_bg = [(-1,-1)]*len(background)
