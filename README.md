@@ -19,12 +19,23 @@ We provide a docker image for running this code
 ```
 docker pull yaozhong/deep_intra_sv:0.9
 ```
-* ubuntu 14.04.4
+* ubuntu 16.04.4
 * Tensorflow 1.8.0
 * Keras 2.2.4
 
 ```
-nvidia-docker run -it --rm -v deepIntraSV:/deepIntraSV -v bamFilePath:/bamFiles yaozhong/deep_intra_sv:0.9 bash
+CODE_FOLD=<Absolute-PATH-to-CODE>
+DATA_FOLD=<Absolute-PATH-to-DATA>
+RESTULT_FOLD=<Absolute-PATH-to-RESULT>
+
+CODE_FOLD=/data/working/1_Unet_IntraSV/deepIntraSV/code
+DATA_FOLD=/data/working/1_Unet_IntraSV/data
+RESTULT_FOLD=/data/working/1_Unet_IntraSV/deepIntraSV/result
+
+nvidia-docker run -it --rm -v $CODE_FOLD:/code -v $DATA_FOLD:/data -v $RESTULT_FOLD:/result \
+yaozhong/deep_intra_sv:0.9 bash
+
+
 ```
 
 ## Configuration file
@@ -67,12 +78,12 @@ The test-split-proportion can be specified with option ``-tsp``
 For the cross-sample case, the second bam file used as the test set is assigned through ``-d2`` option.
 
 
-## Enhancement for CNVnator
+## Breakpoint enhancement for CNVnator
 
 ```
-data="simA"
-vcf_ci=99999999
+sample_name="simA"
 binSize=400
+bam_file=""
 
 genomeStat="hg19-INPUT_simA_RD_bin${binSize}_GENOMESTAT_SampleRate-0.01_Filter-Mappability-0.9"
 model="../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5"
@@ -85,7 +96,8 @@ gVCF="Sim-A.SV.vcf"
 # CNVnator predictions
 pVCF="cnvnator.vcf"
 
-python eval/enhance_bk.py -d $data -b $binSize -gs $genomeStat -mp $model -er $trainRgs -ci $vcf_ci -v $pVCF -vg $gVCF
+python eval/enhance_bk.py -d $data -bam $bam_file -b $binSize -gs $genomeStat \
+-mp $model -er $trainRgs -v $pVCF -vg $gVCF
 ```
 
 
