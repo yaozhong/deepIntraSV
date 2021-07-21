@@ -15,7 +15,7 @@ from dataProcess.data_genomeStats import *
 
 from keras import models
 from models.losses import *
-from models.model_baseline import binary_eval, evluation_breakpoint, get_new_breakpoint2
+from models.model_baseline import binary_eval, get_new_breakpoint2
 from vcf_cmp import compare_rgs_list, three_compare_rgs_list, enhancement_analysis
 
 def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_file=None):
