@@ -66,6 +66,7 @@ pVCF=<CNVnator-bin-resolution-prediction-file>
 # trained model
 model="../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5"
 
+# if sample RD information is not found, generated for the first time.
 genomeStat="../experiment/${sample_name}-BG_RD_statistics.cached"
 output_fold="../experiment/"
 
