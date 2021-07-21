@@ -30,7 +30,7 @@ Random sampling whole genome and calcuate the read-depth distriubtion.
 
 def getSampleBG(bamFile, sampleFold=0.1):
 
-    print("\t[*] Calcuate the Genomic Statistics based on bam File !")
+    print("[*] Calcuate the Genomic Statistics based on bam File !")
     random.seed(config.DATABASE["rand_seed"])
 
     # chrome scale regions
