@@ -30,7 +30,7 @@ Random sampling whole genome and calcuate the read-depth distriubtion.
 
 def getSampleBG(bamFile, sampleFold=0.1):
 
-    print("\t================ Calcuate the Genomic Statistics based on bam File =================")
+    print("\t[*] Calcuate the Genomic Statistics based on bam File !")
     random.seed(config.DATABASE["rand_seed"])
 
     # chrome scale regions
@@ -102,7 +102,7 @@ def cache_genome_statistics(bamFilePath, bk_dataPath, sampleRate):
     with h5py.File(bk_dataPath, 'w') as hf:
  
         hf.create_dataset("rd_basic", data=rd_basic)
-	hf.create_dataset("gc_list", data=gc_list)
+        hf.create_dataset("gc_list", data=gc_list)
         hf.create_dataset("mrd_list", data=mrd_list)
         hf.create_dataset("rdVec", data=rdVec)
 

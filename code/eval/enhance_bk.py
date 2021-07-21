@@ -40,8 +40,8 @@ def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_
 	if not os.path.exists(bk_dataPath):
 		cache_genome_statistics(bam_file, bk_dataPath, config.DATABASE["genomeSampleRate"])	
 	m_rd, std_rd, md_rd, gc_mrd_table = load_genome_statistics(bk_dataPath)
-	
-	visal_rd_genome(bk_dataPath, False)
+
+	#visal_rd_genome(bk_dataPath, False)
 
 	# nomralization the data and genrate the mapping
 	x_data, y_data = np.array(data["x"]), np.array(data["y"])
@@ -70,7 +70,7 @@ def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_
 			num_of_invalid += 1
 	print("[INFO]: UNPROPOER shift [%d] that makes SV length less than 50, are replaced it back!"  %(num_of_invalid))
 
-	if vcf_gold != "":
+	if vcf_gold != None:
 		print("\n[5]. Post processing and evluated with gold SV ...")
 		# load the gold standard VCF, note not filtering for the gold standard SV
 		_, _, sv_gold = parse_sim_data_vcf(vcf_gold, 0, False, False)
@@ -130,12 +130,14 @@ def cmd_eval():
 	parser.add_argument('--bam_file', '-bam', type=str, default="", required=True, help='WGS bam file')
 	parser.add_argument('--vcf', '-v', type=str, default="", required=True, help='initial vcf file')
 	parser.add_argument('--vcf_ci', '-ci', type=int, default=99999999, required=False, help='upbound of breakpoint confidence interval for filtering')
-	parser.add_argument('--vcf_gold', '-vg', type=str, default="", required=True, help='initial vcf file')	
+	parser.add_argument('--vcf_gold', '-vg', type=str, default=None, required=False, help='initial vcf file')	
 
 	parser.add_argument('--bin', '-b', type=int, default=400, required=True, help='bin size of target region')
 	parser.add_argument('--genomeStat', '-gs', type=str, default="", required=True, help='background RD statistic files')
 	parser.add_argument('--model', '-mp', type=str, default="", required=True, help='model hyperparameter file')
 	parser.add_argument('--exRgs', '-er', type=str, default=None, required=False, help='exclude regions')
+
+	parser.add_argument('--out_fold', '-o', type=str, default="./", required=True, help='Results output fold')
 
 	parser.add_argument('--gpu', '-g', type=str, default="0", required=False, help='assign the task GPU')
 
@@ -145,6 +147,10 @@ def cmd_eval():
 	config.DATABASE["fix_center"] = True
 	config.DATABASE["binSize"] = args.bin
 	config.DATABASE["vcf_ci"] = args.vcf_ci
+
+	config.DATABASE["enhance_output_fold"] = args.out_fold
+	config.DATABASE["heatmap_fold"] = args.out_fold
+
 	vcf_file = args.vcf
 	vcf_gold = args.vcf_gold
 	train_rgs = args.exRgs

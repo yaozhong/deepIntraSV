@@ -64,7 +64,7 @@ DATABASE={
     ## fold for saving the training SV regions
     'outFold_train_rgs':"../experiment/train_rgs/",
     ## fold for saving the enhancement results
-    "enhance_output_fold":"../experiment/enhanced_result/",
+    "enhance_output_fold":"../experiment/",
     ## fold for saving breakpoint change matrix, plotted in heatmap
     "heatmap_fold":"../experiment/heatmap/",
     "model_data_tag":"",
