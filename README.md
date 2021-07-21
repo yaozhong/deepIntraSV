@@ -58,26 +58,6 @@ and put it in ``./data/reference``)
 2. SV annotation files./data/SV_annotation/
   (a python script is provided to parse VCF for SV regions)
 
-## Data pre-processing and split
-A multi-core version of pysam is used. 
-By default, all cores will be used to generate RD bins from bam file. For each training data, 
-background statistics of RDs are first calcuated through sampling WGS data.
-Background statistics of each WGS data will be cached in `./data/data_cache/`.
-
-There are two evluation metrics, which are determined through CMD parameter -em (evluation mode)
-* in-sample: ``-em single``
-* cross-sample: ``-em cross``
-
-For the in-sample case, only one bam file is required and the data is split into train-test with the following data split -ds option:
-
-* Stratify: Stratified Random split
-* RandRgs: Random split
-* CV: cross valdiation
-
-The test-split-proportion can be specified with option ``-tsp``
-For the cross-sample case, the second bam file used as the test set is assigned through ``-d2`` option.
-
-
 ## Breakpoint enhancement for CNVnator
 ```
 # example of running
@@ -94,25 +74,39 @@ model="../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dat
 genomeStat="../experiment/${sample_name}-BG_RD_statistics.cached"
 output_fold="../experiment/"
 
-python eval/enhance_bk.py -d $sample_name -bam $bam_file -b $binSize -gs $genomeStat \
--mp $model -v $pVCF -o $output_fold
-
 # If gold SVs are known, it can be used for evaluating enhancement effect.
 gVCF="Sim-A.SV.vcf"
 
-python eval/enhance_bk.py -d $data -bam $bam_file -b $binSize -gs $genomeStat \
--mp $model -er $trainRgs -v $pVCF
+python eval/enhance_bk.py -d $sample_name -bam $bam_file -b $binSize -gs $genomeStat \
+-mp $model -v $pVCF -o $output_fold
 ```
 
+## Training your own deep segmenation model
 
-## Training
 Input are WGS bam file(s) and VCF file(s). 
 Cached train-test data will be first searched according to current parameters,
 If cache files are not found, the code will process the bam file and cache the data.
+A multi-core version of pysam is used. 
+By default, all cores will be used to generate RD bins from bam file. For each training data, 
+background statistics of RDs are first calcuated through sampling WGS data.
+Background statistics of each WGS data will be cached in `./data/data_cache/`.
 
 We provided a default hyperparameters of UNet and CNN in ``./experiment/model_param/``
 Users can make changes of the parameter file or specifiy through command line option.
 If no model parameter file is provided, the code will use hyperOpt to search preDefined hyper-parameter spaces based on the train set.
+
+There are two evluation metrics, which are determined through CMD parameter -em (evluation mode)
+* in-sample: ``-em single``
+* cross-sample: ``-em cross``
+
+For the in-sample case, only one bam file is required and the data is split into train-test with the following data split -ds option:
+
+* Stratify: Stratified Random split
+* RandRgs: Random split
+* CV: cross valdiation
+
+The test-split-proportion can be specified with option ``-tsp``
+For the cross-sample case, the second bam file used as the test set is assigned through ``-d2`` option.
 
 ```
 # Example
