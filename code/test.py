@@ -27,7 +27,6 @@ from models.model_hyperOpt import *
 
 from dataProcess.data_cacheLoading import *
 
-
 VB = 1
 
 # how to get the segment, only return the first 1 position, not very accurate

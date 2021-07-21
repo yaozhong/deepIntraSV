@@ -140,44 +140,6 @@ def binary_eval(gold_cnv, pred_cnv, modelInfo, binaryCase=False, rocFigPath=""):
 ###########################################################
 ### evluation of the break point, basic evluation metric
 ###########################################################
-def evluation_breakpoint(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath, plotFig=False):
- 
-    same_bk, diff1_bk, more2_diff = [], [], []
-
-    basic_distance = []
-
-    for i in range(gold_cnv.shape[0]):
-        pred_seq, pred_ident_count, pred_seq_point = get_break_point_position(pred_cnv[i])
-        gold_seq, gold_ident_count, gold_seq_point = get_break_point_position(gold_cnv[i])
-
-        # based on the gold standard split
-        if np.abs(len(pred_ident_count) - len(gold_ident_count)) >= 2:
-            more2_diff.append(i)
-
-        elif len(pred_ident_count) == len(gold_ident_count):
-            same_bk.append(i)
-            
-            # partial evluation of the predicited distance
-            if len(pred_seq) > 1:
-                basic_distance.extend(np.abs(pred_seq_point[:-1] - gold_seq_point[:-1]))
-        else:
-            diff1_bk.append(i)
-
-    print("** Totally have [%d] same bk, [%d] 1-diff bbk, [%d] 2 more-diff"  \
-        %(len(same_bk), len(diff1_bk), len(more2_diff)))
-
-    if len(basic_distance) > 0:
-        print("** Equal length prediciotn has the Breakpoint prediction shift of [%d, %d]" %(np.mean(basic_distance), np.std(basic_distance)))
-
-    # visualization
-    if plotFig:
-        if len(same_bk) > 0:
-            visual_prediction(x_cnv[same_bk], rgs_cnv[same_bk], gold_cnv[same_bk], pred_cnv[same_bk], figureSavePath + "_same")
-        if len(diff1_bk) > 0:
-            visual_prediction(x_cnv[diff1_bk], rgs_cnv[diff1_bk], gold_cnv[diff1_bk], pred_cnv[diff1_bk], figureSavePath + "_1diff")
-        if len(more2_diff) > 0:
-            visual_prediction(x_cnv[more2_diff], rgs_cnv[more2_diff], gold_cnv[more2_diff], pred_cnv[more2_diff], figureSavePath + "_2moreDiff")
-    
 
 def get_new_breakpoint2(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath, plotFig=False):
  

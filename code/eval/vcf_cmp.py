@@ -74,7 +74,7 @@ def compare_rgs_list(sv_list, tsv_list, excldue_list=None, eval_with_ci=False):
 				   	# this overlap is Jaccard index
 				   	overlap_rate = float(overlap) / union
 
-				   	if overlap_rate > config.DATABASE["RO"]:
+				   	if overlap_rate > config.DATABASE["JS"]:
 				   		if ( np.abs(sv[1] - tsv[1]) <= 1 and np.abs(sv[2] - tsv[2]) <= 1):
 				   			num_exact_both_rough += 1
 				   		elif (np.abs(sv[1] - tsv[1]) <= 1 or np.abs(sv[2] - tsv[2]) <= 1):
@@ -88,7 +88,7 @@ def compare_rgs_list(sv_list, tsv_list, excldue_list=None, eval_with_ci=False):
 
 				   	##################################################
 
-				   	if overlap_rate > config.DATABASE["RO"]:
+				   	if overlap_rate > config.DATABASE["JS"]:
 				   		num_overlap += 1
 				   		distance.append(abs(sv[1]-tsv[1]))
 				   		distance.append(abs(sv[2]-tsv[2]))
@@ -189,7 +189,7 @@ def three_compare_rgs_list(sv_list, sv_list2, tsv_list, excldue_list=None, eval_
 					overlap_rate2 = float(overlap) / union
 			
 				
-				if(overlap_rate1 > config.DATABASE["RO"] and overlap_rate2 < config.DATABASE["RO"]):
+				if(overlap_rate1 > config.DATABASE["JS"] and overlap_rate2 < config.DATABASE["JS"]):
 					print("[*] Effective enhancement, overalp:")
 					print(sv_list[i])
 					print(sv_list2[i])
@@ -199,7 +199,7 @@ def three_compare_rgs_list(sv_list, sv_list2, tsv_list, excldue_list=None, eval_
 
 					#raw_input("Press any key to continue ...")	
 
-				if(overlap_rate1 < config.DATABASE["RO"] and overlap_rate2 > config.DATABASE["RO"]):
+				if(overlap_rate1 < config.DATABASE["JS"] and overlap_rate2 > config.DATABASE["JS"]):
 					print("[*] Worse enhancement, overlap:")
 					print(sv_list[i])
 					print(sv_list2[i])
@@ -312,7 +312,7 @@ def enhancement_analysis(new_svs, old_svs, tsv_list, excldue_list=None, eval_wit
 				old_gDist_right = np.abs(old_svs[i][2] - tsv[2])
 
 				# 2020-03-18 add additional count 
-				if(overlap_rate2 > config.DATABASE["RO"]):
+				if(overlap_rate2 > config.DATABASE["JS"]):
 					# left 
 					if old_gDist_left <= 50:
 						old_bk_in_range += 1
@@ -326,7 +326,7 @@ def enhancement_analysis(new_svs, old_svs, tsv_list, excldue_list=None, eval_wit
 					 	old_bk_out_range += 1
 
 				# checking the bounary shift
-				if(overlap_rate1 > config.DATABASE["RO"] and overlap_rate2 <= config.DATABASE["RO"]):
+				if(overlap_rate1 > config.DATABASE["JS"] and overlap_rate2 <= config.DATABASE["JS"]):
 					print("[*] -*- Effective -*- enhancement, add overalp regions [new, old, gold]:")
 					print(new_svs[i])
 					print(old_svs[i])
@@ -334,7 +334,7 @@ def enhancement_analysis(new_svs, old_svs, tsv_list, excldue_list=None, eval_wit
 					print("overlap1=%f, overlap2=%f" %(overlap_rate1, overlap_rate2))
 
 
-				if(overlap_rate1 <= config.DATABASE["RO"] and overlap_rate2 > config.DATABASE["RO"]):
+				if(overlap_rate1 <= config.DATABASE["JS"] and overlap_rate2 > config.DATABASE["JS"]):
 					print("[*] -X- Worse enhancement -X-, lose overlap [new, old, gold]:")
 					print(new_svs[i])
 					print(old_svs[i])
@@ -343,7 +343,7 @@ def enhancement_analysis(new_svs, old_svs, tsv_list, excldue_list=None, eval_wit
 
 				# this conditional needs checked
 				## 20200406
-				if(overlap_rate1 <= config.DATABASE["RO"] and overlap_rate2 <= config.DATABASE["RO"]):
+				if(overlap_rate1 <= config.DATABASE["JS"] and overlap_rate2 <= config.DATABASE["JS"]):
 					continue
 
 				# checking the count matrix
@@ -399,7 +399,7 @@ def compareSV(vcf1, vcf2):
 					union = (tsv["end"] - tsv["start"] ) + (sv["end"] - sv["start"]) - overlap
 
 					overlap_rate = float(overlap) / union
-					if overlap_rate > config.DATABASE["RO"]:
+					if overlap_rate > config.DATABASE["JS"]:
 						num_overlap += 1
 						distance.append(abs(sv["start"]-tsv["start"]))
 						distance.append(abs(sv["end"]-tsv["end"]))
@@ -446,7 +446,7 @@ def gold_hit_check(gsv_list, sv_list, eval_with_ci=False):
 					
 					overlap_rate = float(overlap) / union
 
-					if(overlap_rate > config.DATABASE["RO"]):
+					if(overlap_rate > config.DATABASE["JS"]):
 
 						#check the boundary exactness
 						if ( (np.abs(sv[1] - gsv[1])) <= 1 and (np.abs(sv[2] - gsv[2]) <= 1) ):

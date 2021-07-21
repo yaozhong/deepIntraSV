@@ -2,30 +2,33 @@
 ## Note: some option values can be modified through the command option.
 ## Make proper setting before running the code. 
 
-#hg19 reference
+
+DATAPATH="../data/"
+BAMFOLD="/data/Dataset/1000GP/phase3/"
+
 DATABASE={	
     # reference genome sequence
-    'ref_faFile':"../data/reference/hg19/hs37d5.fa",
+    'ref_faFile': DATAPATH + "reference/hg19/hs37d5.fa",
     'chr_prefix':False,
+
     # reference general chromesome information
-    'chrLen_info':"../data/reference/hg19/hg19_chr_info.txt",
+    'chrLen_info': DATAPATH + "reference/hg19/hg19_chr_info.txt",
     # Read signal types
     'count_type':"RD",
     # bin Size of the the data
     'binSize':400,
     # mappability files
-    'mappability_file':"../data/reference/hg19/wgEncodeCrgMapabilityAlign100mer.bigWig",
+    'mappability_file': DATAPATH  + "reference/hg19/wgEncodeCrgMapabilityAlign100mer.bigWig",
     'mappability_threshold':0.9,
     # alignment threshold for filtering out low quality data
     'mapq_threshold':30, 
     'base_quality_threshold':30,
-
     # regions avoid in the reference genome
     'black_list':"../data/reference/hg19/hg19.blackList.bed",
     # Embedding related
     'kmer_dic':None,
     'max_kmer':1,
-    # random seed
+    #random seed
     'rand_seed':1234,
 
     # background genome sample rate
@@ -61,17 +64,17 @@ DATABASE={
     ## fold for saving the training SV regions
     'outFold_train_rgs':"../experiment/train_rgs/",
     ## fold for saving the enhancement results
-    "enhance_output_fold":"../experiment/enhance_result/",
+    "enhance_output_fold":"../experiment/enhanced_result/",
     ## fold for saving breakpoint change matrix, plotted in heatmap
     "heatmap_fold":"../experiment/heatmap/",
     "model_data_tag":"",
 
     # threshold of overlapped (Jaccard similarity)
-    "RO":0.5, 
+    "JS":0.5, 
 }
 
-BAMFOLD="/data/Dataset/1000GP/phase3/"
 
+"""
 BAMFILE={
         # NA12878
         "na12878_7x":  BAMFOLD+"NA12878/NA12878.mapped.ILLUMINA.bwa.CEU.low_coverage.20121211.bam",
@@ -85,15 +88,15 @@ BAMFILE={
         "na12878_60x_ds0.7": BAMFOLD+"NA12878/NA12878.mapped.ILLUMINA.bwa.CEU.high_coverage_pcr_free.20130906.downsample0.7.bam",
 
         # NA19238
-        "na19238_7x":"/data2/Dataset/1000GP/phase3/NA19238/NA19238.mapped.ILLUMINA.bwa.YRI.low_coverage.20130415.bam",
-        "na19238_60x":"/data2/Dataset/1000GP/phase3/NA19238/NA19238.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam",
+        "na19238_7x":BAMFOLD+"NA19238.mapped.ILLUMINA.bwa.YRI.low_coverage.20130415.bam",
+        "na19238_60x":BAMFOLD+"NA19238.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam",
 
         # NA18939
-        "na18939_7x":"/data2/Dataset/1000GP/phase3/NA18939/NA18939.mapped.ILLUMINA.bwa.JPT.low_coverage.20130415.bam",
-        "na18939_60x":"/data2/Dataset/1000GP/phase3/NA18939/NA18939.wgs.ILLUMINA.bwa.JPT.high_cov_pcr_free.20140203.bam",
-
+        "na18939_7x":BAMFOLD+"NA18939.mapped.ILLUMINA.bwa.JPT.low_coverage.20130415.bam",
+        "na18939_60x":BAMFOLD+"NA18939.wgs.ILLUMINA.bwa.JPT.high_cov_pcr_free.20140203.bam",
 }
-
+"""
+"""
 ic=-1
 AnnoCNVFile ={       
         "na12878_7x": "../data/SV_annotation/1KGP/annoFile/NA12878_1kGP_IC-"+str(ic)+".bed",
@@ -112,5 +115,5 @@ AnnoCNVFile ={
         "na19239_7x": "../data/SV_annotation/1KGP/annoFile/nonOverlap_NA19239_1kGP_IC-"+str(ic)+".bed",
         "na19239_60x": "../data/SV_annotation/1KGP/annoFile/nonOverlap_NA19239_1kGP_IC-"+str(ic)+".bed",            
 }
-
+"""
 

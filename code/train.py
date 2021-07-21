@@ -43,7 +43,7 @@ TRAIL=100
 
 ############################################################
 # Cross valdiation evluation
-## not revised yet , check before using !
+############################################################
 def train_CV(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, loss, plotResult= False, plotTrainCurve=False):
 
         # all data loading, the data is pre-splited in the caching part.
@@ -235,11 +235,13 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
             model_param_file  =  modelParamPath + ".TRAIL-"+ str(TRAIL)+ ".UNet.model.parameters.json"
             # check whether the model is hyperOpt tuned
             if not os.path.exists(model_param_file):
+                print("* Hyperparammeter starts to search for the given data set ...")
                 tmpData = (x_data, y_data, y_data_label)
                 do_hyperOpt(modelName, tmpData, TRAIL, model_param_file)
             params = load_modelParam(model_param_file)
 
-        print("@ Model parameters are :")
+        print("*"*40)
+        print("* Model parameters are :")
         print(params)
         print("*"*40)
 
@@ -298,9 +300,6 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
 
         model.summary()
 
-        ###########################################################################################3
-        # Results generation
-        ###########################################################################################
         if plotTrainCurve:
 
             figureSavePath= modelSavePath + "/model_curve/" + modelSaveName + "_trainCurve.png"
@@ -338,38 +337,42 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
 
 if __name__ == "__main__":
     
-        parser = argparse.ArgumentParser(description='Intra-bin segmentation for SV augmentation')
+        parser = argparse.ArgumentParser(description='RDBKE with UNet for RD-based SV callers')
 
         parser.add_argument('--gpu', '-g', type=str, default="0", help='GPU ID for Training model.')
-        parser.add_argument('--bin', '-b', type=int, default=1024, required=True, help='bin size of target region')
+        parser.add_argument('--bin', '-b', type=int, default=400, required=True, help='Screening window length of the target region')
         parser.add_argument('--dataAug', '-da', type=int, default=0, help='Epochs of data augmentation')
-        parser.add_argument('--model', '-m', type=str, default="UNet", required=True, help='UNet/CNN/SVM')
-        parser.add_argument('--trainMode', '-tm', type=str, default="", help='Training model [, CV]')
 
+        parser.add_argument('--model', '-m', type=str, default="UNet", required=True, help='UNet/CNN/SVM')
+        parser.add_argument('--trainMode', '-tm', type=str, default="", help='Training model [CrossValidation(CV) non-CV]')
         parser.add_argument('--ref_faFile', '-refa', type=str, default="", help='Reference files')      
-        #parser.add_argument('--chr_prefix', '-chrPrefix', type=bool, default=True, help='Chromesome name Prefix status')   
 
         parser.add_argument('--dataSplit', '-ds', type=str, default="RandRgs",help='Data split setting')
         parser.add_argument('--testSplitPortion', '-tsp', type=float, default=0.2, help='Data split portion')
 
-        parser.add_argument('--smallTrainCV', '-scv', type=str, default="normal", help='')
-        
+        parser.add_argument('--smallTrainCV', '-scv', type=str, default="normal", help='CV train-test-proportion select')
         parser.add_argument('--evalMode', '-em', type=str, default="single", required=True, help='Model evaluation mode')
         
-        parser.add_argument('--dataSelect', '-d', type=str, default="na12878_7x", required=True, help='bam file')
-        parser.add_argument('--dataSelect2', '-d2', type=str, default="", help='bam file for corss-sample testing')
+        # data set option
+        parser.add_argument('--dataSelect', '-d', type=str, default="na12878_7x", required=True, help='sample name')
+        parser.add_argument('--dataSelect2', '-d2', type=str, default="", help='sample2 name')
 
-        parser.add_argument('--modelParam', '-mp', type=str, default="", help='resign pre-determined model parameters')
-        parser.add_argument('--loss', '-l', type=str, default="abc_dice_loss", help='losses of training the model')
-        parser.add_argument('--bg_eval', '-be', type=bool, default=True, help='whether background region evaluated')
-
+        ## bam file
+        parser.add_argument('--bam_file', '-bam', type=str, default="", required=True, help='WGS bam file')
+        parser.add_argument('--bam_file2','-bam2', type=str, default="", help='WGS bam file')
+        
         # Loading target training regions
         parser.add_argument('--vcf', '-vcf', type=str, default="", required=True, help="vcf/bed annotation")
         parser.add_argument('--vcf2', '-vcf2', type=str, default="", help="second vcf/bed for testing")
-        parser.add_argument('--vcf_ci', '-vcf_ci', type=int, default=500, help="Whether filtering PASS tags in the VCF")
-
+        parser.add_argument('--vcf_ci', '-vcf_ci', type=int, default=500, help="Confidence interval of breakpoints")
         parser.add_argument('--vcf_filter', '-vcf_filter', type=bool, default=False, help="Whether filtering PASS tags in the VCF")
-        parser.add_argument('--vcf_filter2', '-vcf_filter2', type=bool, default=False, help="Whether filtering PASS tags in the VCF")
+        parser.add_argument('--vcf_filter2', '-vcf_filter2', type=bool, default=False, help="Whether filtering PASS tags in the VCF2")
+      
+        parser.add_argument('--modelParam', '-mp', type=str, default="", help='load pre-determined model parameters')
+        parser.add_argument('--loss', '-l', type=str, default="abc_dice_loss", help='losses of training the model')
+        parser.add_argument('--bg_eval', '-be', type=bool, default=True, help='whether background region evaluated')
+        parser.add_argument('--model_save_fold', '-msf', type=str, default="./", help='model save place')
+
         parser.add_argument('--fix_center', '-fix_center', type=bool, default=False, help="Fix the winodw and make the break point centering")
         parser.add_argument('--shift_low_bound', '-shift_low_bound', type=int, default=10, help="random shift low distance boundary to breakpoint data")
 
@@ -397,17 +400,14 @@ if __name__ == "__main__":
 
         if args.vcf != "":
             config.DATABASE["vcf"] = args.vcf
-            config.AnnoCNVFile[args.dataSelect] = args.vcf
         if args.vcf2 != "":
             config.DATABASE["vcf2"] = args.vcf2
-            config.AnnoCNVFile[args.dataSelect2] = args.vcf2
 
         if args.vcf_ci != config.DATABASE["vcf_ci"]:
             config.DATABASE["vcf_ci"] = args.vcf_ci
 
         if args.vcf_filter != config.DATABASE["vcf_filter"] :
             config.DATABASE["vcf_filter"] = args.vcf_filter
-
         if args.vcf_filter2 != config.DATABASE["vcf_filter2"] :
             config.DATABASE["vcf_filter2"] = args.vcf_filter2
 
@@ -434,7 +434,7 @@ if __name__ == "__main__":
         bk_dataPath += "SampleRate-" + str(config.DATABASE["genomeSampleRate"]) 
         bk_dataPath += "_Filter-Mappability-"+ str(config.DATABASE["mappability_threshold"])
 
-        bamFilePath = config.BAMFILE[args.dataSelect]
+        bamFilePath = args.bam_file
 
         if not os.path.exists(bk_dataPath):
             cache_genome_statistics(bamFilePath, bk_dataPath, config.DATABASE["genomeSampleRate"])
@@ -449,7 +449,7 @@ if __name__ == "__main__":
             bk_dataPath2 += "SampleRate-" + str(config.DATABASE["genomeSampleRate"]) 
             bk_dataPath2 += "_Filter-Mappability-"+ str(config.DATABASE["mappability_threshold"])
             
-            bamFilePath2 = config.BAMFILE[args.dataSelect2]
+            bamFilePath2 = args.bam_file2
 
             if not os.path.exists(bk_dataPath2):
                 cache_genome_statistics(bamFilePath2, bk_dataPath2, config.DATABASE["genomeSampleRate"])
@@ -461,11 +461,11 @@ if __name__ == "__main__":
         ## training data first cachcing check
         if config.DATABASE["eval_mode"] == "cross":
             assert(args.dataSelect2 != "")
-            goldFile = [config.AnnoCNVFile[args.dataSelect], config.AnnoCNVFile[args.dataSelect2]]
-            bamFilePath = [config.BAMFILE[args.dataSelect], config.BAMFILE[args.dataSelect2]]
+            goldFile = [args.vcf, args.vcf2]
+            bamFilePath = [args.bam_file, args.bam_file2]
         else:
-            goldFile = [config.AnnoCNVFile[args.dataSelect]]
-            bamFilePath = [config.BAMFILE[args.dataSelect]]
+            goldFile = [args.vcf]
+            bamFilePath = [args.bam_file]
 
         dataPath = "../data/data_cache/"+ ANNOTAG         
         dataInfo = args.dataSelect +"_"+config.DATABASE["count_type"] +"_bin"+str(binSize)+"_TRAIN"
@@ -475,7 +475,7 @@ if __name__ == "__main__":
         dataInfo += "_dataAug-"+str(config.DATABASE["data_aug"])
         dataInfo += "_filter-BQ"+str(config.DATABASE["base_quality_threshold"])+"-MAPQ-"+str(config.DATABASE["mapq_threshold"])
 
-        annoElems = config.AnnoCNVFile[args.dataSelect].split("/")
+        annoElems = args.vcf.split("/")
         dataInfo += "_AnnoFile-"+annoElems[-2]+":" +annoElems[-1]
 
         dataInfo += "_VCF-filter" if args.vcf_filter else ""
@@ -498,25 +498,26 @@ if __name__ == "__main__":
                 cache_trainData_fromVCF([args.vcf], bamFilePath, dataPath, args.testSplitPortion)
 
         ## model parameter is associated with the training data [depth bin size, annotation] 
-        modelParamPath = "../experiment/model_param/"  
+        modelParamPath = args.model_save_fold + "/"
         dataInfo = args.dataSelect +"_" + config.DATABASE["count_type"] + "_bin"+str(binSize) + "_TRAIN"
         dataInfo += "_extendContext-" + str(config.DATABASE["extend_context"])
         dataInfo += "_dataAug-"+str(config.DATABASE["data_aug"])
         dataInfo += "_filter-BQ"+str(config.DATABASE["base_quality_threshold"])+"-MAPQ-"+str(config.DATABASE["mapq_threshold"])
-        annoElems = config.AnnoCNVFile[args.dataSelect].split("/")
+        annoElems = args.vcf.split("/")
         dataInfo += "_AnnoFile-"+annoElems[-2]+":" +annoElems[-1]
         modelParamPath = modelParamPath + dataInfo
         
-        modelSavePath ="/home/yaozhong/working/1_Unet_IntraSV/experiment"
+        modelSavePath = args.model_save_fold
 
-        # used for saving different train_tag_set.
         if args.dataSplit == "CV":
+
             if args.model == "SVM":
                 SVM_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotResult= False, plotTrainCurve=False)
             elif args.model == "CNN":
                 CNN_CV(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotResult= False, plotTrainCurve=False)        
             else:  
                 train_CV(args.model, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, args.loss, plotTrainCurve=False, plotResult=False)
+        
         else:
             if args.model == "SVM":
                 SVM(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo)

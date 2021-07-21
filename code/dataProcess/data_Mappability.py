@@ -21,6 +21,7 @@ def getMappability(region, binSize, fileName):
 			map_vec[i] = np.mean(mapB.values(rg[0], rg[1], rg[2]))
 	return map_vec
 
+
 def getMappability_worker(params):
 
 	region, binSize, fileName = params

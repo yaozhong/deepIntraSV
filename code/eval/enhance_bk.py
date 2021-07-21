@@ -15,7 +15,7 @@ from dataProcess.data_genomeStats import *
 
 from keras import models
 from models.losses import *
-from models.model_baseline import binary_eval, evluation_breakpoint, get_new_breakpoint2, get_new_breakpoint
+from models.model_baseline import binary_eval, evluation_breakpoint, get_new_breakpoint2
 from vcf_cmp import compare_rgs_list, three_compare_rgs_list, enhancement_analysis
 
 def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_file=None):
@@ -58,7 +58,7 @@ def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_
 	print("\n[4]. Evluating and summary results ...")
 	old_rg_list, new_rg_list = get_new_breakpoint2(x_data, data["rgs"], y_data, pred, "null", False)
 
-	# added 2020-03-16 [key]
+	# added 2020-03-16 
 	print("\n[4.1]. Print the post-processing for the unproper shift that make SV short than [50] ...")
 	num_of_invalid = 0
 	for i in range(len(new_rg_list)):
@@ -67,26 +67,25 @@ def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_
 			num_of_invalid += 1
 	print("[INFO]: UNPROPOER shift [%d] that makes SV length less than 50, are replaced it back!"  %(num_of_invalid))
 
-	print("\n[5]. Post processing and evluated with gold SV ...")
-	# load the gold standard VCF, note not filtering for the gold standard SV
-	_, _, sv_gold = parse_sim_data_vcf(vcf_gold, 0, False, False)
+	if vcf_gold != "":
+		print("\n[5]. Post processing and evluated with gold SV ...")
+		# load the gold standard VCF, note not filtering for the gold standard SV
+		_, _, sv_gold = parse_sim_data_vcf(vcf_gold, 0, False, False)
 
-  	figureSavePath= "../experiment/result_check_20200316/" + date.today().strftime("%Y%m%d") + "_"
-  	print("[##] Segmentaiton and break point:")
-  	evluation_breakpoint(x_data, np.array(data["rgs"]), gold, pred, figureSavePath + "_bk_debug", False) 	
+  		figureSavePath= config.DATABASE["enhance_output_fold"] + date.today().strftime("%Y%m%d") + "_"
+  		print("[##] Segmentaiton and break point:")
+  		evluation_breakpoint(x_data, np.array(data["rgs"]), gold, pred, figureSavePath + "_bk_debug", False) 	
 
-  	# check the evluation
-  	#three_compare_rgs_list(new_rg_list, old_rg_list, sv_gold, exlcude_rgs)
-  	enhancement_analysis(new_rg_list, old_rg_list, sv_gold, exlcude_rgs, False)
+  		# check the evluation
+  		enhancement_analysis(new_rg_list, old_rg_list, sv_gold, exlcude_rgs, False)
 
-	## all evaluation
-	print("\n############### Overall Evluation ################")
-	print("[1] Original distance:")
-	compare_rgs_list(old_rg_list, sv_gold, exlcude_rgs, False)
-	print("\n[2] Enhanced distance:")
-	compare_rgs_list(new_rg_list, sv_gold, exlcude_rgs, False)
-	#print("\n[3] self comparision:")
-	#compare_rgs_list(new_rg_list, old_rg_list, exlcude_rgs, True)
+		## all evaluation
+		print("\n############### Overall Evluation ################")
+		print("[1] Original distance:")
+		compare_rgs_list(old_rg_list, sv_gold, exlcude_rgs, False)
+
+		print("\n[2] Enhanced distance:")
+		compare_rgs_list(new_rg_list, sv_gold, exlcude_rgs, False)
 
 	print("\n############### Saving the enhancement result ################")
 	# analysis results according to SV_len and SV_type
@@ -95,7 +94,7 @@ def enhance_sv(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude_rgs_
 	file_name = file_name.replace("run_sim_20200119", "")
 	file_name = re.sub(r'2020\d+_', "", file_name)
 	file_name = file_name.replace("Rikan_", "")
-	file_name = "Ubin-" + str(config.DATABASE["binSize"])+ "_" + file_name 
+	file_name = "bin-" + str(config.DATABASE["binSize"])+ "_" + file_name 
 
 	old_result = open(config.DATABASE["enhance_output_fold"]+ "/old_" + file_name + ".bed", "w")
 	new_result = open(config.DATABASE["enhance_output_fold"]+ "/enhanced_" + file_name + ".bed", "w")
@@ -124,14 +123,17 @@ def enhance_sv_test(vcf_file, vcf_gold, bam_file, model_pm, bk_dataPath, exclude
 def cmd_eval():
 
 	parser = argparse.ArgumentParser(description='BK enhancement for SV augmentation')
-	parser.add_argument('--dataSelect', '-d', type=str, default="na12878_60x", required=True, help='bam file')
-	parser.add_argument('--bin', '-b', type=int, default=1000, required=True, help='bin size of target region')
-	parser.add_argument('--genomeStat', '-gs', type=str, default="", required=True, help='bin size of target region')
-	parser.add_argument('--model', '-mp', type=str, default="", required=True, help='bin size of target region')
+	parser.add_argument('--dataSelect', '-d', type=str, default="sample1", required=True, help='sample name')
+	parser.add_argument('--bam_file', '-bam', type=str, default="", required=True, help='WGS bam file')
+    parser.add_argument('--vcf', '-v', type=str, default="", required=True, help='initial vcf file')
+	parser.add_argument('--vcf_ci', '-ci', type=int, default=99999999, required=True, help='upbound of breakpoint confidence interval for filtering')
+	parser.add_argument('--vcf_gold', '-vg', type=str, default="", required=True, help='initial vcf file')	
+
+	parser.add_argument('--bin', '-b', type=int, default=400, required=True, help='bin size of target region')
+	parser.add_argument('--genomeStat', '-gs', type=str, default="", required=True, help='background RD statistic files')
+	parser.add_argument('--model', '-mp', type=str, default="", required=True, help='model hyperparameter file')
 	parser.add_argument('--exRgs', '-er', type=str, default=None, required=False, help='exclude regions')
-	parser.add_argument('--vcf_ci', '-ci', type=int, default=9999999, required=True, help='confidence interval')
-	parser.add_argument('--vcf', '-v', type=str, default="", required=True, help='initial vcf file')
-	parser.add_argument('--vcf_gold', '-vg', type=str, default="", required=True, help='initial vcf file')
+
 	parser.add_argument('--gpu', '-g', type=str, default="0", required=False, help='assign the task GPU')
 
 	args = parser.parse_args()
@@ -144,7 +146,7 @@ def cmd_eval():
 	vcf_gold = args.vcf_gold
 	train_rgs = args.exRgs
 
-	bam_file = config.BAMFILE[args.dataSelect]
+	bam_file = args.bam_file
 	bk_dataPath = args.genomeStat
 	model_pm = args.model
 
