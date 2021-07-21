@@ -79,27 +79,30 @@ For the cross-sample case, the second bam file used as the test set is assigned 
 
 
 ## Breakpoint enhancement for CNVnator
-
 ```
+# example of running
 sample_name="simA"
 binSize=400
-bam_file=""
+bam_file=<path-to-bam-file>
 
-genomeStat="hg19-INPUT_simA_RD_bin${binSize}_GENOMESTAT_SampleRate-0.01_Filter-Mappability-0.9"
+# CNVnator predictions, check this input.
+pVCF=<CNVnator-bin-resolution-prediction-file>
+
+# trained model
 model="../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5"
 
-# exclude regions
-trainRgs="train_rgs/UNet_networkstructure_basic_simA_b${binSize}_tsp0.8-train_rgs.txt"
+genomeStat="../experiment/${sample_name}-BG_RD_statistics.cached"
+output_fold="../experiment/"
 
+python eval/enhance_bk.py -d $sample_name -bam $bam_file -b $binSize -gs $genomeStat \
+-mp $model -v $pVCF -o $output_fold
+
+# If gold SVs are known, it can be used for evaluating enhancement effect.
 gVCF="Sim-A.SV.vcf"
 
-# CNVnator predictions
-pVCF="cnvnator.vcf"
-
 python eval/enhance_bk.py -d $data -bam $bam_file -b $binSize -gs $genomeStat \
--mp $model -er $trainRgs -v $pVCF -vg $gVCF
+-mp $model -er $trainRgs -v $pVCF
 ```
-
 
 
 ## Training
