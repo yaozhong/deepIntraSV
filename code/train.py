@@ -293,14 +293,14 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
         history = model.fit(x_data, y_data, epochs=params["epoch"], batch_size=batchSize, verbose=VB,callbacks=CB, validation_split=0.2)
         
         print "@ Saving model ..."
-        model.save(modelSavePath + "/model/" + modelSaveName + ".h5" )
+        model.save(modelSavePath + modelSaveName + ".h5" )
         plotTrainCurve = False
 
         model.summary()
 
         if plotTrainCurve:
 
-            figureSavePath= modelSavePath + "/model_curve/" + modelSaveName + "_trainCurve.png"
+            figureSavePath= modelSavePath + "/" + modelSaveName + "_trainCurve.png"
             plt.plot(history.history['dice_coef'])
             plt.plot(history.history['val_dice_coef'])
             plt.title('Training curve of dice_coefficient')
@@ -317,7 +317,7 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
 
         # save the prediction figures
         if plotResult == True:
-            figureSavePath= "../experiment/result/"+ modelInfo + "_DATA-"+dataInfo
+            figureSavePath= modelSavePath + modelInfo + "_DATA-"+dataInfo
             visual_prediction(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath)
 
         print "\n=========== [DATA/MODEL information] ============="
@@ -325,10 +325,10 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
         print("[*]: Train BreakPoints=%d / Total=%d" %(np.sum(y_data_label), y_data_label.shape[0]))
 
         ## evluation of the break point.
-        figureSavePath= "../experiment/ROC/" + date.today().strftime("%Y%m%d") + "_"
+        figureSavePath= modelSavePath + date.today().strftime("%Y%m%d") + "_"
         binary_eval(gold_cnv, pred_cnv, modelInfo, False, figureSavePath + "UNet" + ".png")
        
-        figureSavePath= "../experiment/result/" + date.today().strftime("%Y%m%d") + "_"
+        figureSavePath= modelSavePath + date.today().strftime("%Y%m%d") + "_"
         evluation_breakpoint(x_cnv, rgs_cnv, gold_cnv, pred_cnv, figureSavePath + "UNet_", False)
         print("\n")
 
@@ -519,4 +519,4 @@ if __name__ == "__main__":
             elif args.model == "CNN":
                 CNN(dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, plotTrainCurve=False, plotResult=False)   
             else: 
-                train(args.model, dataPath, bk_dataPath, modelParamPath, modelSavePath , dataInfo, args.loss, plotTrainCurve=False, plotResult=False)
+                train(args.model, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataInfo, args.loss, plotTrainCurve=False, plotResult=False)

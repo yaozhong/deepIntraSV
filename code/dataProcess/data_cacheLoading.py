@@ -22,7 +22,7 @@ def printBasicStat(x_data, y_data):
     idx_bg = [ i for i in range(len(y_label)) if y_label[i] == 0 ]
     idx_bk = [ i for i in range(len(y_label)) if y_label[i] == 1 ]
     
-    logger.info("\n[BIN_DATA]:Sample label number Positive=%d, Negative=%d" %(len(idx_bk), len(idx_bg)))
+    print("\n[BIN_DATA]:Sample label number Positive=%d, Negative=%d" %(len(idx_bk), len(idx_bg)))
     
     print("[BIN_DATA]:Background data [m=%f, std=%f]" %(np.mean(x_data[idx_bg]), np.std(x_data[idx_bg])))
     print("[BIN_DATA]:Break point containing [m=%f, std=%f]" %(np.mean(x_data[idx_bk]), np.std(x_data[idx_bk])))
