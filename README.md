@@ -68,9 +68,8 @@ gVCF=<path-of-gold-standard-SV>
 python eval/enhance_bk.py -d $sample_name -bam $bam_file -b $binSize -gs $genomeStat -mp $model -v $pVCF -o $output_fold
 ```
 
-## UNet model: Training and testing
+## Training UNet model
 
-### Training
 Input are WGS bam file(s) and VCF file(s). 
 Cached train-test data will be first searched according to current parameters,
 If cache files are not found, the code will process the bam file and cache the data.
