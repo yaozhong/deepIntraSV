@@ -36,8 +36,7 @@ Some frequently used parameters can be also specifized through command line opti
 1. reference files are located in ./data/reference/, which includes required reference files: 
 
 * reference genome FASTA file ``hs37d5.fa`` and its ``index ``	hs37d5.fa.fai``
-(Please download from [1000genomes](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/),
-and place it in ``./data/reference/hg19/``)
+(Please download from [1000genomes](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/) , and place it in ``./data/reference/hg19/``)
 * mappability of 100-mer file
 * Encode hg19 blacklist regions
 * hg19 Chromesome length 
@@ -141,25 +140,24 @@ python train.py -b $bin_size -em single -d $sample1_name \
 
 ## Used Data 
 ### VCF files
-* [Simulation](https://github.com/stat-lab/EvalSVcallers/blob/master/Ref_SV/Sim-A.SV.vcf)
+* Simulated data:(https://github.com/stat-lab/EvalSVcallers/blob/master/Ref_SV/Sim-A.SV.vcf)
 
-* [NA12878, NA19238, NA19239]
-(ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz)
+* NA12878, NA19238, NA19239:(ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz)
  
-* [HG002](ftp://ftp- trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/analysis/NIST_SVs_Integration_v0.6/HG002_SVs_Tier1_v0.6.vcf.gz)
+* HG002:(ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/analysis/NIST_SVs_Integration_v0.6/HG002_SVs_Tier1_v0.6.vcf.gz)
  
-* [COLO829T](https://zenodo.org/record/3988185/files/truthset_somaticSVs_COLO829.vcf?download=1)
+* COLO829T:(https://zenodo.org/record/3988185/files/truthset_somaticSVs_COLO829.vcf?download=1)
  
 ### BAM files
-* [NA12878](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA12878.mapped.ILLUMINA.bwa.CEU.high_coverage_pcr_free.20130906.bam) 
+* NA12878:(ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA12878.mapped.ILLUMINA.bwa.CEU.high_coverage_pcr_free.20130906.bam) 
 
-* [NA19238](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19238.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam)
+* NA19238:(ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19238.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam)
 
-* [NA19239](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19239.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam)
+* NA19239:(ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19239.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam)
 
-* [HG002](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/NIST_HiSeq_HG002_Homogeneity-10953946/NHGRI_Illumina300X_AJtrio_novoalign_bams/HG002.hs37d5.60X.1.bam)
+* HG002:(ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/NIST_HiSeq_HG002_Homogeneity-10953946/NHGRI_Illumina300X_AJtrio_novoalign_bams/HG002.hs37d5.60X.1.bam)
 
-* [COLO829T](ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR275/ERR2752450/COLO829T_dedup.realigned.bam)
+* COLO829T:(ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR275/ERR2752450/COLO829T_dedup.realigned.bam)
 
 
 
