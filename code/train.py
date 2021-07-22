@@ -296,10 +296,9 @@ def train(modelName, dataPath, bk_dataPath, modelParamPath, modelSavePath, dataI
         model.save(modelSavePath + modelSaveName + ".h5" )
         plotTrainCurve = False
 
-        model.summary()
+        #model.summary()
 
         if plotTrainCurve:
-
             figureSavePath= modelSavePath + "/" + modelSaveName + "_trainCurve.png"
             plt.plot(history.history['dice_coef'])
             plt.plot(history.history['val_dice_coef'])
@@ -431,7 +430,9 @@ if __name__ == "__main__":
         if not os.path.exists(args.model_save_fold):
             os.makedirs(args.model_save_fold)
 
-        bk_dataPath = args.model_save_fold + ANNOTAG + "-" + args.dataSelect \
+        config.DATABASE["outFold_train_rgs"]=args.model_save_fold
+
+        bk_dataPath = args.model_save_fold + ANNOTAG + args.dataSelect \
                 +"_"+config.DATABASE["count_type"] +"_bin"+str(binSize)+"_GENOMESTAT_" \
                 + "SampleRate-" + str(config.DATABASE["genomeSampleRate"]) \
                 + "_Filter-Mappability-"+ str(config.DATABASE["mappability_threshold"])
@@ -443,7 +444,7 @@ if __name__ == "__main__":
         ########### Prepare the second genome for normalization ###########
         if(config.DATABASE["eval_mode"]=="cross"):
 
-            bk_dataPath2 = args.model_save_fold + ANNOTAG + "-" + args.dataSelect2 \
+            bk_dataPath2 = args.model_save_fold + ANNOTAG + args.dataSelect2 \
                     +"_"+config.DATABASE["count_type"] \
                     +"_bin"+str(binSize)+"_GENOMESTAT_" \
                     +"SampleRate-" + str(config.DATABASE["genomeSampleRate"]) \

@@ -61,7 +61,6 @@ def parse_sim_data_vcf(vcf_file, test_protion=0.2, verbose=True, vcf_filter=Fals
 
             # only using the PASS VCF PASS=[], HG00514 no filter note!!
             # only applys to VCF input
-
             if (vcf_filter):
                 if len(record.FILTER) > 0:
                     continue

@@ -49,7 +49,7 @@ and place it in ``./data/reference/hg19/``)
 
 ```
 # example
-sample_name="simA"
+sample_name="sample1"
 binSize=400
 bam_file=<path-of-bam-file>
 # SV prediction of a RD-based SV caller, e.g., CNVnator
@@ -74,9 +74,10 @@ Input are WGS bam file(s) and VCF file(s).
 Cached train-test data will be first searched according to current parameters,
 If cache files are not found, the code will process the bam file and cache the data.
 A multi-core version of pysam is used. 
-By default, all cores will be used to generate RD bins from bam file. For each training data, 
+By default, all cores will be used to generate RD bins from bam file. 
+For each training data, 
 background statistics of RDs are first calcuated through sampling WGS data.
-Background statistics of each WGS data will be cached in `./data/data_cache/`.
+Background statistics of each WGS data will be cached in the same fold of trained model parameters
 
 We provided a default hyperparameters of UNet and CNN in ``./experiment/model_param/``
 Users can make changes of the parameter file or specifiy through command line option.
@@ -140,25 +141,25 @@ python train.py -b $bin_size -em single -d $sample1_name \
 
 ## Used Data 
 ### VCF files
-* Simulation: https://github.com/stat-lab/EvalSVcallers/blob/master/Ref_SV/Sim-A.SV.vcf
+* [Simulation](https://github.com/stat-lab/EvalSVcallers/blob/master/Ref_SV/Sim-A.SV.vcf)
 
-* NA12878, NA19238, NA19239:
-ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz
+* [NA12878, NA19238, NA19239]
+(ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz)
  
-* HG002: ftp://ftp- trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/analysis/NIST_SVs_Integration_v0.6/HG002_SVs_Tier1_v0.6.vcf.gz
+* [HG002](ftp://ftp- trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/analysis/NIST_SVs_Integration_v0.6/HG002_SVs_Tier1_v0.6.vcf.gz)
  
-* COLO829T: https://zenodo.org/record/3988185/files/truthset_somaticSVs_COLO829.vcf?download=1
+* [COLO829T](https://zenodo.org/record/3988185/files/truthset_somaticSVs_COLO829.vcf?download=1)
  
 ### BAM files
-* NA12878: ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA12878.mapped.ILLUMINA.bwa.CEU.high_coverage_pcr_free.20130906.bam 
+* [NA12878](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA12878.mapped.ILLUMINA.bwa.CEU.high_coverage_pcr_free.20130906.bam) 
 
-* NA19238: ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19238.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam
+* [NA19238](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19238.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam)
 
-* NA19239: ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19239.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam 
+* [NA19239](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data/NA12878/high_coverage_alignment/NA19239.mapped.ILLUMINA.bwa.YRI.high_coverage_pcr_free.20130924.bam)
 
-* HG002: ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/NIST_HiSeq_HG002_Homogeneity-10953946/NHGRI_Illumina300X_AJtrio_novoalign_bams/HG002.hs37d5.60X.1.bam
+* [HG002](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/NIST_HiSeq_HG002_Homogeneity-10953946/NHGRI_Illumina300X_AJtrio_novoalign_bams/HG002.hs37d5.60X.1.bam)
 
-* COLO829T: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR275/ERR2752450/COLO829T_dedup.realigned.bam
+* [COLO829T](ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR275/ERR2752450/COLO829T_dedup.realigned.bam)
 
 
 

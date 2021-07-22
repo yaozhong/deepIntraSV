@@ -82,14 +82,10 @@ def binary_eval(gold_cnv, pred_cnv, modelInfo, binaryCase=False, rocFigPath=""):
             
             iou_cnv = iou_score(gold_cnv, pred_cnv)
             iou1 = iou_score(gold_cnv[index1], pred_cnv[index1])
-            print("; All_IOU=%.4f" %(iou_cnv)),
-            print(", BK_IOU=%.4f" %(iou1)),
 
             if len(index0) > 0:
                 df0 = dice_score(gold_cnv[index0], pred_cnv[index0])   
                 iou0 = iou_score(gold_cnv[index0], pred_cnv[index0])        
-                print("| BG_dice=%.4f" %(df0)),
-                print(", BG_IOU=%.4f" %(iou0))
             else:
                 df0, iou0 = None, None
 
