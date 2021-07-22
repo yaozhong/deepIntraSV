@@ -599,7 +599,6 @@ if __name__ == "__main__":
 	parser.add_argument('--exFile', '-ex', type=str, default=None, required=True, help="reference vcf file")
 
 	args = parser.parse_args()
-
 	#overlap_checking(args.vcf1, args.vcf2, args.gvcf, args.exFile , True)
 	exact_checking(args.vcf1, args.vcf2, args.gvcf, args.exFile , False)
 
