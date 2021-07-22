@@ -30,7 +30,7 @@ Random sampling whole genome and calcuate the read-depth distriubtion.
 
 def getSampleBG(bamFile, sampleFold=0.1):
 
-    print("[*] Calcuate the Genomic Statistics based on bam File !")
+    print("[*] Calcuate the Genomic Statistics based on bam File.")
     random.seed(config.DATABASE["rand_seed"])
 
     # chrome scale regions
@@ -54,7 +54,7 @@ def getSampleBG(bamFile, sampleFold=0.1):
 
     # Do mappability filter first, note if no mappability is needed just set the threshold to 0. 	
     idx = [ i for i,ma in enumerate(maVec) if ma > config.DATABASE["mappability_threshold"] ]
-    print(">> Filtering the low mappability sample unit from [%d] to [%d] " %(len(maVec), len(idx)))
+    print("    |-Filtering the low mappability sample unit from [%d] to [%d] " %(len(maVec), len(idx)))
     maVec = np.array(maVec, dtype=np.float32)[idx]
     rgs = [ rgVec[i] for i in idx ]
 	
@@ -74,7 +74,7 @@ def getSampleBG(bamFile, sampleFold=0.1):
     
     # calcuating the basic statistics and do normalization according to the gc
     m_rd, std_rd, md_rd = np.mean(rdVec), np.std(rdVec), np.median(rdVec)
-    print("** The basic statistics for the genome is [mead=%f, std=%f, median=%f]" %(m_rd, std_rd, md_rd))
+    print("    |-The basic statistics for the genome is [mead=%f, std=%f, median=%f]" %(m_rd, std_rd, md_rd))
     rd_basic =[m_rd, std_rd, md_rd]
 
     #2. Calcuate the potential GC-RD table.

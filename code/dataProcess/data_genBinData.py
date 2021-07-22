@@ -691,4 +691,29 @@ def cache_trainData_fromVCF(vcf_files, bamFiles, dataPath, dataSplit, bk_in=True
             hf.create_dataset("stable_test", data=None)
 
 
+def load_cache_trainData(dataPath):
+
+    with h5py.File(dataPath,'r') as hf:
+        x_data = hf["x_data"][:]
+        y_data = hf["y_data"][:]
+        seq_data = hf["seq_data"][:]
+        rgs_data = hf["rgs_data"][:]
+        gc_data = hf["gc_data"][:]
+        bps_data = hf["bps_data"][:]
+
+        f_data = hf["flex_data"][:]
+        s_data = hf["stable_data"][:]
+
+        x_test = hf["x_test"][:]
+        y_test = hf["y_test"][:]
+        seq_test = hf["seq_test"][:]
+        rgs_test = hf["rgs_test"][:]
+        gc_test = hf["gc_test"][:]
+        bps_test = hf["bps_test"][:]
+
+        f_test = hf["flex_test"][:]
+        s_test = hf["stable_test"][:]
+
+    return (x_data, y_data, seq_data, rgs_data, gc_data, bps_data, f_data, s_data,\
+            x_test, y_test, seq_test, rgs_test, gc_test, bps_test, f_test, s_test)
 

@@ -420,12 +420,12 @@ if __name__ == "__main__":
 
         config.DATABASE["model_data_tag"] = args.model + "_" + args.dataSelect + "_b"+str(binSize) + "_tsp" + str(args.testSplitPortion)
         
-        ANNOTAG=""
+        ANNOTAG="-"
         bamFilePath = args.bam_file
 
         # makeing tmp_workspace in the current fold
         if not os.path.exists(args.tmp):
-            print("[@] tmp_workspace does not exist, and set up the tmp_workspace in:", args.tmp)
+            print("[@] tmp_workspace does not exist, and set up the tmp_workspace in:" + args.tmp)
             os.makedirs(args.tmp)
 
         if not os.path.exists(args.model_save_fold):
