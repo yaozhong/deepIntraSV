@@ -227,10 +227,10 @@ if  __name__ == "__main__":
         bk_dataPath = args.genomeStat
 
         if not os.path.exists(bk_dataPath) or bk_dataPath == "":
-                bk_dataPath = args.out_fold + ANNOTAG + args.dataSelect \
-                +"_"+config.DATABASE["count_type"]+"_bin"+str(binSize)+"_GENOMESTAT_" \
-                + "SampleRate-" + str(config.DATABASE["genomeSampleRate"]) \
-                +"_Filter-Mappability-"+ str(config.DATABASE["mappability_threshold"])
+            bk_dataPath = args.out_fold + ANNOTAG + args.dataSelect \
+            +"_"+config.DATABASE["count_type"]+"_bin"+str(binSize)+"_GENOMESTAT_" \
+            + "SampleRate-" + str(config.DATABASE["genomeSampleRate"]) \
+            +"_Filter-Mappability-"+ str(config.DATABASE["mappability_threshold"])
     
             cache_genome_statistics(bamFilePath, bk_dataPath, config.DATABASE["genomeSampleRate"])
 

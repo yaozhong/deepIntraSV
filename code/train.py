@@ -427,16 +427,17 @@ if __name__ == "__main__":
         if not os.path.exists(args.tmp):
             print("[@] tmp_workspace does not exist, and set up the tmp_workspace in:", args.tmp)
             os.makedirs(args.tmp)
-        if not os.path.exits(args.model_save_fold):
+
+        if not os.path.exists(args.model_save_fold):
             os.makedirs(args.model_save_fold)
 
-        if not os.path.exists(bk_dataPath) or bk_dataPath == "":
-            ## background data is random sampling whole genome read depth data
-            bk_dataPath = args.model_save_fold + ANNOTAG + args.dataSelect \
+        bk_dataPath = args.model_save_fold + ANNOTAG + args.dataSelect \
                 +"_"+config.DATABASE["count_type"] +"_bin"+str(binSize)+"_GENOMESTAT_" \
                 + "SampleRate-" + str(config.DATABASE["genomeSampleRate"]) \
                 + "_Filter-Mappability-"+ str(config.DATABASE["mappability_threshold"])
 
+        if not os.path.exists(bk_dataPath):
+            ## background data is random sampling whole genome read depth data
             cache_genome_statistics(bamFilePath, bk_dataPath, config.DATABASE["genomeSampleRate"])
 
         ########### Prepare the second genome for normalization ###########
