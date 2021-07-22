@@ -420,7 +420,7 @@ if __name__ == "__main__":
 
         config.DATABASE["model_data_tag"] = args.model + "_" + args.dataSelect + "_b"+str(binSize) + "_tsp" + str(args.testSplitPortion)
         
-        ANNOTAG="-"
+        ANNOTAG=""
         bamFilePath = args.bam_file
 
         # makeing tmp_workspace in the current fold
@@ -431,7 +431,7 @@ if __name__ == "__main__":
         if not os.path.exists(args.model_save_fold):
             os.makedirs(args.model_save_fold)
 
-        bk_dataPath = args.model_save_fold + ANNOTAG + args.dataSelect \
+        bk_dataPath = args.model_save_fold + ANNOTAG + "-" + args.dataSelect \
                 +"_"+config.DATABASE["count_type"] +"_bin"+str(binSize)+"_GENOMESTAT_" \
                 + "SampleRate-" + str(config.DATABASE["genomeSampleRate"]) \
                 + "_Filter-Mappability-"+ str(config.DATABASE["mappability_threshold"])
@@ -443,7 +443,7 @@ if __name__ == "__main__":
         ########### Prepare the second genome for normalization ###########
         if(config.DATABASE["eval_mode"]=="cross"):
 
-            bk_dataPath2 = args.model_save_fold + ANNOTAG + args.dataSelect2 \
+            bk_dataPath2 = args.model_save_fold + ANNOTAG + "-" + args.dataSelect2 \
                     +"_"+config.DATABASE["count_type"] \
                     +"_bin"+str(binSize)+"_GENOMESTAT_" \
                     +"SampleRate-" + str(config.DATABASE["genomeSampleRate"]) \

@@ -38,7 +38,6 @@ EPOCH=30
 CB = [ callbacks.EarlyStopping(monitor="val_loss", patience=10, mode = "auto", restore_best_weights=True) ] 
 VB = 0
 
-
 ## 2019/12/19 add ROC curve for the figure
 def plot_roc(gold_cnv, pred_cnv, rocFigPath):
 
