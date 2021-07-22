@@ -68,8 +68,9 @@ gVCF=<path-of-gold-standard-SV>
 python eval/enhance_bk.py -d $sample_name -bam $bam_file -b $binSize -gs $genomeStat -mp $model -v $pVCF -o $output_fold
 ```
 
-## Training your own deep segmenation model
+## UNet model: Training and testing
 
+### Training
 Input are WGS bam file(s) and VCF file(s). 
 Cached train-test data will be first searched according to current parameters,
 If cache files are not found, the code will process the bam file and cache the data.
@@ -100,11 +101,8 @@ For the cross-sample case, the second bam file used as the test set is assigned 
 python train.py -b 400 -em single -ds Stratify -d na12878_60x -da 0 -m UNet -g 0 -mp ../experiment/model_param/unet_default
 ```
 
-## Testing model-level performance
-```
-# Example
-python test.py -b 400  -em single -ds Stratify -d na12878_60x -m UNet -mw ../experiment/trained_models/sim/simA_RD_bin400_TRAIN_extendContext-0_dataAug-0_filter-BQ30-MAPQ-30_AnnoFile-simData:Sim-A.SV.vcf_UNet_networkstructure_basic_simA_b400_tsp0.8.h5 -mp ../experiment/model_param/unet_default
-```
+
+
 
 
 
